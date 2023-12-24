@@ -87,11 +87,10 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
         name: teamPlayer.overridedName ?? teamPlayer.player.name,
         designation:
           teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
-        portraitImage: `${
+        portraitImage:
           teamPlayer.overridedPortraitImage ??
           teamPlayer.player.portraitImage ??
-          "/images/empty.png"
-        }?w=360&h=360&fit=crop&crop=top&auto=format`,
+          "/images/empty.png",
       }))
     );
 
