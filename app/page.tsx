@@ -6,8 +6,6 @@ export default async function Home() {
   const teams = await getTeams();
   const oldMatches = await getOldMatches();
 
-  console.log(oldMatches);
-
   return (
     <main>
       <section className="w-full text-center relative overflow-hidden">
@@ -20,7 +18,9 @@ export default async function Home() {
             {teams.map((team) => (
               <div key={team.slug}>
                 <img
-                  src={team.squareLogoImage}
+                  src={
+                    (team.squareLogoImage ?? "/images/empty.png") + "?width=512"
+                  }
                   className="w-48"
                   alt={team.name}
                 />
@@ -407,28 +407,40 @@ export default async function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src={teams[0]?.squareLogoImage}
+                  src={
+                    (teams[0].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[1]?.squareLogoImage}
+                  src={
+                    (teams[1].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[2]?.squareLogoImage}
+                  src={
+                    (teams[2].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[3]?.squareLogoImage}
+                  src={
+                    (teams[3].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
@@ -437,14 +449,20 @@ export default async function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src={teams[4]?.squareLogoImage}
+                  src={
+                    (teams[4].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[5]?.squareLogoImage}
+                  src={
+                    (teams[5].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
@@ -493,14 +511,20 @@ export default async function Home() {
             <div className="grid grid-cols-5 gap-x-8 gap-y-12">
               <div className="col-span-2">
                 <img
-                  src={teams[6]?.squareLogoImage}
+                  src={
+                    (teams[6].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[7]?.squareLogoImage}
+                  src={
+                    (teams[7].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
@@ -509,28 +533,40 @@ export default async function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src={teams[8]?.squareLogoImage}
+                  src={
+                    (teams[8].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[9]?.squareLogoImage}
+                  src={
+                    (teams[9].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[10]?.squareLogoImage}
+                  src={
+                    (teams[10].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src={teams[11]?.squareLogoImage}
+                  src={
+                    (teams[11].squareLogoImage ?? "/images/empty.png") +
+                    "?width=320"
+                  }
                   className="w-40 h-40"
                   alt=""
                 />

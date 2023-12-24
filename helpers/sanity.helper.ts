@@ -16,25 +16,34 @@ type Match = {
   startAt: string | null;
   youtubeUrl: string | null;
   bilibiliUrl: string | null;
-  playerEast: Player;
-  playerSouth: Player;
-  playerWest: Player;
-  playerNorth: Player;
+  playerEast: TeamPlayer;
+  playerSouth: TeamPlayer;
+  playerWest: TeamPlayer;
+  playerNorth: TeamPlayer;
 };
 
-type Player = {
-  name: string;
+type TeamPlayer = {
   portraitImageUrl: string | null;
   team: Team;
+  player: Player;
   overridedDesignation: string | null;
   overridedName: string | null;
   overridedColor: string | null;
   overridedPortraitImage: string | null;
 };
 
+type Player = {
+  _id: string;
+  name: string;
+  designation: string;
+  portraitImage: string;
+};
+
 type Team = {
+  _id: string;
   slug: string;
   name: string;
+  description: string;
   squareLogoImage: string | null;
   color: string;
 };
@@ -42,17 +51,96 @@ type Team = {
 export const getTeams = cache(() =>
   client
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]->{"slug": slug.current, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex} }`
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]->{_id, "slug": slug.current, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, description} }`
+    )
+    .then((tournaments) => tournaments[0]?.teams as Team[])
+);
+
+export const getTeamSlugs = cache(() =>
+  client
+    .fetch(
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]->{"slug": slug.current} }`
     )
     .then((tournaments) =>
-      (tournaments[0]?.teams as Team[]).map((team) => ({
-        ...team,
-        squareLogoImage: team.squareLogoImage
-          ? `${team.squareLogoImage}?width=512&height=512`
-          : "/images/empty.png",
-      }))
+      (tournaments[0]?.teams as Team[]).map((team) => team.slug)
     )
 );
+
+export const getTeamDetailBySlug = cache(async (slug: string) => {
+  const team = await client
+    .fetch(
+      `*[_type == "team" && slug.current == "${slug}"]{_id, name, description, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}`
+    )
+    .then((teams) => teams[0] as Team);
+
+  if (!team) {
+    return null;
+  }
+
+  const players = await client
+    .fetch(
+      `*[_type == "teamPlayer" && team._ref == "${team._id}"]{ team->{_id}, player->{_id, name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
+    )
+    .then((teamPlayers: TeamPlayer[]) =>
+      teamPlayers.map((teamPlayer) => ({
+        _id: teamPlayer.player._id,
+        name: teamPlayer.overridedName ?? teamPlayer.player.name,
+        designation:
+          teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
+        portraitImage: `${
+          teamPlayer.overridedPortraitImage ??
+          teamPlayer.player.portraitImage ??
+          "/images/empty.png"
+        }?w=360&h=360&fit=crop&crop=top&auto=format`,
+      }))
+    );
+
+  return {
+    ...team,
+    players,
+  };
+});
+
+export const getPlayersGroupByTeams = cache(async () => {
+  const teamIds = await client
+    .fetch(
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]->{_id} }`
+    )
+    .then(
+      (tournaments) =>
+        tournaments[0].teams.map(
+          (team: { _id: string }) => team._id
+        ) as string[]
+    );
+
+  const teamPlayers = (await client.fetch(
+    `*[_type == "teamPlayer" && team._ref in ${JSON.stringify(
+      teamIds
+    )}]{ team->{_id}, player->{_id, name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
+  )) as TeamPlayer[];
+
+  const result: Record<string, Player[]> = {};
+
+  for (let i = 0; i < teamPlayers.length; i++) {
+    const teamPlayer = teamPlayers[i];
+    if (!result[teamPlayer.team._id]) {
+      result[teamPlayer.team._id] = [];
+    }
+
+    result[teamPlayer.team._id].push({
+      _id: teamPlayer.player._id,
+      name: teamPlayer.overridedName ?? teamPlayer.player.name,
+      designation:
+        teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
+      portraitImage:
+        teamPlayer.overridedPortraitImage ??
+        teamPlayer.player.portraitImage ??
+        "/images/empty.png",
+    });
+  }
+
+  return result;
+});
 
 export const getOldMatches = cache(() =>
   client
