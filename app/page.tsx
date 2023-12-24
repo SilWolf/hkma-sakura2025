@@ -1,4 +1,13 @@
-export default function Home() {
+import { getOldMatches, getTeams } from "@/helpers/sanity.helper";
+
+export const revalidate = 900;
+
+export default async function Home() {
+  const teams = await getTeams();
+  const oldMatches = await getOldMatches();
+
+  console.log(oldMatches);
+
   return (
     <main>
       <section className="w-full text-center relative overflow-hidden">
@@ -8,90 +17,15 @@ export default function Home() {
             src="https://www.youtube.com/embed/Kp_UppkAiCk?si=Va0LX5hMdsdeQXzO&controls=0&start=1878&autoplay=1&mute=1&playsinline=1"
           ></iframe> */}
           <div className="grid grid-cols-4 lg:grid-cols-6 items-center justify-center text-center max-w-screen-xl mx-auto">
-            <div>
-              <img
-                src="/images/logo-team1.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team2.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team3.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team4.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team5.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team6.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team7.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team8.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team9.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team10.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team11.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="/images/logo-team12.webp"
-                className="inline-w-48"
-                alt=""
-              />
-            </div>
+            {teams.map((team) => (
+              <div key={team.slug}>
+                <img
+                  src={team.squareLogoImage}
+                  className="w-48"
+                  alt={team.name}
+                />
+              </div>
+            ))}
           </div>
         </div>
         <div className="pt-40 pb-32 relative z-10">
@@ -145,7 +79,7 @@ export default function Home() {
           <div>
             <iframe
               className="w-full aspect-video"
-              src="https://www.youtube.com/embed/Kp_UppkAiCk?si=eXOxZCGAvv5TwRFY&autoplay=1&mute=1"
+              src="https://www.youtube.com/embed/Kp_UppkAiCk?si=eXOxZCGAvv5TwRFY&mute=1"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             ></iframe>
@@ -473,28 +407,28 @@ export default function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team1.webp"
+                  src={teams[0]?.squareLogoImage}
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team2.webp"
+                  src={teams[1]?.squareLogoImage}
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team3.webp"
+                  src={teams[2]?.squareLogoImage}
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team4.webp"
+                  src={teams[3]?.squareLogoImage}
                   className="w-40 h-40"
                   alt=""
                 />
@@ -503,14 +437,14 @@ export default function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team5.webp"
+                  src={teams[4]?.squareLogoImage}
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team6.webp"
+                  src={teams[5]?.squareLogoImage}
                   className="w-40 h-40"
                   alt=""
                 />
@@ -559,15 +493,15 @@ export default function Home() {
             <div className="grid grid-cols-5 gap-x-8 gap-y-12">
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team7.webp"
-                  className="w-40 h-40 bg-neutral-700"
+                  src={teams[6]?.squareLogoImage}
+                  className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team8.webp"
-                  className="w-40 h-40 bg-neutral-700"
+                  src={teams[7]?.squareLogoImage}
+                  className="w-40 h-40"
                   alt=""
                 />
               </div>
@@ -575,28 +509,28 @@ export default function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team9.webp"
-                  className="w-40 h-40 bg-neutral-700"
+                  src={teams[8]?.squareLogoImage}
+                  className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team10.webp"
-                  className="w-40 h-40 bg-neutral-700"
+                  src={teams[9]?.squareLogoImage}
+                  className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team11.webp"
-                  className="w-40 h-40 bg-neutral-700"
+                  src={teams[10]?.squareLogoImage}
+                  className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="/images/logo-team12.webp"
+                  src={teams[11]?.squareLogoImage}
                   className="w-40 h-40"
                   alt=""
                 />
@@ -655,254 +589,66 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-4 gap-8">
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
+            {oldMatches.map((match) => (
+              <a
+                className="block"
+                href={match.youtubeUrl ?? "#"}
+                target="_blank"
+                key={match._id}
+              >
+                <div className="bg-neutral-800 rounded aspect-video">
+                  {match.youtubeThumbnailUrl && (
+                    <img
+                      src={match.youtubeThumbnailUrl}
+                      className="w-full rounded aspect-video"
+                      alt=""
+                    />
+                  )}
                 </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
+                <div className="flex justify-between items-center pr-1 mt-1">
+                  <div>
+                    <p>{match.name}</p>
+                    <p className="text-sm text-neutral-300">
+                      {match.startAt?.substring(0, 10)}
+                    </p>
+                  </div>
+                  <div>
+                    <img
+                      src={
+                        match.playerEast.team.squareLogoImage ??
+                        "/images/empty.png"
+                      }
+                      className="inline w-10 h-10"
+                      alt=""
+                    />
+                    <img
+                      src={
+                        match.playerSouth.team.squareLogoImage ??
+                        "/images/empty.png"
+                      }
+                      className="inline w-10 h-10"
+                      alt=""
+                    />
+                    <img
+                      src={
+                        match.playerWest.team.squareLogoImage ??
+                        "/images/empty.png"
+                      }
+                      className="inline w-10 h-10"
+                      alt=""
+                    />
+                    <img
+                      src={
+                        match.playerNorth.team.squareLogoImage ??
+                        "/images/empty.png"
+                      }
+                      className="inline w-10 h-10"
+                      alt=""
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="/images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="/images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
+              </a>
+            ))}
           </div>
         </div>
       </section>

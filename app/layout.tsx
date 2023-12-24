@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "香港麻雀協會 日本麻將隊際競技聯賽2024",
@@ -24,13 +25,13 @@ export default function RootLayout({
         <div className="max-w-[1920px] mx-auto relative">
           <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-transparent">
             <div className="py-6 text-center space-x-6">
-              <a href="#">主頁</a>
-              <a href="#">隊伍</a>
-              <a href="#">聯賽賽制及規則</a>
-              <a href="#">賽程</a>
-              <a href="#">排名</a>
-              <a href="#">過往對局</a>
-              <a href="#">新手專區</a>
+              <Link href="/">主頁</Link>
+              <Link href="/teams">隊伍</Link>
+              <Link href="/">聯賽賽制及規則</Link>
+              <Link href="/">賽程</Link>
+              <Link href="/">排名</Link>
+              <Link href="/">過往對局</Link>
+              <Link href="/">新手專區</Link>
             </div>
           </div>
 
