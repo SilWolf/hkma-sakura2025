@@ -73,7 +73,7 @@ export default async function TeamDetail({
               <div className="col-span-2">
                 <table className="w-full text-center">
                   <thead>
-                    <tr className="bg-neutral-800">
+                    <tr className="bg-neutral-800 text-white">
                       <th>對戰成續</th>
                       <th>得分</th>
                       <th>順位</th>
@@ -84,7 +84,7 @@ export default async function TeamDetail({
               <div>
                 <table className="w-full text-center">
                   <thead>
-                    <tr className="bg-neutral-800">
+                    <tr className="bg-neutral-800 text-white">
                       <th>平均打點</th>
                       <th>平均順位</th>
                     </tr>
