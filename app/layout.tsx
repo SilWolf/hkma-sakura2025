@@ -22,7 +22,7 @@ export default function RootLayout({
       </head>
       <body>
         <div className="max-w-[1920px] mx-auto relative">
-          <div className="absolute top-0 left-0 right-0 z-30 text-neutral-200 hover:[&_a]:text-white">
+          <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-transparent">
             <div className="py-6 text-center space-x-6">
               <a href="#">主頁</a>
               <a href="#">隊伍</a>
@@ -89,7 +89,7 @@ export default function RootLayout({
                   <a href="https://www.hkmahjong.org/" target="_blank">
                     <img
                       className="h-16 inline-block"
-                      src="./images/logo-hkma.webp"
+                      src="/images/logo-hkma.webp"
                       alt="香港麻雀協會 Hong Kong Mahjong Association"
                     />
                   </a>
@@ -100,7 +100,7 @@ export default function RootLayout({
                 <span>
                   <img
                     className="h-16 inline-block"
-                    src="./images/logo-hkmjbs.webp"
+                    src="/images/logo-hkmjbs.webp"
                     alt="牌藝攻防 Mahjong Battle Stadium"
                   />
                 </span>

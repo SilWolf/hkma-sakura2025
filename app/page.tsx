@@ -2,31 +2,117 @@ export default function Home() {
   return (
     <main>
       <section className="w-full text-center relative overflow-hidden">
-        <div className="w-full aspect-video absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
-          <iframe
+        <div className="w-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
+          {/* <iframe
             className="w-full aspect-video"
             src="https://www.youtube.com/embed/Kp_UppkAiCk?si=Va0LX5hMdsdeQXzO&controls=0&start=1878&autoplay=1&mute=1&playsinline=1"
-          ></iframe>
+          ></iframe> */}
+          <div className="grid grid-cols-4 lg:grid-cols-6 items-center justify-center text-center max-w-screen-xl mx-auto">
+            <div>
+              <img
+                src="/images/logo-team1.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team2.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team3.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team4.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team5.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team6.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team7.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team8.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team9.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team10.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team11.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+            <div>
+              <img
+                src="/images/logo-team12.webp"
+                className="inline-w-48"
+                alt=""
+              />
+            </div>
+          </div>
         </div>
-        <div className="pt-40 pb-32 text-white relative z-10">
+        <div className="pt-40 pb-32 relative z-10">
           <h1 className="text-[96px] leading-[1.1em]">HK League 2024</h1>
           <h2 className="text-[32px]">香港麻雀協會 日本麻將隊際競技聯賽2024</h2>
           <div className="flex justify-center gap-x-8 mt-8">
             <img
               className="h-16"
-              src="./images/logo-hkma.webp"
+              src="/images/logo-hkma.webp"
               alt="香港麻雀協會 Hong Kong Mahjong Association"
             />
             <img
               className="h-16"
-              src="./images/logo-hkmjbs.webp"
+              src="/images/logo-hkmjbs.webp"
               alt="牌藝攻防 Mahjong Battle Stadium"
             />
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-[url('/images/bg-3.jpg')] bg-cover bg-center text-white">
+      <section className="py-24 bg-[url('/images/bg-3.jpg')] bg-cover bg-center">
         <div className="container mx-auto">
           <div className="flex justify-between items-center gap-x-2 mb-4">
             <h1 className="font-bold text-4xl shrink-0">常規賽 #01</h1>
@@ -35,22 +121,22 @@ export default function Home() {
             </div>
             <div className="flex-1 text-right space-x-4">
               <img
-                src="./images/logo-team1.webp"
+                src="/images/logo-team1.webp"
                 className="inline w-16 h-16"
                 alt=""
               />
               <img
-                src="./images/logo-team2.webp"
+                src="/images/logo-team2.webp"
                 className="inline w-16 h-16"
                 alt=""
               />
               <img
-                src="./images/logo-team3.webp"
+                src="/images/logo-team3.webp"
                 className="inline w-16 h-16"
                 alt=""
               />
               <img
-                src="./images/logo-team4.webp"
+                src="/images/logo-team4.webp"
                 className="inline w-16 h-16"
                 alt=""
               />
@@ -68,7 +154,7 @@ export default function Home() {
       </section>
 
       <section className="py-24">
-        <div className="container mx-auto text-center text-white grid grid-cols-2 gap-8">
+        <div className="container mx-auto text-center grid grid-cols-2 gap-8">
           <div>
             <h2 className="font-bold text-[36px] mb-8">賽程</h2>
             <table className="w-full [&_img]:w-24 [&_img]:h-24 odd:[&_tr]:bg-[rgba(255,255,255,0.1)] [&_td]:py-2">
@@ -80,7 +166,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team1.webp"
+                      src="/images/logo-team1.webp"
                       className="inline"
                       alt=""
                     />
@@ -90,7 +176,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team2.webp"
+                      src="/images/logo-team2.webp"
                       className="inline"
                       alt=""
                     />
@@ -100,7 +186,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team3.webp"
+                      src="/images/logo-team3.webp"
                       className="inline"
                       alt=""
                     />
@@ -110,7 +196,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team4.webp"
+                      src="/images/logo-team4.webp"
                       className="inline"
                       alt=""
                     />
@@ -126,7 +212,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team5.webp"
+                      src="/images/logo-team5.webp"
                       className="inline"
                       alt=""
                     />
@@ -136,7 +222,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team6.webp"
+                      src="/images/logo-team6.webp"
                       className="inline"
                       alt=""
                     />
@@ -146,7 +232,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team7.webp"
+                      src="/images/logo-team7.webp"
                       className="inline"
                       alt=""
                     />
@@ -156,7 +242,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team8.webp"
+                      src="/images/logo-team8.webp"
                       className="inline"
                       alt=""
                     />
@@ -172,7 +258,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team9.webp"
+                      src="/images/logo-team9.webp"
                       className="inline"
                       alt=""
                     />
@@ -182,7 +268,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team10.webp"
+                      src="/images/logo-team10.webp"
                       className="inline"
                       alt=""
                     />
@@ -192,7 +278,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team11.webp"
+                      src="/images/logo-team11.webp"
                       className="inline"
                       alt=""
                     />
@@ -202,7 +288,7 @@ export default function Home() {
                   </td>
                   <td>
                     <img
-                      src="./images/logo-team12.webp"
+                      src="/images/logo-team12.webp"
                       className="inline"
                       alt=""
                     />
@@ -222,7 +308,7 @@ export default function Home() {
                   <td>1st</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team1.webp" alt="" />
+                    <img src="/images/logo-team1.webp" alt="" />
                   </td>
                   <td>Bad Beat</td>
                   <td>999.9</td>
@@ -235,7 +321,7 @@ export default function Home() {
                   <td>2nd</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team2.webp" alt="" />
+                    <img src="/images/logo-team2.webp" alt="" />
                   </td>
                   <td>茶道研究院</td>
                   <td>999.9</td>
@@ -248,7 +334,7 @@ export default function Home() {
                   <td>3rd</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team3.webp" alt="" />
+                    <img src="/images/logo-team3.webp" alt="" />
                   </td>
                   <td>皇家勇士 Royal Warriors</td>
                   <td>999.9</td>
@@ -261,7 +347,7 @@ export default function Home() {
                   <td>4th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team4.webp" alt="" />
+                    <img src="/images/logo-team4.webp" alt="" />
                   </td>
                   <td>團結Forwards</td>
                   <td>999.9</td>
@@ -274,7 +360,7 @@ export default function Home() {
                   <td>5th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team5.webp" alt="" />
+                    <img src="/images/logo-team5.webp" alt="" />
                   </td>
                   <td>桌遊旅人 BoardGameTraveller</td>
                   <td>999.9</td>
@@ -287,9 +373,9 @@ export default function Home() {
                   <td>6th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team6.webp" alt="" />
+                    <img src="/images/logo-team6.webp" alt="" />
                   </td>
-                  <td>一發放統</td>
+                  <td>一發放銃</td>
                   <td>999.9</td>
                   <td>0.0</td>
                   <td>
@@ -300,7 +386,7 @@ export default function Home() {
                   <td>7th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team7.webp" alt="" />
+                    <img src="/images/logo-team7.webp" alt="" />
                   </td>
                   <td>阿嚕阿嚕</td>
                   <td>999.9</td>
@@ -313,7 +399,7 @@ export default function Home() {
                   <td>8th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team8.webp" alt="" />
+                    <img src="/images/logo-team8.webp" alt="" />
                   </td>
                   <td>友聯</td>
                   <td>999.9</td>
@@ -326,7 +412,7 @@ export default function Home() {
                   <td>9th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team9.webp" alt="" />
+                    <img src="/images/logo-team9.webp" alt="" />
                   </td>
                   <td>晉天晴朗</td>
                   <td>999.9</td>
@@ -339,7 +425,7 @@ export default function Home() {
                   <td>10th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team10.webp" alt="" />
+                    <img src="/images/logo-team10.webp" alt="" />
                   </td>
                   <td>麻瓜</td>
                   <td>999.9</td>
@@ -352,7 +438,7 @@ export default function Home() {
                   <td>11th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team11.webp" alt="" />
+                    <img src="/images/logo-team11.webp" alt="" />
                   </td>
                   <td>茶道研究院</td>
                   <td>999.9</td>
@@ -365,7 +451,7 @@ export default function Home() {
                   <td>12th</td>
                   <td>
                     {" "}
-                    <img src="./images/logo-team12.webp" alt="" />
+                    <img src="/images/logo-team12.webp" alt="" />
                   </td>
                   <td>天地人和</td>
                   <td>999.9</td>
@@ -387,28 +473,28 @@ export default function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team1.webp"
+                  src="/images/logo-team1.webp"
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team2.webp"
+                  src="/images/logo-team2.webp"
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team3.webp"
+                  src="/images/logo-team3.webp"
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team4.webp"
+                  src="/images/logo-team4.webp"
                   className="w-40 h-40"
                   alt=""
                 />
@@ -417,14 +503,14 @@ export default function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team5.webp"
+                  src="/images/logo-team5.webp"
                   className="w-40 h-40"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team6.webp"
+                  src="/images/logo-team6.webp"
                   className="w-40 h-40"
                   alt=""
                 />
@@ -433,7 +519,7 @@ export default function Home() {
           </div>
           <div className="flex-1 text-center text-neutral-300 space-y-12">
             <div>
-              <h3 className="text-2xl font-bold mb-2 text-white">
+              <h3 className="text-2xl font-bold mb-2">
                 至今為止最長賽程的香港日麻比賽
               </h3>
               <p>
@@ -443,9 +529,7 @@ export default function Home() {
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-2 text-white">
-                12支隊伍、48名選手
-              </h3>
+              <h3 className="text-2xl font-bold mb-2">12支隊伍、48名選手</h3>
               <p>
                 選手們喜愛日本麻將，更視之為一種專業
                 <br />
@@ -453,9 +537,7 @@ export default function Home() {
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-2 text-white">
-                長達八個月的常規賽
-              </h3>
+              <h3 className="text-2xl font-bold mb-2">長達八個月的常規賽</h3>
               <p>
                 八個月裡，每隊將進行多達60場半莊
                 <br />
@@ -463,9 +545,7 @@ export default function Home() {
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-2 text-white">
-                最終只為決定一支勝隊
-              </h3>
+              <h3 className="text-2xl font-bold mb-2">最終只為決定一支勝隊</h3>
               <p>
                 六支隊伍進入合計18場半莊的準決賽
                 <br />
@@ -479,14 +559,14 @@ export default function Home() {
             <div className="grid grid-cols-5 gap-x-8 gap-y-12">
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team7.webp"
+                  src="/images/logo-team7.webp"
                   className="w-40 h-40 bg-neutral-700"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team8.webp"
+                  src="/images/logo-team8.webp"
                   className="w-40 h-40 bg-neutral-700"
                   alt=""
                 />
@@ -495,28 +575,28 @@ export default function Home() {
               <div></div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team9.webp"
+                  src="/images/logo-team9.webp"
                   className="w-40 h-40 bg-neutral-700"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team10.webp"
+                  src="/images/logo-team10.webp"
                   className="w-40 h-40 bg-neutral-700"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team11.webp"
+                  src="/images/logo-team11.webp"
                   className="w-40 h-40 bg-neutral-700"
                   alt=""
                 />
               </div>
               <div className="col-span-2">
                 <img
-                  src="./images/logo-team12.webp"
+                  src="/images/logo-team12.webp"
                   className="w-40 h-40"
                   alt=""
                 />
@@ -528,7 +608,7 @@ export default function Home() {
       </section>
 
       <section className="py-12">
-        <div className="container mx-auto grid grid-cols-3 gap-8 text-center text-white">
+        <div className="container mx-auto grid grid-cols-3 gap-8 text-center">
           <div>
             <div className="mb-4">
               <i className="bi bi-calendar2-week text-[64px]"></i>
@@ -567,7 +647,7 @@ export default function Home() {
       </section>
 
       <section className="py-24">
-        <div className="container mx-auto text-white">
+        <div className="container mx-auto">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-bold text-[36px]">過往對局</h2>
             <p className="pr-2">
@@ -584,53 +664,22 @@ export default function Home() {
                 </div>
                 <div>
                   <img
-                    src="./images/logo-team1.webp"
+                    src="/images/logo-team1.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team2.webp"
+                    src="/images/logo-team2.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team3.webp"
+                    src="/images/logo-team3.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="./images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team4.webp"
+                    src="/images/logo-team4.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
@@ -646,53 +695,22 @@ export default function Home() {
                 </div>
                 <div>
                   <img
-                    src="./images/logo-team1.webp"
+                    src="/images/logo-team1.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team2.webp"
+                    src="/images/logo-team2.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team3.webp"
+                    src="/images/logo-team3.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="./images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team4.webp"
+                    src="/images/logo-team4.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
@@ -708,53 +726,22 @@ export default function Home() {
                 </div>
                 <div>
                   <img
-                    src="./images/logo-team1.webp"
+                    src="/images/logo-team1.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team2.webp"
+                    src="/images/logo-team2.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team3.webp"
+                    src="/images/logo-team3.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team4.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-neutral-800 rounded aspect-video"></div>
-              <div className="flex justify-between items-center pr-1 mt-1">
-                <div>
-                  <p>常規賽 #01</p>
-                  <p className="text-sm text-neutral-300">2023-12-32</p>
-                </div>
-                <div>
-                  <img
-                    src="./images/logo-team1.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team2.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team3.webp"
-                    className="inline w-8 h-8"
-                    alt=""
-                  />
-                  <img
-                    src="./images/logo-team4.webp"
+                    src="/images/logo-team4.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
@@ -770,22 +757,22 @@ export default function Home() {
                 </div>
                 <div>
                   <img
-                    src="./images/logo-team1.webp"
+                    src="/images/logo-team1.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team2.webp"
+                    src="/images/logo-team2.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team3.webp"
+                    src="/images/logo-team3.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team4.webp"
+                    src="/images/logo-team4.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
@@ -801,22 +788,115 @@ export default function Home() {
                 </div>
                 <div>
                   <img
-                    src="./images/logo-team1.webp"
+                    src="/images/logo-team1.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team2.webp"
+                    src="/images/logo-team2.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team3.webp"
+                    src="/images/logo-team3.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
                   <img
-                    src="./images/logo-team4.webp"
+                    src="/images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="/images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="/images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="/images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="/images/logo-team4.webp"
                     className="inline w-8 h-8"
                     alt=""
                   />
