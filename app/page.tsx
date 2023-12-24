@@ -1,113 +1,838 @@
-import Image from 'next/image'
-
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main>
+      <section className="w-full text-center relative overflow-hidden">
+        <div className="w-full aspect-video absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
+          <iframe
+            className="w-full aspect-video"
+            src="https://www.youtube.com/embed/Kp_UppkAiCk?si=Va0LX5hMdsdeQXzO&controls=0&start=1878&autoplay=1&mute=1&playsinline=1"
+          ></iframe>
         </div>
-      </div>
+        <div className="pt-40 pb-32 text-white relative z-10">
+          <h1 className="text-[96px] leading-[1.1em]">HK League 2024</h1>
+          <h2 className="text-[32px]">香港麻雀協會 日本麻將隊際競技聯賽2024</h2>
+          <div className="flex justify-center gap-x-8 mt-8">
+            <img
+              className="h-16"
+              src="./images/logo-hkma.webp"
+              alt="香港麻雀協會 Hong Kong Mahjong Association"
+            />
+            <img
+              className="h-16"
+              src="./images/logo-hkmjbs.webp"
+              alt="牌藝攻防 Mahjong Battle Stadium"
+            />
+          </div>
+        </div>
+      </section>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <section className="py-24 bg-[url('/images/bg-3.jpg')] bg-cover bg-center text-white">
+        <div className="container mx-auto">
+          <div className="flex justify-between items-center gap-x-2 mb-4">
+            <h1 className="font-bold text-4xl shrink-0">常規賽 #01</h1>
+            <div className="shrink-0 font-bold pl-2 pr-3 rounded-full bg-red-500">
+              <i className="bi bi-record-fill"></i> LIVE
+            </div>
+            <div className="flex-1 text-right space-x-4">
+              <img
+                src="./images/logo-team1.webp"
+                className="inline w-16 h-16"
+                alt=""
+              />
+              <img
+                src="./images/logo-team2.webp"
+                className="inline w-16 h-16"
+                alt=""
+              />
+              <img
+                src="./images/logo-team3.webp"
+                className="inline w-16 h-16"
+                alt=""
+              />
+              <img
+                src="./images/logo-team4.webp"
+                className="inline w-16 h-16"
+                alt=""
+              />
+            </div>
+          </div>
+          <div>
+            <iframe
+              className="w-full aspect-video"
+              src="https://www.youtube.com/embed/Kp_UppkAiCk?si=eXOxZCGAvv5TwRFY&autoplay=1&mute=1"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      <section className="py-24">
+        <div className="container mx-auto text-center text-white grid grid-cols-2 gap-8">
+          <div>
+            <h2 className="font-bold text-[36px] mb-8">賽程</h2>
+            <table className="w-full [&_img]:w-24 [&_img]:h-24 odd:[&_tr]:bg-[rgba(255,255,255,0.1)] [&_td]:py-2">
+              <tbody>
+                <tr>
+                  <td>
+                    <h3 className="font-bold text-lg">2023.12.32</h3>
+                    <p>常規賽 #01</p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team1.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team2.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team3.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team4.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h3 className="font-bold text-lg">2023.12.33</h3>
+                    <p>常規賽 #02</p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team5.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team6.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team7.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team8.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h3 className="font-bold text-lg">2023.12.34</h3>
+                    <p>常規賽 #03</p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team9.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team10.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team11.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                  <td>
+                    <img
+                      src="./images/logo-team12.webp"
+                      className="inline"
+                      alt=""
+                    />
+                    <p>
+                      1 <span className="text-xs">/60</span>
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h2 className="font-bold text-[36px] mb-8">排名</h2>
+            <table className="w-full [&_img]:w-12 [&_img]:h-12 odd:[&_tr]:bg-[rgba(255,255,255,0.1)] [&_td]:py-2">
+              <tbody>
+                <tr>
+                  <td>1st</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team1.webp" alt="" />
+                  </td>
+                  <td>Bad Beat</td>
+                  <td>999.9</td>
+                  <td>-</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2nd</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team2.webp" alt="" />
+                  </td>
+                  <td>茶道研究院</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3rd</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team3.webp" alt="" />
+                  </td>
+                  <td>皇家勇士 Royal Warriors</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team4.webp" alt="" />
+                  </td>
+                  <td>團結Forwards</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>5th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team5.webp" alt="" />
+                  </td>
+                  <td>桌遊旅人 BoardGameTraveller</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>6th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team6.webp" alt="" />
+                  </td>
+                  <td>一發放統</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>7th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team7.webp" alt="" />
+                  </td>
+                  <td>阿嚕阿嚕</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>8th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team8.webp" alt="" />
+                  </td>
+                  <td>友聯</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>9th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team9.webp" alt="" />
+                  </td>
+                  <td>晉天晴朗</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>10th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team10.webp" alt="" />
+                  </td>
+                  <td>麻瓜</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>11th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team11.webp" alt="" />
+                  </td>
+                  <td>茶道研究院</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>12th</td>
+                  <td>
+                    {" "}
+                    <img src="./images/logo-team12.webp" alt="" />
+                  </td>
+                  <td>天地人和</td>
+                  <td>999.9</td>
+                  <td>0.0</td>
+                  <td>
+                    1 <span className="text-xs">/60</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+      <section className="py-16 bg-[url('/images/bg-1.jpg')] bg-cover bg-center">
+        <div className="container mx-auto flex justify-center items-center">
+          <div className="shrink-0">
+            <div className="grid grid-cols-5 gap-x-8 gap-y-12">
+              <div></div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team1.webp"
+                  className="w-40 h-40"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team2.webp"
+                  className="w-40 h-40"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team3.webp"
+                  className="w-40 h-40"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team4.webp"
+                  className="w-40 h-40"
+                  alt=""
+                />
+              </div>
+              <div></div>
+              <div></div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team5.webp"
+                  className="w-40 h-40"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team6.webp"
+                  className="w-40 h-40"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex-1 text-center text-neutral-300 space-y-12">
+            <div>
+              <h3 className="text-2xl font-bold mb-2 text-white">
+                至今為止最長賽程的香港日麻比賽
+              </h3>
+              <p>
+                2024年1月-11月，共有十二隊隊伍角逐由
+                <br />
+                香港麻雀協會首次舉辦的日本麻將隊際聯賽冠軍
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold mb-2 text-white">
+                12支隊伍、48名選手
+              </h3>
+              <p>
+                選手們喜愛日本麻將，更視之為一種專業
+                <br />
+                大家組成隊伍，藉此在聯賽中證明自己的努力
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold mb-2 text-white">
+                長達八個月的常規賽
+              </h3>
+              <p>
+                八個月裡，每隊將進行多達60場半莊
+                <br />
+                被降低的運氣性及多元的對局組合，將使排名更有意義
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold mb-2 text-white">
+                最終只為決定一支勝隊
+              </h3>
+              <p>
+                六支隊伍進入合計18場半莊的準決賽
+                <br />
+                四支隊伍進入合計8場半莊的總決賽
+                <br />
+                最終勝出者將實至名歸
+              </p>
+            </div>
+          </div>
+          <div className="shrink-0">
+            <div className="grid grid-cols-5 gap-x-8 gap-y-12">
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team7.webp"
+                  className="w-40 h-40 bg-neutral-700"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team8.webp"
+                  className="w-40 h-40 bg-neutral-700"
+                  alt=""
+                />
+              </div>
+              <div></div>
+              <div></div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team9.webp"
+                  className="w-40 h-40 bg-neutral-700"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team10.webp"
+                  className="w-40 h-40 bg-neutral-700"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team11.webp"
+                  className="w-40 h-40 bg-neutral-700"
+                  alt=""
+                />
+              </div>
+              <div className="col-span-2">
+                <img
+                  src="./images/logo-team12.webp"
+                  className="w-40 h-40"
+                  alt=""
+                />
+              </div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+      <section className="py-12">
+        <div className="container mx-auto grid grid-cols-3 gap-8 text-center text-white">
+          <div>
+            <div className="mb-4">
+              <i className="bi bi-calendar2-week text-[64px]"></i>
+            </div>
+            <h2 className="font-bold text-[28px] mb-2">116場半莊的大型聯賽</h2>
+            <p>
+              所有隊伍在經過總計90場半莊的常規賽後，
+              <br />
+              排名最高的六隊及四隊，依序進入
+              <br />
+              共有26場半莊的準決賽和總決賽。
+            </p>
+          </div>
+          <div>
+            <div className="mb-4">
+              <i className="bi bi-camera-reels text-[64px]"></i>
+            </div>
+            <h2 className="font-bold text-[28px] mb-2">全程直播所有賽事</h2>
+            <p>
+              廣東話旁述、清晰的分數變化及顯示，
+              <br />在 Youtube 及 Bilibili 上播放。
+            </p>
+          </div>
+          <div>
+            <div className="mb-4">
+              <i className="bi bi-person-up text-[64px]"></i>
+            </div>
+            <h2 className="font-bold text-[28px] mb-2">選手賽後訪問</h2>
+            <p>
+              觀摩強者打法、學習更豐富的日麻思路，
+              <br />
+              無論新手或老手都能在日本麻雀競技上取得進步。
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <section className="py-24">
+        <div className="container mx-auto text-white">
+          <div className="flex items-end justify-between mb-8">
+            <h2 className="font-bold text-[36px]">過往對局</h2>
+            <p className="pr-2">
+              <a href="#">觀看全部對局 &gt;</a>
+            </p>
+          </div>
+          <div className="grid grid-cols-4 gap-8">
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="bg-neutral-800 rounded aspect-video"></div>
+              <div className="flex justify-between items-center pr-1 mt-1">
+                <div>
+                  <p>常規賽 #01</p>
+                  <p className="text-sm text-neutral-300">2023-12-32</p>
+                </div>
+                <div>
+                  <img
+                    src="./images/logo-team1.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team2.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team3.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                  <img
+                    src="./images/logo-team4.webp"
+                    className="inline w-8 h-8"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24">
+        <div className="container mx-auto text-white">
+          <h2 className="font-bold text-[36px] mb-8">新手專區</h2>
+          <p>（Dicky: 想放新手教學既文章、友站連結、Youtube片之類，求提供）</p>
+        </div>
+      </section>
     </main>
-  )
+  );
 }
