@@ -1,5 +1,7 @@
 import { getTeamDetailBySlug, getTeamSlugs } from "@/helpers/sanity.helper";
 
+export const revalidate = 900;
+
 export async function generateStaticParams() {
   return getTeamSlugs();
 }

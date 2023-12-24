@@ -31,14 +31,14 @@ export default async function Home() {
         <div className="pt-40 pb-32 relative z-10">
           <h1 className="text-[96px] leading-[1.1em]">HK League 2024</h1>
           <h2 className="text-[32px]">香港麻雀協會 日本麻將隊際競技聯賽2024</h2>
-          <div className="flex justify-center gap-x-8 mt-8">
+          <div className="flex justify-center gap-x-2 mx-auto mt-8">
             <img
-              className="h-16"
+              className="h-20 py-2 px-4 bg-[#12141C]"
               src="/images/logo-hkma.webp"
               alt="香港麻雀協會 Hong Kong Mahjong Association"
             />
             <img
-              className="h-16"
+              className="h-20 py-2 px-4 bg-[#12141C]"
               src="/images/logo-hkmjbs.webp"
               alt="牌藝攻防 Mahjong Battle Stadium"
             />
@@ -690,7 +690,7 @@ export default async function Home() {
       </section>
 
       <section className="py-24">
-        <div className="container mx-auto text-white">
+        <div className="container mx-auto">
           <h2 className="font-bold text-[36px] mb-8">新手專區</h2>
           <p>（Dicky: 想放新手教學既文章、友站連結、Youtube片之類，求提供）</p>
         </div>
