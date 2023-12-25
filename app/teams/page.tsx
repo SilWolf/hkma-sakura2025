@@ -4,7 +4,7 @@ import Link from "next/link";
 export const revalidate = 900;
 
 export default async function Teams() {
-  const [teams, playersInTeamIds] = await Promise.all([
+  const [tournamentTeams, playersInTeamIds] = await Promise.all([
     getTeams(),
     getPlayersGroupByTeams(),
   ]);
@@ -20,7 +20,7 @@ export default async function Teams() {
       <section className="py-8 sticky top-0 z-50 bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-transparent">
         <div className="container mx-auto max-w-screen-lg bg-gray-800 p-4 rounded-full shadow-xl">
           <nav className="flex justify-center items-center">
-            {teams.map((team) => (
+            {tournamentTeams.map(({ team }) => (
               <div key={team.slug} className="flex-1 text-center">
                 <a className="inline-block" href={`#${team.slug}`}>
                   <img
@@ -37,7 +37,7 @@ export default async function Teams() {
         </div>
       </section>
 
-      {teams.map((team) => (
+      {tournamentTeams.map(({ team }) => (
         <section className="py-20 relative" key={team.slug}>
           <div id={team.slug} className="absolute -top-32"></div>
           <Link href={`/teams/${team.slug}`}>

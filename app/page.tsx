@@ -1,10 +1,15 @@
 import { getOldMatches, getTeams } from "@/helpers/sanity.helper";
+import { renderRanking } from "@/helpers/string.helper";
 
 export const revalidate = 900;
 
 export default async function Home() {
-  const teams = await getTeams();
+  const tournamentTeams = await getTeams();
   const oldMatches = await getOldMatches();
+
+  const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
+    (a, b) => b.ranking - a.ranking
+  );
 
   return (
     <main>
@@ -15,7 +20,7 @@ export default async function Home() {
             src="https://www.youtube.com/embed/Kp_UppkAiCk?si=Va0LX5hMdsdeQXzO&controls=0&start=1878&autoplay=1&mute=1&playsinline=1"
           ></iframe> */}
           <div className="grid grid-cols-4 lg:grid-cols-6 items-center justify-center text-center max-w-screen-xl mx-auto">
-            {teams.map((team) => (
+            {tournamentTeams.map(({ team }) => (
               <div key={team.slug}>
                 <img
                   src={(team.squareLogoImage ?? "/images/empty.png") + "?w=512"}
@@ -234,164 +239,40 @@ export default async function Home() {
           </div>
           <div>
             <h2 className="font-bold text-[36px] mb-8">排名</h2>
-            <table className="w-full [&_img]:w-12 [&_img]:h-12 odd:[&_tr]:bg-[rgba(255,255,255,0.1)] [&_td]:py-2">
+            <table className="w-full [&_img]:w-12 [&_img]:h-12 [&_td]:py-2">
               <tbody>
-                <tr>
-                  <td>1st</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team1.webp" alt="" />
-                  </td>
-                  <td>Bad Beat</td>
-                  <td>999.9</td>
-                  <td>-</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2nd</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team2.webp" alt="" />
-                  </td>
-                  <td>茶道研究院</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3rd</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team3.webp" alt="" />
-                  </td>
-                  <td>皇家勇士 Royal Warriors</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team4.webp" alt="" />
-                  </td>
-                  <td>團結Forwards</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team5.webp" alt="" />
-                  </td>
-                  <td>桌遊旅人 BoardGameTraveller</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team6.webp" alt="" />
-                  </td>
-                  <td>一發放銃</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team7.webp" alt="" />
-                  </td>
-                  <td>阿嚕阿嚕</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>8th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team8.webp" alt="" />
-                  </td>
-                  <td>友聯</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>9th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team9.webp" alt="" />
-                  </td>
-                  <td>晉天晴朗</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>10th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team10.webp" alt="" />
-                  </td>
-                  <td>麻瓜</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>11th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team11.webp" alt="" />
-                  </td>
-                  <td>茶道研究院</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>12th</td>
-                  <td>
-                    {" "}
-                    <img src="/images/logo-team12.webp" alt="" />
-                  </td>
-                  <td>天地人和</td>
-                  <td>999.9</td>
-                  <td>0.0</td>
-                  <td>
-                    1 <span className="text-xs">/60</span>
-                  </td>
-                </tr>
+                {tournamentTeamsOrderedByRanking.map(
+                  ({ team, ranking, point, matchCount }, i) => (
+                    <tr
+                      key={team._id}
+                      style={{
+                        background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
+                      }}
+                    >
+                      <td>{renderRanking(ranking)}</td>
+                      <td>
+                        {" "}
+                        <img
+                          src={team.squareLogoImage + "?w=128"}
+                          alt={team.name}
+                        />
+                      </td>
+                      <td>{team.name}</td>
+                      <td>{point?.toFixed(1) ?? "-"}</td>
+                      <td>
+                        {tournamentTeamsOrderedByRanking[i - 1]
+                          ? (
+                              tournamentTeamsOrderedByRanking[i - 1].point -
+                              point
+                            ).toFixed(1)
+                          : "-"}
+                      </td>
+                      <td>
+                        {matchCount} <span className="text-xs">/60</span>
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </div>
@@ -406,7 +287,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[0].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[0].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -415,7 +297,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[1].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[1].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -424,7 +307,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[2].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[2].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -433,7 +317,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[3].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[3].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -444,7 +329,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[4].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[4].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -453,7 +339,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[5].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[5].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -504,7 +391,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[6].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[6].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -513,7 +401,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[7].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[7].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -524,7 +413,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[8].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[8].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -533,7 +423,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[9].squareLogoImage ?? "/images/empty.png") + "?w=320"
+                    (tournamentTeams[9].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -542,8 +433,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[10].squareLogoImage ?? "/images/empty.png") +
-                    "?w=320"
+                    (tournamentTeams[10].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -552,8 +443,8 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[11].squareLogoImage ?? "/images/empty.png") +
-                    "?w=320"
+                    (tournamentTeams[11].team.squareLogoImage ??
+                      "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
