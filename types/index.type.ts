@@ -14,12 +14,37 @@ export type Match = {
     playerWest: MatchResultPlayer;
     playerNorth: MatchResultPlayer;
   };
+  rounds: {
+    _key: string;
+    code: string;
+    type: "ron" | "tsumo" | "exhausted" | "hotfix";
+    playerEast: MatchRoundPlayer;
+    playerSouth: MatchRoundPlayer;
+    playerWest: MatchRoundPlayer;
+    playerNorth: MatchRoundPlayer;
+  }[];
 };
 
 export type MatchResultPlayer = {
   score: number;
   ranking: "1" | "2" | "3" | "4";
   point: number;
+};
+
+export type MatchRoundPlayer = {
+  position: "east" | "south" | "west" | "north";
+  type: "none" | "win" | "lose";
+  status: "none" | "isRiichied" | "isRevealed";
+  isWaited: boolean;
+  beforeScore: number;
+  afterScore: number;
+  dora?: number;
+  redDora?: number;
+  innerDora?: number;
+  han?: number;
+  fu?: number;
+  pureScore?: number;
+  yaku?: string;
 };
 
 export type TeamPlayer = {

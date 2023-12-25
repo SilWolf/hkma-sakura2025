@@ -1,6 +1,7 @@
 "use client";
 
 import { Match, MatchResultPlayer, TeamPlayer } from "@/types/index.type";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const MatchPlayerDiv = ({
@@ -70,10 +71,12 @@ export default function StatisticsPage() {
               {matches.map((match) => (
                 <tr key={match._id}>
                   <td className="py-2">
-                    <p>{match.name}</p>
-                    <p className="text-sm opacity-80">
-                      {match.startAt?.substring(0, 10)}
-                    </p>
+                    <Link href={`/statistics/match/${match._id}`}>
+                      <p>{match.name}</p>
+                      <p className="text-sm opacity-80">
+                        {match.startAt?.substring(0, 10)}
+                      </p>
+                    </Link>
                   </td>
                   <td className="py-2">
                     {match.youtubeUrl && (
