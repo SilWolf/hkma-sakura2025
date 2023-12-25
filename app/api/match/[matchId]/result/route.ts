@@ -27,3 +27,52 @@ export async function PATCH(request: Request) {
       Response.json({ success: false, errors: error.message }, { status: 400 })
     );
 }
+
+export async function OPTIONS() {
+  return new Response();
+}
+
+type Match = {
+  _id: string;
+  result: MatchResult;
+  rounds: MatchRound[];
+};
+
+type MatchResult = {
+  playerEast: MatchResultPlayer;
+  playerSouth: MatchResultPlayer;
+  playerWest: MatchResultPlayer;
+  playerNorth: MatchResultPlayer;
+};
+
+type MatchResultPlayer = {
+  score: number;
+  ranking: "1" | "2" | "3" | "4";
+  point: number;
+};
+
+type MatchRound = {
+  _key: string;
+  code: string;
+  type: "ron" | "tsumo" | "exhausted" | "hotfix";
+  playerEast: MatchRoundPlayer;
+  playerSouth: MatchRoundPlayer;
+  playerWest: MatchRoundPlayer;
+  playerNorth: MatchRoundPlayer;
+};
+
+type MatchRoundPlayer = {
+  position: "east" | "south" | "west" | "north";
+  type: "none" | "win" | "lose";
+  status: "none" | "isRiichied" | "isRevealed";
+  isWaited: boolean;
+  beforeScore: number;
+  afterScore: number;
+  dora?: number;
+  redDora?: number;
+  innerDora?: number;
+  han?: number;
+  fu?: number;
+  pureScore?: number;
+  yaku?: string;
+};
