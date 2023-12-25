@@ -29,15 +29,15 @@ export default function RootLayout({
               <Link href="/teams">隊伍</Link>
               <Link href="/">聯賽賽制及規則</Link>
               <Link href="/">賽程</Link>
-              <Link href="/">排名</Link>
-              <Link href="/">過往對局</Link>
-              <Link href="/">新手專區</Link>
+              <Link href="/">排名及數據</Link>
+              <Link href="/#old-matches">過往對局</Link>
+              <Link href="/#new-players">新手專區</Link>
             </div>
           </div>
 
           {children}
 
-          <section className="bg-[url('/images/bg-2.jpg')] bg-cover bg-center py-12">
+          <section className="bg-[url('/images/bg-2.jpg')] text-neutral-900 bg-cover bg-center py-12">
             <div className="container mx-auto flex items-end">
               <div className="flex-1">
                 <p className="text-left text-xl">
@@ -108,11 +108,14 @@ export default function RootLayout({
               </div>
             </div>
             <div className="text-right pb-6 space-y-4">
-              <div className="space-x-2 text-right pr-1 text-2xl">
+              <div className="space-x-4 text-right pr-1 text-2xl">
                 <a href="#">
                   <i className="bi bi-facebook"></i>
                 </a>
-                <a href="#">
+                <a
+                  href="https://www.instagram.com/mahjongbattlestadium/"
+                  target="_blank"
+                >
                   <i className="bi bi-instagram"></i>
                 </a>
               </div>

@@ -18,9 +18,7 @@ export default async function Home() {
             {teams.map((team) => (
               <div key={team.slug}>
                 <img
-                  src={
-                    (team.squareLogoImage ?? "/images/empty.png") + "?width=512"
-                  }
+                  src={(team.squareLogoImage ?? "/images/empty.png") + "?w=512"}
                   className="w-48"
                   alt={team.name}
                 />
@@ -408,8 +406,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[0].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[0].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -418,8 +415,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[1].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[1].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -428,8 +424,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[2].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[2].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -438,8 +433,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[3].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[3].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -450,8 +444,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[4].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[4].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -460,8 +453,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[5].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[5].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -512,8 +504,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[6].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[6].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -522,8 +513,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[7].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[7].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -534,8 +524,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[8].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[8].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -544,8 +533,7 @@ export default async function Home() {
               <div className="col-span-2">
                 <img
                   src={
-                    (teams[9].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    (teams[9].squareLogoImage ?? "/images/empty.png") + "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -555,7 +543,7 @@ export default async function Home() {
                 <img
                   src={
                     (teams[10].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -565,7 +553,7 @@ export default async function Home() {
                 <img
                   src={
                     (teams[11].squareLogoImage ?? "/images/empty.png") +
-                    "?width=320"
+                    "?w=320"
                   }
                   className="w-40 h-40"
                   alt=""
@@ -616,7 +604,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="py-24">
+      <section className="py-24" id="old-matches">
         <div className="container mx-auto">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-bold text-[36px]">過往對局</h2>
@@ -689,7 +677,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="py-24">
+      <section className="py-24" id="new-players">
         <div className="container mx-auto">
           <h2 className="font-bold text-[36px] mb-8">新手專區</h2>
           <p>（Dicky: 想放新手教學既文章、友站連結、Youtube片之類，求提供）</p>

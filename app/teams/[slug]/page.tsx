@@ -1,4 +1,5 @@
 import { getTeamDetailBySlug, getTeamSlugs } from "@/helpers/sanity.helper";
+import { notFound } from "next/navigation";
 
 export const revalidate = 900;
 
@@ -14,7 +15,7 @@ export default async function TeamDetail({
   const team = await getTeamDetailBySlug(slug);
 
   if (!team) {
-    return <></>;
+    return notFound();
   }
 
   return (

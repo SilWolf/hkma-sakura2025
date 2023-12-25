@@ -1,0 +1,240 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Match",
+  "definitions": {
+    "Match": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "playerEast": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number"
+                },
+                "ranking": {
+                  "type": "string",
+                  "enum": ["1", "2", "3", "4"]
+                },
+                "point": {
+                  "type": "number"
+                }
+              },
+              "required": ["score", "ranking", "point"],
+              "additionalProperties": false
+            },
+            "playerSouth": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number"
+                },
+                "ranking": {
+                  "type": "string",
+                  "enum": ["1", "2", "3", "4"]
+                },
+                "point": {
+                  "type": "number"
+                }
+              },
+              "required": ["score", "ranking", "point"],
+              "additionalProperties": false
+            },
+            "playerWest": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number"
+                },
+                "ranking": {
+                  "type": "string",
+                  "enum": ["1", "2", "3", "4"]
+                },
+                "point": {
+                  "type": "number"
+                }
+              },
+              "required": ["score", "ranking", "point"],
+              "additionalProperties": false
+            },
+            "playerNorth": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number"
+                },
+                "ranking": {
+                  "type": "string",
+                  "enum": ["1", "2", "3", "4"]
+                },
+                "point": {
+                  "type": "number"
+                }
+              },
+              "required": ["score", "ranking", "point"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "playerEast",
+            "playerSouth",
+            "playerWest",
+            "playerNorth"
+          ],
+          "additionalProperties": false
+        },
+        "rounds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["ron", "tsumo", "exhausted", "unknown"]
+              },
+              "playerEast": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["none", "isRiichied", "isRevealed"]
+                  },
+                  "isWaited": {
+                    "type": "boolean"
+                  },
+                  "beforeScore": {
+                    "type": "number"
+                  },
+                  "afterScore": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  }
+                },
+                "required": [
+                  "status",
+                  "isWaited",
+                  "beforeScore",
+                  "afterScore",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              "playerSouth": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["none", "isRiichied", "isRevealed"]
+                  },
+                  "isWaited": {
+                    "type": "boolean"
+                  },
+                  "beforeScore": {
+                    "type": "number"
+                  },
+                  "afterScore": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  }
+                },
+                "required": [
+                  "status",
+                  "isWaited",
+                  "beforeScore",
+                  "afterScore",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              "playerWest": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["none", "isRiichied", "isRevealed"]
+                  },
+                  "isWaited": {
+                    "type": "boolean"
+                  },
+                  "beforeScore": {
+                    "type": "number"
+                  },
+                  "afterScore": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  }
+                },
+                "required": [
+                  "status",
+                  "isWaited",
+                  "beforeScore",
+                  "afterScore",
+                  "type"
+                ],
+                "additionalProperties": false
+              },
+              "playerNorth": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["none", "isRiichied", "isRevealed"]
+                  },
+                  "isWaited": {
+                    "type": "boolean"
+                  },
+                  "beforeScore": {
+                    "type": "number"
+                  },
+                  "afterScore": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  }
+                },
+                "required": [
+                  "status",
+                  "isWaited",
+                  "beforeScore",
+                  "afterScore",
+                  "type"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "code",
+              "type",
+              "playerEast",
+              "playerSouth",
+              "playerWest",
+              "playerNorth"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["_id", "result", "rounds"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -25,8 +25,7 @@ export default async function Teams() {
                 <a className="inline-block" href={`#${team.slug}`}>
                   <img
                     src={
-                      (team.squareLogoImage ?? "/images/empty.png") +
-                      "?width=64"
+                      (team.squareLogoImage ?? "/images/empty.png") + "?w=64"
                     }
                     className="w-16 h-16"
                     alt={team.name}
@@ -51,18 +50,14 @@ export default async function Teams() {
             >
               <div className="absolute -top-32 -left-[16rem] opacity-[.05] grayscale">
                 <img
-                  src={
-                    (team.squareLogoImage ?? "/images/empty.png") + "?width=512"
-                  }
+                  src={(team.squareLogoImage ?? "/images/empty.png") + "?w=512"}
                   className="w-[512px] h-[512px] mx-auto"
                   alt={team.name}
                 />
               </div>
               <div className="shrink-0 z-10">
                 <img
-                  src={
-                    (team.squareLogoImage ?? "/images/empty.png") + "?width=512"
-                  }
+                  src={(team.squareLogoImage ?? "/images/empty.png") + "?w=512"}
                   className="w-[240px] h-[240px] mx-auto"
                   alt={team.name}
                 />

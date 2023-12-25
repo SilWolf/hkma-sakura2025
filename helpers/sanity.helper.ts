@@ -7,7 +7,7 @@ export const client = createClient({
   dataset: process.env.SANITY_DATASET_ID,
   useCdn: true,
   apiVersion: "2023-05-03",
-  // token: process.env.SANITY_SECRET_TOKEN // Only if you want to update content with the client
+  token: process.env.SANITY_SECRET_TOKEN, // Only if you want to update content with the client
 });
 
 type Match = {
