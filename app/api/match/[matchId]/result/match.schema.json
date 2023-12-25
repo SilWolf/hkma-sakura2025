@@ -101,11 +101,19 @@
               },
               "type": {
                 "type": "string",
-                "enum": ["ron", "tsumo", "exhausted", "unknown"]
+                "enum": ["ron", "tsumo", "exhausted", "hotfix"]
               },
               "playerEast": {
                 "type": "object",
                 "properties": {
+                  "position": {
+                    "type": "string",
+                    "enum": ["east", "south", "west", "north"]
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  },
                   "status": {
                     "type": "string",
                     "enum": ["none", "isRiichied", "isRevealed"]
@@ -119,23 +127,49 @@
                   "afterScore": {
                     "type": "number"
                   },
-                  "type": {
-                    "type": "string",
-                    "enum": ["none", "win", "lose"]
+                  "dora": {
+                    "type": "number"
+                  },
+                  "redDora": {
+                    "type": "number"
+                  },
+                  "innerDora": {
+                    "type": "number"
+                  },
+                  "han": {
+                    "type": "number"
+                  },
+                  "fu": {
+                    "type": "number"
+                  },
+                  "pureScore": {
+                    "type": "number"
+                  },
+                  "yaku": {
+                    "type": "string"
                   }
                 },
                 "required": [
+                  "position",
+                  "type",
                   "status",
                   "isWaited",
                   "beforeScore",
-                  "afterScore",
-                  "type"
+                  "afterScore"
                 ],
                 "additionalProperties": false
               },
               "playerSouth": {
                 "type": "object",
                 "properties": {
+                  "position": {
+                    "type": "string",
+                    "enum": ["east", "south", "west", "north"]
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  },
                   "status": {
                     "type": "string",
                     "enum": ["none", "isRiichied", "isRevealed"]
@@ -149,23 +183,49 @@
                   "afterScore": {
                     "type": "number"
                   },
-                  "type": {
-                    "type": "string",
-                    "enum": ["none", "win", "lose"]
+                  "dora": {
+                    "type": "number"
+                  },
+                  "redDora": {
+                    "type": "number"
+                  },
+                  "innerDora": {
+                    "type": "number"
+                  },
+                  "han": {
+                    "type": "number"
+                  },
+                  "fu": {
+                    "type": "number"
+                  },
+                  "pureScore": {
+                    "type": "number"
+                  },
+                  "yaku": {
+                    "type": "string"
                   }
                 },
                 "required": [
+                  "position",
+                  "type",
                   "status",
                   "isWaited",
                   "beforeScore",
-                  "afterScore",
-                  "type"
+                  "afterScore"
                 ],
                 "additionalProperties": false
               },
               "playerWest": {
                 "type": "object",
                 "properties": {
+                  "position": {
+                    "type": "string",
+                    "enum": ["east", "south", "west", "north"]
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  },
                   "status": {
                     "type": "string",
                     "enum": ["none", "isRiichied", "isRevealed"]
@@ -179,23 +239,49 @@
                   "afterScore": {
                     "type": "number"
                   },
-                  "type": {
-                    "type": "string",
-                    "enum": ["none", "win", "lose"]
+                  "dora": {
+                    "type": "number"
+                  },
+                  "redDora": {
+                    "type": "number"
+                  },
+                  "innerDora": {
+                    "type": "number"
+                  },
+                  "han": {
+                    "type": "number"
+                  },
+                  "fu": {
+                    "type": "number"
+                  },
+                  "pureScore": {
+                    "type": "number"
+                  },
+                  "yaku": {
+                    "type": "string"
                   }
                 },
                 "required": [
+                  "position",
+                  "type",
                   "status",
                   "isWaited",
                   "beforeScore",
-                  "afterScore",
-                  "type"
+                  "afterScore"
                 ],
                 "additionalProperties": false
               },
               "playerNorth": {
                 "type": "object",
                 "properties": {
+                  "position": {
+                    "type": "string",
+                    "enum": ["east", "south", "west", "north"]
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["none", "win", "lose"]
+                  },
                   "status": {
                     "type": "string",
                     "enum": ["none", "isRiichied", "isRevealed"]
@@ -209,17 +295,35 @@
                   "afterScore": {
                     "type": "number"
                   },
-                  "type": {
-                    "type": "string",
-                    "enum": ["none", "win", "lose"]
+                  "dora": {
+                    "type": "number"
+                  },
+                  "redDora": {
+                    "type": "number"
+                  },
+                  "innerDora": {
+                    "type": "number"
+                  },
+                  "han": {
+                    "type": "number"
+                  },
+                  "fu": {
+                    "type": "number"
+                  },
+                  "pureScore": {
+                    "type": "number"
+                  },
+                  "yaku": {
+                    "type": "string"
                   }
                 },
                 "required": [
+                  "position",
+                  "type",
                   "status",
                   "isWaited",
                   "beforeScore",
-                  "afterScore",
-                  "type"
+                  "afterScore"
                 ],
                 "additionalProperties": false
               }

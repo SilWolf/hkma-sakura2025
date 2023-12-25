@@ -29,7 +29,7 @@ export default function RootLayout({
               <Link href="/teams">隊伍</Link>
               <Link href="/">聯賽賽制及規則</Link>
               <Link href="/">賽程</Link>
-              <Link href="/">排名及數據</Link>
+              <Link href="/statistics">排名及數據</Link>
               <Link href="/#old-matches">過往對局</Link>
               <Link href="/#new-players">新手專區</Link>
             </div>

@@ -1,6 +1,13 @@
 import { createClient } from "@sanity/client";
 import { cache } from "react";
 import { getYoutubeThumbnailByUrl } from "./youtube.helper";
+import {
+  Match,
+  Player,
+  Team,
+  TeamPlayer,
+  TournamentTeam,
+} from "@/types/index.type";
 
 export const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID,
@@ -10,56 +17,18 @@ export const client = createClient({
   token: process.env.SANITY_SECRET_TOKEN, // Only if you want to update content with the client
 });
 
-type Match = {
-  _id: string;
-  name: string;
-  startAt: string | null;
-  youtubeUrl: string | null;
-  bilibiliUrl: string | null;
-  playerEast: TeamPlayer;
-  playerSouth: TeamPlayer;
-  playerWest: TeamPlayer;
-  playerNorth: TeamPlayer;
-};
-
-type TeamPlayer = {
-  portraitImageUrl: string | null;
-  team: Team;
-  player: Player;
-  overridedDesignation: string | null;
-  overridedName: string | null;
-  overridedColor: string | null;
-  overridedPortraitImage: string | null;
-};
-
-type Player = {
-  _id: string;
-  name: string;
-  designation: string;
-  portraitImage: string;
-};
-
-type Team = {
-  _id: string;
-  slug: string;
-  name: string;
-  description: string;
-  squareLogoImage: string | null;
-  color: string;
-};
-
 export const getTeams = cache(() =>
   client
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]->{_id, "slug": slug.current, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, description} }`
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->{_id, "slug": slug.current, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, description}} }`
     )
-    .then((tournaments) => tournaments[0]?.teams as Team[])
+    .then((tournaments) => tournaments[0]?.teams as TournamentTeam[])
 );
 
 export const getTeamSlugs = cache(() =>
   client
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]->{"slug": slug.current} }`
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "slug": team.slug.current } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as Team[]).map((team) => team.slug)
@@ -103,12 +72,12 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
 export const getPlayersGroupByTeams = cache(async () => {
   const teamIds = await client
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]->{_id} }`
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "teamId": team->_id } }`
     )
     .then(
       (tournaments) =>
         tournaments[0].teams.map(
-          (team: { _id: string }) => team._id
+          (team: { teamId: string }) => team.teamId
         ) as string[]
     );
 
@@ -152,4 +121,12 @@ export const getOldMatches = cache(() =>
         youtubeThumbnailUrl: getYoutubeThumbnailByUrl(match.youtubeUrl),
       }))
     )
+);
+
+export const getMatch = cache((matchId: string) =>
+  client
+    .fetch(
+      `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerSouth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerWest->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerNorth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
+    )
+    .then((matches: Match[]) => matches[0])
 );
