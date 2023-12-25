@@ -27,7 +27,7 @@ export const renderMatchCode = (code: string) => {
       title += "北";
     }
 
-    title += `${round}局`;
+    title += `${((round - 1) % 4) + 1}局`;
 
     if (extendedRound > 0) {
       title += `${extendedRound}本場`;
