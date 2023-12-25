@@ -8,7 +8,7 @@ export default async function Home() {
   const oldMatches = await getOldMatches();
 
   const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
-    (a, b) => b.ranking - a.ranking
+    (a, b) => a.ranking - b.ranking
   );
 
   return (
