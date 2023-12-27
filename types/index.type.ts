@@ -14,15 +14,17 @@ export type Match = {
     playerWest: MatchResultPlayer;
     playerNorth: MatchResultPlayer;
   };
-  rounds: {
-    _key: string;
-    code: string;
-    type: "ron" | "tsumo" | "exhausted" | "hotfix";
-    playerEast: MatchRoundPlayer;
-    playerSouth: MatchRoundPlayer;
-    playerWest: MatchRoundPlayer;
-    playerNorth: MatchRoundPlayer;
-  }[];
+  rounds: MatchRound[];
+};
+
+export type MatchRound = {
+  _key: string;
+  code: string;
+  type: "ron" | "tsumo" | "exhausted" | "hotfix";
+  playerEast: MatchRoundPlayer;
+  playerSouth: MatchRoundPlayer;
+  playerWest: MatchRoundPlayer;
+  playerNorth: MatchRoundPlayer;
 };
 
 export type MatchResultPlayer = {

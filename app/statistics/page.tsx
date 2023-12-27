@@ -4,7 +4,7 @@ import { Match, MatchResultPlayer, TeamPlayer } from "@/types/index.type";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const MatchPlayerDiv = ({
+const MatchTeamDiv = ({
   player,
   result,
 }: {
@@ -34,6 +34,7 @@ const MatchPlayerDiv = ({
         />
       </div> */}
       <div className="flex-1 pl-4">
+        <p className="text-center">{player.team.name}</p>
         <p className="text-center text-2xl">{result.point.toFixed(1)}</p>
       </div>
     </div>
@@ -52,13 +53,13 @@ export default function StatisticsPage() {
   return (
     <main className="py-20 relative">
       <section className="pt-12 w-full text-center">
-        <div className="relative z-10">
+        <div className="container mx-auto max-w-screen-lg relative z-10">
           <h2 className="text-[48px]">對局紀錄</h2>
         </div>
       </section>
 
       <section className="py-8">
-        <div className="container mx-auto">
+        <div className="container mx-auto max-w-screen-xl">
           <table className="w-full">
             <thead>
               <tr>
@@ -91,19 +92,19 @@ export default function StatisticsPage() {
                   </td>
                   <td className="py-2">
                     <div className="grid grid-cols-4">
-                      <MatchPlayerDiv
+                      <MatchTeamDiv
                         player={match.playerEast}
                         result={match.result!.playerEast}
                       />
-                      <MatchPlayerDiv
+                      <MatchTeamDiv
                         player={match.playerSouth}
                         result={match.result!.playerSouth}
                       />
-                      <MatchPlayerDiv
+                      <MatchTeamDiv
                         player={match.playerWest}
                         result={match.result!.playerWest}
                       />
-                      <MatchPlayerDiv
+                      <MatchTeamDiv
                         player={match.playerNorth}
                         result={match.result!.playerNorth}
                       />

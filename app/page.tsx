@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <main>
       <section className="w-full text-center relative overflow-hidden">
-        <div className="w-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
+        <div className="w-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
           {/* <iframe
             className="w-full aspect-video"
             src="https://www.youtube.com/embed/Kp_UppkAiCk?si=Va0LX5hMdsdeQXzO&controls=0&start=1878&autoplay=1&mute=1&playsinline=1"

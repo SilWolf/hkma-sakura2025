@@ -4,7 +4,12 @@ import {
   renderMatchResultType,
   renderRanking,
 } from "@/helpers/string.helper";
-import { MatchResultPlayer, TeamPlayer } from "@/types/index.type";
+import {
+  Match,
+  MatchResultPlayer,
+  MatchRound,
+  TeamPlayer,
+} from "@/types/index.type";
 import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
@@ -89,6 +94,85 @@ const NumberSpan = ({ value }: { value: number }) => {
   }
 
   return <span className="text-red-500">{value}</span>;
+};
+
+const MatchScoreChangeTd = ({
+  match,
+  round,
+  playerKey,
+}: {
+  match: Match;
+  round: MatchRound;
+  playerKey: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
+}) => {
+  return (
+    <td
+      className="text-center p-2 data-[win='1']:border"
+      style={{
+        borderColor:
+          match[playerKey].overridedColor || match[playerKey].team.color,
+      }}
+      data-win={
+        (round.type === "tsumo" || round.type === "ron") &&
+        round[playerKey].type === "win"
+          ? "1"
+          : "0"
+      }
+    >
+      <p>
+        <NumberSpan
+          value={round[playerKey].afterScore - round[playerKey].beforeScore}
+        />
+      </p>
+      <p className="text-xs opacity-60 space-x-1">
+        {round[playerKey].status === "isRiichied" && (
+          <span className="inline-block">立直</span>
+        )}
+        {round[playerKey].status === "isRevealed" && (
+          <span className="inline-block">副露</span>
+        )}
+        {round[playerKey].isWaited && (
+          <span className="inline-block">聽牌</span>
+        )}
+        {round.type === "ron" && round[playerKey].type === "win" && (
+          <span className="inline-block">榮和</span>
+        )}
+        {round.type === "ron" && round[playerKey].type === "lose" && (
+          <span className="inline-block">出銃</span>
+        )}
+        {round.type === "tsumo" && round[playerKey].type === "win" && (
+          <span className="inline-block">自摸</span>
+        )}
+      </p>
+      {(round.type === "tsumo" || round.type === "ron") &&
+        round[playerKey].type === "win" && (
+          <p className="text-xs opacity-60">{round.playerSouth.yaku}</p>
+        )}
+    </td>
+  );
+};
+
+const MatchFinalScoreTd = ({
+  match,
+  playerKey,
+}: {
+  match: Match;
+  playerKey: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
+}) => {
+  return (
+    <td
+      className="py-4 text-center"
+      style={{
+        background:
+          (match[playerKey].overridedColor || match[playerKey].team.color) +
+          "2D",
+      }}
+    >
+      <p className="text-xl font-bold">
+        {match.rounds[match.rounds.length - 1][playerKey].afterScore}
+      </p>
+    </td>
+  );
 };
 
 export default async function MatchDetailPage({
@@ -187,7 +271,7 @@ export default async function MatchDetailPage({
               {match.rounds.map((round) => (
                 <tr
                   key={round._key}
-                  className="odd:bg-neutral-500 odd:bg-opacity-10"
+                  className="odd:bg-neutral-100 odd:bg-opacity-10"
                 >
                   <td colSpan={2} className="text-center">
                     <p className="font-bold">{renderMatchCode(round.code)}</p>
@@ -195,258 +279,34 @@ export default async function MatchDetailPage({
                       {renderMatchResultType(round.type)}
                     </p>
                   </td>
-                  <td
-                    className="text-center p-2 data-[win='1']:border"
-                    style={{
-                      borderColor:
-                        match.playerEast.overridedColor ||
-                        match.playerEast.team.color,
-                    }}
-                    data-win={
-                      (round.type === "tsumo" || round.type === "ron") &&
-                      round.playerEast.type === "win"
-                        ? "1"
-                        : "0"
-                    }
-                  >
-                    <p>
-                      <NumberSpan
-                        value={
-                          round.playerEast.afterScore -
-                          round.playerEast.beforeScore
-                        }
-                      />
-                    </p>
-                    <p className="text-xs opacity-60 space-x-1">
-                      {round.playerEast.status === "isRiichied" && (
-                        <span className="inline-block">立直</span>
-                      )}
-                      {round.playerEast.status === "isRevealed" && (
-                        <span className="inline-block">副露</span>
-                      )}
-                      {round.playerEast.isWaited && (
-                        <span className="inline-block">聽牌</span>
-                      )}
-                      {round.type === "ron" &&
-                        round.playerEast.type === "win" && (
-                          <span className="inline-block">榮和</span>
-                        )}
-                      {round.type === "ron" &&
-                        round.playerEast.type === "lose" && (
-                          <span className="inline-block">出銃</span>
-                        )}
-                      {round.type === "tsumo" &&
-                        round.playerEast.type === "win" && (
-                          <span className="inline-block">自摸</span>
-                        )}
-                    </p>
-                    {(round.type === "tsumo" || round.type === "ron") &&
-                      round.playerEast.type === "win" && (
-                        <p className="text-xs opacity-60">
-                          {round.playerEast.yaku}
-                        </p>
-                      )}
-                  </td>
-                  <td
-                    className="text-center p-2 data-[win='1']:border"
-                    style={{
-                      borderColor:
-                        match.playerSouth.overridedColor ||
-                        match.playerSouth.team.color,
-                    }}
-                    data-win={
-                      (round.type === "tsumo" || round.type === "ron") &&
-                      round.playerSouth.type === "win"
-                        ? "1"
-                        : "0"
-                    }
-                  >
-                    <p>
-                      <NumberSpan
-                        value={
-                          round.playerSouth.afterScore -
-                          round.playerSouth.beforeScore
-                        }
-                      />
-                    </p>
-                    <p className="text-xs opacity-60 space-x-1">
-                      {round.playerSouth.status === "isRiichied" && (
-                        <span className="inline-block">立直</span>
-                      )}
-                      {round.playerSouth.status === "isRevealed" && (
-                        <span className="inline-block">副露</span>
-                      )}
-                      {round.playerSouth.isWaited && (
-                        <span className="inline-block">聽牌</span>
-                      )}
-                      {round.type === "ron" &&
-                        round.playerSouth.type === "win" && (
-                          <span className="inline-block">榮和</span>
-                        )}
-                      {round.type === "ron" &&
-                        round.playerSouth.type === "lose" && (
-                          <span className="inline-block">出銃</span>
-                        )}
-                      {round.type === "tsumo" &&
-                        round.playerSouth.type === "win" && (
-                          <span className="inline-block">自摸</span>
-                        )}
-                    </p>
-                    {(round.type === "tsumo" || round.type === "ron") &&
-                      round.playerSouth.type === "win" && (
-                        <p className="text-xs opacity-60">
-                          {round.playerSouth.yaku}
-                        </p>
-                      )}
-                  </td>
-                  <td
-                    className="text-center p-2 data-[win='1']:border"
-                    style={{
-                      borderColor:
-                        match.playerWest.overridedColor ||
-                        match.playerWest.team.color,
-                    }}
-                    data-win={
-                      (round.type === "tsumo" || round.type === "ron") &&
-                      round.playerWest.type === "win"
-                        ? "1"
-                        : "0"
-                    }
-                  >
-                    <p>
-                      <NumberSpan
-                        value={
-                          round.playerWest.afterScore -
-                          round.playerWest.beforeScore
-                        }
-                      />
-                    </p>
-                    <p className="text-xs opacity-60 space-x-1">
-                      {round.playerWest.status === "isRiichied" && (
-                        <span className="inline-block">立直</span>
-                      )}
-                      {round.playerWest.status === "isRevealed" && (
-                        <span className="inline-block">副露</span>
-                      )}
-                      {round.playerWest.isWaited && (
-                        <span className="inline-block">聽牌</span>
-                      )}
-                      {round.type === "ron" &&
-                        round.playerWest.type === "win" && (
-                          <span className="inline-block">榮和</span>
-                        )}
-                      {round.type === "ron" &&
-                        round.playerWest.type === "lose" && (
-                          <span className="inline-block">出銃</span>
-                        )}
-                      {round.type === "tsumo" &&
-                        round.playerWest.type === "win" && (
-                          <span className="inline-block">自摸</span>
-                        )}
-                    </p>
-                    {(round.type === "tsumo" || round.type === "ron") &&
-                      round.playerWest.type === "win" && (
-                        <p className="text-xs opacity-60">
-                          {round.playerWest.yaku}
-                        </p>
-                      )}
-                  </td>
-                  <td
-                    className="text-center p-2 data-[win='1']:border"
-                    style={{
-                      borderColor:
-                        match.playerNorth.overridedColor ||
-                        match.playerNorth.team.color,
-                    }}
-                    data-win={
-                      (round.type === "tsumo" || round.type === "ron") &&
-                      round.playerNorth.type === "win"
-                        ? "1"
-                        : "0"
-                    }
-                  >
-                    <p>
-                      <NumberSpan
-                        value={
-                          round.playerNorth.afterScore -
-                          round.playerNorth.beforeScore
-                        }
-                      />
-                    </p>
-                    <p className="text-xs opacity-60 space-x-1">
-                      {round.playerNorth.status === "isRiichied" && (
-                        <span className="inline-block">立直</span>
-                      )}
-                      {round.playerNorth.status === "isRevealed" && (
-                        <span className="inline-block">副露</span>
-                      )}
-                      {round.playerNorth.isWaited && (
-                        <span className="inline-block">聽牌</span>
-                      )}
-                      {round.type === "ron" &&
-                        round.playerNorth.type === "win" && (
-                          <span className="inline-block">榮和</span>
-                        )}
-                      {round.type === "ron" &&
-                        round.playerNorth.type === "lose" && (
-                          <span className="inline-block">出銃</span>
-                        )}
-                      {round.type === "tsumo" &&
-                        round.playerNorth.type === "win" && (
-                          <span className="inline-block">自摸</span>
-                        )}
-                    </p>
-                    {(round.type === "tsumo" || round.type === "ron") &&
-                      round.playerNorth.type === "win" && (
-                        <p className="text-xs opacity-60">
-                          {round.playerNorth.yaku}
-                        </p>
-                      )}
-                  </td>
+                  <MatchScoreChangeTd
+                    match={match}
+                    round={round}
+                    playerKey="playerEast"
+                  />
+                  <MatchScoreChangeTd
+                    match={match}
+                    round={round}
+                    playerKey="playerSouth"
+                  />
+                  <MatchScoreChangeTd
+                    match={match}
+                    round={round}
+                    playerKey="playerWest"
+                  />
+                  <MatchScoreChangeTd
+                    match={match}
+                    round={round}
+                    playerKey="playerNorth"
+                  />
                 </tr>
               ))}
-              <tr className="odd:bg-neutral-500 odd:bg-opacity-10">
+              <tr className="odd:bg-neutral-100 odd:bg-opacity-10">
                 <td colSpan={2}></td>
-                <td
-                  className="py-4 text-center font-bold text-lg"
-                  style={{
-                    background:
-                      (match.playerEast.overridedColor ||
-                        match.playerEast.team.color) + "2D",
-                  }}
-                >
-                  {match.rounds[match.rounds.length - 1].playerEast.afterScore}
-                </td>
-                <td
-                  className="py-4 text-center font-bold text-lg"
-                  style={{
-                    background:
-                      (match.playerSouth.overridedColor ||
-                        match.playerSouth.team.color) + "2D",
-                  }}
-                >
-                  {match.rounds[match.rounds.length - 1].playerSouth.afterScore}
-                </td>
-                <td
-                  className="py-4 text-center font-bold text-lg"
-                  style={{
-                    background:
-                      (match.playerWest.overridedColor ||
-                        match.playerWest.team.color) + "2D",
-                  }}
-                >
-                  {match.rounds[match.rounds.length - 1].playerWest.afterScore}
-                </td>
-                <td
-                  className="py-4 text-center font-bold text-lg"
-                  style={{
-                    background:
-                      (match.playerNorth.overridedColor ||
-                        match.playerNorth.team.color) + "2D",
-                  }}
-                >
-                  {match.rounds[match.rounds.length - 1].playerNorth.afterScore}
-                </td>
+                <MatchFinalScoreTd match={match} playerKey="playerEast" />
+                <MatchFinalScoreTd match={match} playerKey="playerSouth" />
+                <MatchFinalScoreTd match={match} playerKey="playerWest" />
+                <MatchFinalScoreTd match={match} playerKey="playerNorth" />
               </tr>
             </tbody>
           </table>
