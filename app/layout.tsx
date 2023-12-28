@@ -8,7 +8,8 @@ export const metadata: Metadata = {
     default: "HK-League 2024 香港麻雀協會 日本麻將隊際競技聯賽2024",
     template: "%s | HK-League 2024 香港麻雀協會 日本麻將隊際競技聯賽2024",
   },
-  description: "HK-League 2024 香港麻雀協會 日本麻將隊際競技聯賽2024",
+  description:
+    "《HK-League 2024 香港麻雀協會日本麻將隊際競技聯賽2024》是由香港麻雀協會在2024年籌備的香港內賽程最長的日麻隊際競技聯賽。",
   keywords: [
     "HK-League",
     "2024",

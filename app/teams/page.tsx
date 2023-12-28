@@ -11,11 +11,7 @@ export default async function Teams() {
 
   return (
     <main className="pt-10 pb-10 relative">
-      <section className="w-full text-center">
-        <div className="relative z-10">
-          <h2 className="text-5xl font-semibold">聯賽隊伍</h2>
-        </div>
-      </section>
+      <h2 className="text-center text-5xl font-semibold">聯賽隊伍</h2>
 
       <section className="py-8 sticky top-0 z-50 bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-transparent">
         <div className="container mx-auto max-w-screen-lg bg-neutral-800 p-4 rounded-full shadow-xl">

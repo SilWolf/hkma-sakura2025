@@ -54,10 +54,20 @@ export default async function Home() {
               />
             </div>
             <div className="text-center sm:text-left flex flex-col justify-between pb-[4px]">
-              <h1 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] leading-[1] sm:leading-[1.1] md:leading-[0.8] font-serif font-semibold">
+              <h1
+                className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] leading-[1] sm:leading-[1.1] md:leading-[0.8] font-serif font-semibold"
+                style={{
+                  textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
+                }}
+              >
                 HK-League 2024
               </h1>
-              <h2 className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-[1]">
+              <h2
+                className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-[1]"
+                style={{
+                  textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
+                }}
+              >
                 香港麻雀協會
                 <br />
                 日本麻將隊際競技聯賽2024

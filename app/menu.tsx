@@ -48,13 +48,13 @@ const Menu = () => {
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/statistics">
+          <Link onClick={handleCloseMenu} href="/ranking">
             排名及數據
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/#old-matches">
-            過往對局
+          <Link onClick={handleCloseMenu} href="/old-matches">
+            對局紀錄
           </Link>
         </li>
         <li>

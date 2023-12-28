@@ -52,11 +52,7 @@ export default function StatisticsPage() {
 
   return (
     <main className="pt-10 pb-10 relative">
-      <section className="pt-12 w-full text-center">
-        <div className="container mx-auto max-w-screen-lg relative z-10">
-          <h2 className="font-semibold text-4xl mb-4">對局紀錄</h2>
-        </div>
-      </section>
+      <h2 className="text-center text-5xl font-semibold"></h2>
 
       <section className="py-8">
         <div className="container mx-auto max-w-screen-xl">
@@ -72,7 +68,7 @@ export default function StatisticsPage() {
               {matches.map((match) => (
                 <tr key={match._id}>
                   <td className="py-2">
-                    <Link href={`/statistics/match/${match._id}`}>
+                    <Link href={`/old-matches/match/${match._id}`}>
                       <p>{match.name}</p>
                       <p className="text-sm opacity-80">
                         {match.startAt?.substring(0, 10)}
