@@ -17,7 +17,7 @@ const Menu = () => {
   return (
     <div className="container mx-auto text-center">
       <div className="fixed top-0 left-0 right-0 z-50 text-right md:hidden">
-        <button className="p-2" onClick={handleClickMenu}>
+        <button className="p-2" onClick={handleClickMenu} aria-label="選單">
           <i className="bi bi-list text-4xl"></i>
         </button>
       </div>

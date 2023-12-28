@@ -9,7 +9,9 @@ const TeamLogoForIntro = ({ team }: { team: Team }) => {
   return (
     <a href={`/team-detail/${team.slug}`} target="_blank">
       <img
-        src={(team.squareLogoImage ?? "/images/empty.png") + "?w=320"}
+        src={
+          (team.squareLogoImage ?? "/images/empty.png") + "?w=320&auto=format"
+        }
         alt={team.name}
       />
     </a>
@@ -36,7 +38,10 @@ export default async function Home() {
             {tournamentTeams.map(({ team }) => (
               <div key={team.slug}>
                 <img
-                  src={(team.squareLogoImage ?? "/images/empty.png") + "?w=512"}
+                  src={
+                    (team.squareLogoImage ?? "/images/empty.png") +
+                    "?w=512&auto=format"
+                  }
                   className="w-48"
                   alt={team.name}
                 />
@@ -49,7 +54,7 @@ export default async function Home() {
             <div className="shrink-0">
               <img
                 src="/images/logo.png"
-                className="block mx-auto h-36 xl:h-40"
+                className="block mx-auto w-36 h-36 xl:w-40 xl:h-40"
                 alt="HK-League"
               />
             </div>
@@ -109,6 +114,7 @@ export default async function Home() {
 
           <div className="mt-8">
             <iframe
+              title="常規賽 #01"
               className="w-full aspect-video"
               src="https://www.youtube.com/embed/Kp_UppkAiCk?si=eXOxZCGAvv5TwRFY&mute=1"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -276,14 +282,14 @@ export default async function Home() {
             <table className="w-full">
               <thead>
                 <tr className="[&>th]:text-xs sm:[&>th]:text-base sm:[&>th]:px-2">
-                  <th>名次</th>
-                  <th></th>
-                  <th>隊伍</th>
-                  <th>積分</th>
-                  <th>
+                  <th scope="col">名次</th>
+                  <th scope="col"></th>
+                  <th scope="col">隊伍</th>
+                  <th scope="col">積分</th>
+                  <th scope="col">
                     <span className="hidden sm:inline">與前名</span>差距
                   </th>
-                  <th>
+                  <th scope="col">
                     半莊<span className="hidden sm:inline">數</span>
                   </th>
                 </tr>
@@ -297,7 +303,7 @@ export default async function Home() {
                         background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
                       }}
                     >
-                      <td>
+                      <td scope="row">
                         <span className="hidden sm:inline">
                           {renderRanking(ranking)}
                         </span>
@@ -305,7 +311,7 @@ export default async function Home() {
                       </td>
                       <td className="w-8">
                         <img
-                          src={team.squareLogoImage + "?w=128"}
+                          src={team.squareLogoImage + "?w=128&auto=format"}
                           alt={team.name}
                           className="h-4 w-4"
                         />
@@ -531,7 +537,7 @@ export default async function Home() {
       <section className="py-12" id="old-matches">
         <div className="container px-2 mx-auto">
           <div className="flex items-end justify-center sm:justify-between mb-8">
-            <h2 className="font-semibold text-4xl">過往對局</h2>
+            <h2 className="font-semibold text-4xl">對局紀錄</h2>
             <p className="hidden sm:block pr-2">
               <a href="#">觀看全部對局 &gt;</a>
             </p>
@@ -548,7 +554,7 @@ export default async function Home() {
                   {match.youtubeThumbnailUrl && (
                     <img
                       src={match.youtubeThumbnailUrl}
-                      className="w-full rounded aspect-video"
+                      className="w-full rounded aspect-[4/3]"
                       alt={match.name}
                     />
                   )}
@@ -563,32 +569,32 @@ export default async function Home() {
                   <div>
                     <img
                       src={
-                        match.playerEast.team.squareLogoImage ??
-                        "/images/empty.png"
+                        (match.playerEast.team.squareLogoImage ??
+                          "/images/empty.png") + "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
                     />
                     <img
                       src={
-                        match.playerSouth.team.squareLogoImage ??
-                        "/images/empty.png"
+                        (match.playerSouth.team.squareLogoImage ??
+                          "/images/empty.png") + "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
                     />
                     <img
                       src={
-                        match.playerWest.team.squareLogoImage ??
-                        "/images/empty.png"
+                        (match.playerWest.team.squareLogoImage ??
+                          "/images/empty.png") + "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
                     />
                     <img
                       src={
-                        match.playerNorth.team.squareLogoImage ??
-                        "/images/empty.png"
+                        (match.playerNorth.team.squareLogoImage ??
+                          "/images/empty.png") + "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""

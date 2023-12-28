@@ -117,18 +117,21 @@ export default function RootLayout({
                   <a
                     href="https://www.instagram.com/mahjongbattlestadium/"
                     target="_blank"
+                    aria-label="週一至四日本麻雀聚會"
                   >
                     <img src="/images/promo-1.jpg" alt="" />
                   </a>
                   <a
                     href="https://www.instagram.com/mahjongbattlestadium/"
                     target="_blank"
+                    aria-label="週二四日麻新人教學"
                   >
                     <img src="/images/promo-2.jpg" alt="" />
                   </a>
                   <a
                     href="https://www.instagram.com/mahjongbattlestadium/"
                     target="_blank"
+                    aria-label="週五日本麻雀聚會"
                   >
                     <img src="/images/promo-3.jpg" alt="" />
                   </a>
@@ -142,6 +145,7 @@ export default function RootLayout({
                   allowFullScreen={false}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
+                  title="牌藝攻防地圖"
                 ></iframe>
               </div>
             </div>
@@ -175,10 +179,18 @@ export default function RootLayout({
             </div>
             <div className="space-y-4">
               <div className="space-x-4 text-center md:text-right pr-1 text-2xl">
-                <a href="https://www.facebook.com/hkmjassn/" target="_blank">
+                <a
+                  href="https://www.facebook.com/hkmjassn/"
+                  target="_blank"
+                  aria-label="Facebook"
+                >
                   <i className="bi bi-facebook"></i>
                 </a>
-                <a href="https://www.instagram.com/hkmjassn/" target="_blank">
+                <a
+                  href="https://www.instagram.com/hkmjassn/"
+                  target="_blank"
+                  aria-label="Instagram"
+                >
                   <i className="bi bi-instagram"></i>
                 </a>
               </div>

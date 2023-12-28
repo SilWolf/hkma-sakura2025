@@ -11,10 +11,10 @@ const MatchTeamDiv = ({
   player: TeamPlayer;
   result: MatchResultPlayer;
 }) => {
-  const teamLogoUrl = player.team.squareLogoImage + "?w=128";
+  const teamLogoUrl = player.team.squareLogoImage + "?w=128&auto=format";
   const playerImageUrl =
     (player.overridedPortraitImage || player.player.portraitImage) +
-    "?w=128&h=128&fit=crop&crop=top";
+    "?w=128&h=128&fit=crop&crop=top&auto=format";
 
   return (
     <div
