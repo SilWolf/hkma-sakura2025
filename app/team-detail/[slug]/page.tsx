@@ -19,7 +19,7 @@ export default async function TeamDetail({
   }
 
   return (
-    <main className="py-20 relative">
+    <main className="pb-10 relative">
       <section
         className="py-12 w-full text-center"
         style={{

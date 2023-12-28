@@ -51,10 +51,10 @@ export default function StatisticsPage() {
   }, []);
 
   return (
-    <main className="py-20 relative">
+    <main className="pt-10 pb-10 relative">
       <section className="pt-12 w-full text-center">
         <div className="container mx-auto max-w-screen-lg relative z-10">
-          <h2 className="text-[48px]">對局紀錄</h2>
+          <h2 className="font-semibold text-4xl mb-4">對局紀錄</h2>
         </div>
       </section>
 

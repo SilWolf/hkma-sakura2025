@@ -10,15 +10,15 @@ export default async function Teams() {
   ]);
 
   return (
-    <main className="py-20 relative">
-      <section className="pt-12 w-full text-center">
+    <main className="pt-10 pb-10 relative">
+      <section className="w-full text-center">
         <div className="relative z-10">
-          <h2 className="text-[48px]">聯賽隊伍</h2>
+          <h2 className="text-5xl font-semibold">聯賽隊伍</h2>
         </div>
       </section>
 
       <section className="py-8 sticky top-0 z-50 bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-transparent">
-        <div className="container mx-auto max-w-screen-lg bg-gray-800 p-4 rounded-full shadow-xl">
+        <div className="container mx-auto max-w-screen-lg bg-neutral-800 p-4 rounded-full shadow-xl">
           <nav className="flex justify-center items-center">
             {tournamentTeams.map(({ team }) => (
               <div key={team.slug} className="flex-1 text-center">
@@ -40,7 +40,7 @@ export default async function Teams() {
       {tournamentTeams.map(({ team }) => (
         <section className="py-20 relative" key={team.slug}>
           <div id={team.slug} className="absolute -top-32"></div>
-          <Link href={`/teams/${team.slug}`}>
+          <Link href={`/team-detail/${team.slug}`}>
             <div
               className="container mx-auto max-w-screen-lg flex gap-x-12 border-y bg-opacity-20 p-8 relative overflow-hidden"
               style={{

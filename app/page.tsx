@@ -1,7 +1,20 @@
 import { getOldMatches, getTeams } from "@/helpers/sanity.helper";
 import { renderRanking } from "@/helpers/string.helper";
+import { Team } from "@/types/index.type";
+import Link from "next/link";
 
 export const revalidate = 900;
+
+const TeamLogoForIntro = ({ team }: { team: Team }) => {
+  return (
+    <a href={`/team-detail/${team.slug}`} target="_blank">
+      <img
+        src={(team.squareLogoImage ?? "/images/empty.png") + "?w=320"}
+        alt={team.name}
+      />
+    </a>
+  );
+};
 
 export default async function Home() {
   const tournamentTeams = await getTeams();
@@ -13,7 +26,7 @@ export default async function Home() {
 
   return (
     <main>
-      <section className="w-full text-center relative overflow-hidden">
+      <section className="w-full text-center relative overflow-hidden pt-12">
         <div className="w-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
           {/* <iframe
             className="w-full aspect-video"
@@ -31,55 +44,60 @@ export default async function Home() {
             ))}
           </div>
         </div>
-        <div className="pt-40 pb-32 relative z-10">
-          <h1 className="text-[96px] leading-[1.1em]">HK League 2024</h1>
-          <h2 className="text-[32px]">香港麻雀協會 日本麻將隊際競技聯賽2024</h2>
+        <div className="pt-8 md:pt-20 pb-20 relative z-10 text-center">
+          <div className="container px-2 mx-auto flex flex-col sm:flex-row justify-center items-stretch gap-4">
+            <div className="shrink-0">
+              <img
+                src="/images/logo.png"
+                className="block mx-auto h-36 xl:h-40"
+                alt="HK-League"
+              />
+            </div>
+            <div className="text-center sm:text-left flex flex-col justify-between pb-[4px]">
+              <h1 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] leading-[1] sm:leading-[1.1] md:leading-[0.8] font-serif font-semibold">
+                HK-League 2024
+              </h1>
+              <h2 className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-[1]">
+                香港麻雀協會
+                <br />
+                日本麻將隊際競技聯賽2024
+              </h2>
+            </div>
+          </div>
           <div className="flex justify-center gap-x-2 mx-auto mt-8">
-            <img
-              className="h-20 py-2 px-4 bg-[#12141C]"
-              src="/images/logo-hkma.webp"
-              alt="香港麻雀協會 Hong Kong Mahjong Association"
-            />
-            <img
-              className="h-20 py-2 px-4 bg-[#12141C]"
-              src="/images/logo-hkmjbs.webp"
-              alt="牌藝攻防 Mahjong Battle Stadium"
-            />
+            <a href="https://www.hkmahjong.org/" target="_blank">
+              <img
+                className="h-16"
+                src="/images/logo-hkma.webp"
+                alt="香港麻雀協會 Hong Kong Mahjong Association"
+              />
+            </a>
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-[url('/images/bg-3.jpg')] bg-cover bg-center">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-center gap-x-2 mb-4">
-            <h1 className="font-bold text-4xl shrink-0">常規賽 #01</h1>
-            <div className="shrink-0 font-bold pl-2 pr-3 rounded-full bg-red-500">
+      <section
+        className="py-12 bg-[url('/images/bg-3.jpg')] bg-cover bg-center"
+        style={{ backgroundColor: "#85753c" }}
+      >
+        <div className="container max-w-screen-md px-2 mx-auto">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <h1 className="font-semibold text-4xl shrink-0">
+              <span>常規賽 #01</span>
+            </h1>
+            <div className="font-semibold pl-2 pr-3 pb-1 rounded-full bg-red-500">
               <i className="bi bi-record-fill"></i> LIVE
             </div>
-            <div className="flex-1 text-right space-x-4">
-              <img
-                src="/images/logo-team1.webp"
-                className="inline w-16 h-16"
-                alt=""
-              />
-              <img
-                src="/images/logo-team2.webp"
-                className="inline w-16 h-16"
-                alt=""
-              />
-              <img
-                src="/images/logo-team3.webp"
-                className="inline w-16 h-16"
-                alt=""
-              />
-              <img
-                src="/images/logo-team4.webp"
-                className="inline w-16 h-16"
-                alt=""
-              />
-            </div>
           </div>
-          <div>
+
+          <div className="max-w-screen-sm mx-auto grid grid-cols-4 mt-8">
+            <img src="/images/logo-team1.webp" alt="" />
+            <img src="/images/logo-team2.webp" alt="" />
+            <img src="/images/logo-team3.webp" alt="" />
+            <img src="/images/logo-team4.webp" alt="" />
+          </div>
+
+          <div className="mt-8">
             <iframe
               className="w-full aspect-video"
               src="https://www.youtube.com/embed/Kp_UppkAiCk?si=eXOxZCGAvv5TwRFY&mute=1"
@@ -91,14 +109,20 @@ export default async function Home() {
       </section>
 
       <section className="py-24">
-        <div className="container mx-auto text-center grid grid-cols-2 gap-8">
-          <div>
-            <h2 className="font-bold text-[36px] mb-8">賽程</h2>
-            <table className="w-full [&_img]:w-24 [&_img]:h-24 odd:[&_tr]:bg-[rgba(255,255,255,0.1)] [&_td]:py-2">
-              <tbody>
+        <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">
+          <div className="flex-1">
+            <h2 className="font-semibold text-4xl mb-4">賽程</h2>
+            <table className="w-full [&_img]:w-10 [&_img]:h-10 sm:[&_img]:w-24 sm:[&_img]:h-24">
+              <thead>
+                <tr>
+                  <th>場次</th>
+                  <th colSpan={4}>隊伍</th>
+                </tr>
+              </thead>
+              <tbody className="odd:[&_tr]:bg-[rgba(255,255,255,0.1)] [&_td]:py-2">
                 <tr>
                   <td>
-                    <h3 className="font-bold text-lg">2023.12.32</h3>
+                    <h3 className="font-semibold text-lg">2023.12.32</h3>
                     <p>常規賽 #01</p>
                   </td>
                   <td>
@@ -144,7 +168,7 @@ export default async function Home() {
                 </tr>
                 <tr>
                   <td>
-                    <h3 className="font-bold text-lg">2023.12.33</h3>
+                    <h3 className="font-semibold text-lg">2023.12.33</h3>
                     <p>常規賽 #02</p>
                   </td>
                   <td>
@@ -190,7 +214,7 @@ export default async function Home() {
                 </tr>
                 <tr>
                   <td>
-                    <h3 className="font-bold text-lg">2023.12.34</h3>
+                    <h3 className="font-semibold text-lg">2023.12.34</h3>
                     <p>常規賽 #03</p>
                   </td>
                   <td>
@@ -237,10 +261,24 @@ export default async function Home() {
               </tbody>
             </table>
           </div>
-          <div>
-            <h2 className="font-bold text-[36px] mb-8">排名</h2>
-            <table className="w-full [&_img]:w-12 [&_img]:h-12 [&_td]:py-2">
-              <tbody>
+          <div className="flex-1">
+            <h2 className="font-semibold text-4xl mb-4">排名</h2>
+            <table className="w-full">
+              <thead>
+                <tr className="[&>th]:text-xs sm:[&>th]:text-base sm:[&>th]:px-2">
+                  <th>名次</th>
+                  <th></th>
+                  <th>隊伍</th>
+                  <th>積分</th>
+                  <th>
+                    <span className="hidden sm:inline">與前名</span>差距
+                  </th>
+                  <th>
+                    半莊<span className="hidden sm:inline">數</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="[&_img]:w-8 [&_img]:h-8 [&_td]:py-2">
                 {tournamentTeamsOrderedByRanking.map(
                   ({ team, ranking, point, matchCount }, i) => (
                     <tr
@@ -249,26 +287,42 @@ export default async function Home() {
                         background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
                       }}
                     >
-                      <td>{renderRanking(ranking)}</td>
                       <td>
-                        {" "}
+                        <span className="hidden sm:inline">
+                          {renderRanking(ranking)}
+                        </span>
+                        <span className="sm:hidden">{ranking}</span>
+                      </td>
+                      <td className="w-8">
                         <img
                           src={team.squareLogoImage + "?w=128"}
                           alt={team.name}
+                          className="h-4 w-4"
                         />
                       </td>
-                      <td>{team.name}</td>
-                      <td>{point?.toFixed(1) ?? "-"}</td>
                       <td>
-                        {tournamentTeamsOrderedByRanking[i - 1]
-                          ? (
-                              tournamentTeamsOrderedByRanking[i - 1].point -
-                              point
-                            ).toFixed(1)
-                          : "-"}
+                        <span className="text-sm sm:text-xl">{team.name}</span>
                       </td>
                       <td>
-                        {matchCount} <span className="text-xs">/60</span>
+                        <span className="text-xs sm:text-base">
+                          {point?.toFixed(1) ?? "-"}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="text-xs sm:text-base">
+                          {tournamentTeamsOrderedByRanking[i - 1]
+                            ? (
+                                tournamentTeamsOrderedByRanking[i - 1].point -
+                                point
+                              ).toFixed(1)
+                            : "-"}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="text-xs sm:text-base">
+                          {matchCount}
+                        </span>
+                        <span className="hidden sm:inline sm:text-sm">/60</span>
                       </td>
                     </tr>
                   )
@@ -280,79 +334,26 @@ export default async function Home() {
       </section>
 
       <section className="py-16 bg-[url('/images/bg-1.jpg')] bg-cover bg-center">
-        <div className="container mx-auto flex justify-center items-center">
-          <div className="shrink-0">
-            <div className="grid grid-cols-5 gap-x-8 gap-y-12">
-              <div></div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[0].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
+        <div className="container px-2 mx-auto flex justify-center items-center lg:[&_img]:w-32 lg:[&_img]:h-32 xl:[&_img]:w-48 xl:[&_img]:h-48 2xl:[&_img]:w-48 2xl:[&_img]:h-48 [&_img]:inline-block [&_img]:transition-transform hover:[&_img]:scale-110">
+          <div className="flex-1 hidden lg:block">
+            <div className="flex flex-col items-end">
+              <div>
+                <TeamLogoForIntro team={tournamentTeams[0].team} />
+                <TeamLogoForIntro team={tournamentTeams[1].team} />
               </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[1].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
+              <div className="pr-[12%]">
+                <TeamLogoForIntro team={tournamentTeams[2].team} />
+                <TeamLogoForIntro team={tournamentTeams[3].team} />
               </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[2].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
-              </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[3].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
-              </div>
-              <div></div>
-              <div></div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[4].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
-              </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[5].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
+              <div>
+                <TeamLogoForIntro team={tournamentTeams[4].team} />
+                <TeamLogoForIntro team={tournamentTeams[5].team} />
               </div>
             </div>
           </div>
-          <div className="flex-1 text-center text-neutral-300 space-y-12">
+          <div className="shrink-[1] text-center space-y-12 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mb-2 sm:[&_h3]:text-2xl">
             <div>
-              <h3 className="text-2xl font-bold mb-2">
-                至今為止最長賽程的香港日麻比賽
-              </h3>
+              <h3>至今為止最長賽程的香港日麻比賽</h3>
               <p>
                 2024年1月-11月，共有十二隊隊伍角逐由
                 <br />
@@ -360,7 +361,7 @@ export default async function Home() {
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-2">12支隊伍、48名選手</h3>
+              <h3>12支隊伍、48名選手</h3>
               <p>
                 選手們喜愛日本麻將，更視之為一種專業
                 <br />
@@ -368,7 +369,7 @@ export default async function Home() {
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-2">長達八個月的常規賽</h3>
+              <h3>長達八個月的常規賽</h3>
               <p>
                 八個月裡，每隊將進行多達60場半莊
                 <br />
@@ -376,116 +377,138 @@ export default async function Home() {
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-2">最終只為決定一支勝隊</h3>
+              <h3>最終只為決定一支勝隊</h3>
               <p>
-                六支隊伍進入合計18場半莊的準決賽
+                六支隊伍進入合計36場半莊的準決賽
                 <br />
-                四支隊伍進入合計8場半莊的總決賽
+                四支隊伍進入合計16場半莊的總決賽
                 <br />
                 最終勝出者將實至名歸
               </p>
             </div>
           </div>
-          <div className="shrink-0">
-            <div className="grid grid-cols-5 gap-x-8 gap-y-12">
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[6].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
+
+          <div className="flex-1 hidden lg:block">
+            <div className="flex flex-col items-start">
+              <div>
+                <TeamLogoForIntro team={tournamentTeams[6].team} />
+                <TeamLogoForIntro team={tournamentTeams[7].team} />
               </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[7].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
+              <div className="pl-[12%]">
+                <TeamLogoForIntro team={tournamentTeams[8].team} />
+                <TeamLogoForIntro team={tournamentTeams[9].team} />
               </div>
-              <div></div>
-              <div></div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[8].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
+              <div>
+                <TeamLogoForIntro team={tournamentTeams[10].team} />
+                <TeamLogoForIntro team={tournamentTeams[11].team} />
               </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[9].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
-              </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[10].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
-              </div>
-              <div className="col-span-2">
-                <img
-                  src={
-                    (tournamentTeams[11].team.squareLogoImage ??
-                      "/images/empty.png") + "?w=320"
-                  }
-                  className="w-40 h-40"
-                  alt=""
-                />
-              </div>
-              <div></div>
             </div>
           </div>
+        </div>
+
+        <div className="mt-8 block relative overflow-hidden lg:hidden h-48 sm:h-64 [&>div]:absolute [&>div]:w-24 [&>div]:h-24 sm:[&>div]:w-32 sm:[&>div]:h-32 [&>div]:animate-carousel [&_img]:w-24 [&_img]:h-24 sm:[&_img]:w-32 sm:[&_img]:h-32">
+          <div>
+            <TeamLogoForIntro team={tournamentTeams[0].team} />
+          </div>
+          <div style={{ animationDelay: "-5s" }}>
+            <TeamLogoForIntro team={tournamentTeams[1].team} />
+          </div>
+          <div style={{ animationDelay: "-10s" }}>
+            <TeamLogoForIntro team={tournamentTeams[2].team} />
+          </div>
+          <div style={{ animationDelay: "-15s" }}>
+            <TeamLogoForIntro team={tournamentTeams[3].team} />
+          </div>
+          <div style={{ animationDelay: "-20s" }}>
+            <TeamLogoForIntro team={tournamentTeams[4].team} />
+          </div>
+          <div style={{ animationDelay: "-25s" }}>
+            <TeamLogoForIntro team={tournamentTeams[5].team} />
+          </div>
+          <div className="bottom-0" style={{ animationDirection: "reverse" }}>
+            <TeamLogoForIntro team={tournamentTeams[6].team} />
+          </div>
+          <div
+            className="bottom-0"
+            style={{ animationDirection: "reverse", animationDelay: "-5s" }}
+          >
+            <TeamLogoForIntro team={tournamentTeams[7].team} />
+          </div>
+          <div
+            className="bottom-0"
+            style={{
+              animationDirection: "reverse",
+              animationDelay: "-10s",
+            }}
+          >
+            <TeamLogoForIntro team={tournamentTeams[8].team} />
+          </div>
+          <div
+            className="bottom-0"
+            style={{
+              animationDirection: "reverse",
+              animationDelay: "-15s",
+            }}
+          >
+            <TeamLogoForIntro team={tournamentTeams[9].team} />
+          </div>
+          <div
+            className="bottom-0"
+            style={{
+              animationDirection: "reverse",
+              animationDelay: "-20s",
+            }}
+          >
+            <TeamLogoForIntro team={tournamentTeams[10].team} />
+          </div>
+          <div
+            className="bottom-0"
+            style={{
+              animationDirection: "reverse",
+              animationDelay: "-25s",
+            }}
+          >
+            <TeamLogoForIntro team={tournamentTeams[11].team} />
+          </div>
+        </div>
+        <div className="container mx-auto text-center mt-8">
+          <Link
+            className="inline-block text-lg rounded-full py-4 px-12 hover:opacity-80 bg-[#1abced]"
+            href="/teams"
+          >
+            點我觀看隊伍介紹
+          </Link>
         </div>
       </section>
 
       <section className="py-12">
-        <div className="container mx-auto grid grid-cols-3 gap-8 text-center">
+        <div className="container px-2 mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-center [&_i.bi]:text-[64px] [&_h3]:font-semibold [&_h3]:text-xl sm:[&_h3]:text-2xl [&_h3]:mb-2">
           <div>
-            <div className="mb-4">
-              <i className="bi bi-calendar2-week text-[64px]"></i>
+            <div>
+              <i className="bi bi-calendar2-week"></i>
             </div>
-            <h2 className="font-bold text-[28px] mb-2">116場半莊的大型聯賽</h2>
+            <h3>超過200場半莊的大型聯賽</h3>
             <p>
-              所有隊伍在經過總計90場半莊的常規賽後，
+              所有隊伍在經過總計60場半莊的常規賽後，
               <br />
-              排名最高的六隊及四隊，依序進入
-              <br />
-              共有26場半莊的準決賽和總決賽。
+              排名最高的六隊及四隊，依序進入準決賽和總決賽。
             </p>
           </div>
           <div>
-            <div className="mb-4">
-              <i className="bi bi-camera-reels text-[64px]"></i>
+            <div>
+              <i className="bi bi-camera-reels"></i>
             </div>
-            <h2 className="font-bold text-[28px] mb-2">全程直播所有賽事</h2>
+            <h3>全程直播所有賽事</h3>
             <p>
               廣東話旁述、清晰的分數變化及顯示，
               <br />在 Youtube 及 Bilibili 上播放。
             </p>
           </div>
-          <div>
-            <div className="mb-4">
-              <i className="bi bi-person-up text-[64px]"></i>
+          <div className="md:col-span-2 lg:col-span-1">
+            <div>
+              <i className="bi bi-person-up"></i>
             </div>
-            <h2 className="font-bold text-[28px] mb-2">選手賽後訪問</h2>
+            <h3>選手賽後訪問及數據</h3>
             <p>
               觀摩強者打法、學習更豐富的日麻思路，
               <br />
@@ -495,15 +518,15 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="py-24" id="old-matches">
-        <div className="container mx-auto">
-          <div className="flex items-end justify-between mb-8">
-            <h2 className="font-bold text-[36px]">過往對局</h2>
-            <p className="pr-2">
+      <section className="py-12" id="old-matches">
+        <div className="container px-2 mx-auto">
+          <div className="flex items-end justify-center sm:justify-between mb-8">
+            <h2 className="font-semibold text-4xl">過往對局</h2>
+            <p className="hidden sm:block pr-2">
               <a href="#">觀看全部對局 &gt;</a>
             </p>
           </div>
-          <div className="grid grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-8 gap-y-6 sm:gap-y-12">
             {oldMatches.map((match) => (
               <a
                 className="block"
@@ -516,11 +539,11 @@ export default async function Home() {
                     <img
                       src={match.youtubeThumbnailUrl}
                       className="w-full rounded aspect-video"
-                      alt=""
+                      alt={match.name}
                     />
                   )}
                 </div>
-                <div className="flex justify-between items-center pr-1 mt-1">
+                <div className="flex flex-col sm:flex-row justify-between items-center sm:pr-1 mt-1">
                   <div>
                     <p>{match.name}</p>
                     <p className="text-sm text-neutral-300">
@@ -565,12 +588,22 @@ export default async function Home() {
               </a>
             ))}
           </div>
+          <div className="mt-12 sm:hidden text-center">
+            <Link
+              className="inline-block rounded-full py-2 px-6 hover:opacity-80 border text-[#1abced] border-[#1abced]"
+              href="/matches"
+            >
+              觀看全部對局
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="py-24" id="new-players">
-        <div className="container mx-auto">
-          <h2 className="font-bold text-[36px] mb-8">新手專區</h2>
+      <section className="py-12" id="new-players">
+        <div className="container px-2 mx-auto">
+          <h2 className="text-center sm:text-left font-semibold text-4xl mb-8">
+            新手專區
+          </h2>
           <p>（Dicky: 想放新手教學既文章、友站連結、Youtube片之類，求提供）</p>
         </div>
       </section>
