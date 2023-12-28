@@ -109,6 +109,7 @@ export default function RootLayout({
                     <i className="bi bi-instagram"></i> @mahjongbattlestadium
                   </a>
                   <a
+                    target="_blank"
                     href="https://www.facebook.com/mahjongbs/"
                     className="text-lg underline"
                   >
@@ -177,7 +178,7 @@ export default function RootLayout({
             </div>
             <div className="space-y-4">
               <div className="space-x-4 text-center md:text-right pr-1 text-2xl">
-                <a href="https://www.facebook.com/hkmjassn/">
+                <a href="https://www.facebook.com/hkmjassn/" target="_blank">
                   <i className="bi bi-facebook"></i>
                 </a>
                 <a href="https://www.instagram.com/hkmjassn/" target="_blank">
