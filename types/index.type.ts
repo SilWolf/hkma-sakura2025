@@ -55,6 +55,7 @@ export type TeamPlayer = {
   player: Player;
   overridedDesignation: string | null;
   overridedName: string | null;
+  overridedNickname: string | null;
   overridedColor: string | null;
   overridedPortraitImage: string | null;
 };
@@ -62,6 +63,7 @@ export type TeamPlayer = {
 export type Player = {
   _id: string;
   name: string;
+  nickname: string;
   designation: string;
   portraitImage: string;
 };
@@ -81,4 +83,14 @@ export type TournamentTeam = {
   ranking: number;
   point: number;
   matchCount: number;
+  firstP: number;
+  secondP: number;
+  thirdP: number;
+  fourthP: number;
+  rankingAvg: number;
+  pointAvg: number;
+  ronP: number;
+  chuckP: number;
+  riichiP: number;
+  revealP: number;
 };

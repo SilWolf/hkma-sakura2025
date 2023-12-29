@@ -7,7 +7,7 @@ export const revalidate = 900;
 
 const TeamLogoForIntro = ({ team }: { team: Team }) => {
   return (
-    <a href={`/team-detail/${team.slug}`} target="_blank">
+    <a href={`/teams/${team.slug}`} target="_blank">
       <img
         src={
           (team.squareLogoImage ?? "/images/empty.png") + "?w=320&auto=format"
@@ -135,143 +135,10 @@ export default async function Home() {
                   <th colSpan={4}>隊伍</th>
                 </tr>
               </thead>
-              <tbody className="odd:[&_tr]:bg-[rgba(255,255,255,0.1)] [&_td]:py-2">
+              <tbody className="odd:[&_tr]:bg-[rgba(255,255,255,0.1)]">
                 <tr>
-                  <td>
-                    <h3 className="font-semibold text-lg">2023.12.32</h3>
-                    <p>常規賽 #01</p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team1.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team2.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team3.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team4.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h3 className="font-semibold text-lg">2023.12.33</h3>
-                    <p>常規賽 #02</p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team5.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team6.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team7.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team8.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h3 className="font-semibold text-lg">2023.12.34</h3>
-                    <p>常規賽 #03</p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team9.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team10.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team11.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
-                  </td>
-                  <td>
-                    <img
-                      src="/images/logo-team12.webp"
-                      className="inline"
-                      alt=""
-                    />
-                    <p>
-                      1 <span className="text-xs">/60</span>
-                    </p>
+                  <td colSpan={5} className="text-center py-8">
+                    稍後公佈
                   </td>
                 </tr>
               </tbody>
@@ -309,7 +176,7 @@ export default async function Home() {
                         </span>
                         <span className="sm:hidden">{ranking}</span>
                       </td>
-                      <td className="w-8">
+                      <td className="w-9">
                         <img
                           src={team.squareLogoImage + "?w=128&auto=format"}
                           alt={team.name}

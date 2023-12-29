@@ -48,12 +48,13 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
 
   const players = await client
     .fetch(
-      `*[_type == "teamPlayer" && team._ref == "${team._id}"]{ team->{_id}, player->{_id, name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
+      `*[_type == "teamPlayer" && team._ref == "${team._id}"]{ team->{_id}, player->{_id, name, nickname, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
     )
     .then((teamPlayers: TeamPlayer[]) =>
       teamPlayers.map((teamPlayer) => ({
         _id: teamPlayer.player._id,
         name: teamPlayer.overridedName ?? teamPlayer.player.name,
+        nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
         designation:
           teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
         portraitImage:
@@ -84,7 +85,7 @@ export const getPlayersGroupByTeams = cache(async () => {
   const teamPlayers = (await client.fetch(
     `*[_type == "teamPlayer" && team._ref in ${JSON.stringify(
       teamIds
-    )}]{ team->{_id}, player->{_id, name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
+    )}]{ team->{_id}, player->{_id, name, nickname, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
   )) as TeamPlayer[];
 
   const result: Record<string, Player[]> = {};
@@ -98,6 +99,7 @@ export const getPlayersGroupByTeams = cache(async () => {
     result[teamPlayer.team._id].push({
       _id: teamPlayer.player._id,
       name: teamPlayer.overridedName ?? teamPlayer.player.name,
+      nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
       designation:
         teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
       portraitImage:

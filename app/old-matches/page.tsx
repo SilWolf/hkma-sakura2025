@@ -52,7 +52,7 @@ export default function StatisticsPage() {
 
   return (
     <main className="pt-10 pb-10 relative">
-      <h2 className="text-center text-5xl font-semibold"></h2>
+      <h2 className="text-center text-4xl lg:text-5xl font-semibold"></h2>
 
       <section className="py-8">
         <div className="container mx-auto max-w-screen-xl">

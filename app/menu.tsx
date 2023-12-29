@@ -34,16 +34,16 @@ const Menu = () => {
         </li>
         <li>
           <Link onClick={handleCloseMenu} href="/teams">
-            隊伍
+            聯賽隊伍
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/">
+          <Link onClick={handleCloseMenu} href="/ruling">
             聯賽賽制及規則
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/">
+          <Link onClick={handleCloseMenu} href="/schedule">
             賽程
           </Link>
         </li>
