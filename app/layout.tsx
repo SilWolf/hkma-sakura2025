@@ -4,6 +4,7 @@ import "./globals.css";
 import Menu from "./menu";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hkleague2024.hkmahjong.org"),
   title: {
     default: "HK-League 2024 香港麻雀協會 立直麻雀隊際競技聯賽2024",
     template: "%s | HK-League 2024 香港麻雀協會 立直麻雀隊際競技聯賽2024",
