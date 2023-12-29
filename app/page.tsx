@@ -406,7 +406,7 @@ export default async function Home() {
           <div className="flex items-end justify-center sm:justify-between mb-8">
             <h2 className="font-semibold text-4xl">對局紀錄</h2>
             <p className="hidden sm:block pr-2">
-              <a href="#">觀看全部對局 &gt;</a>
+              <Link href="/schedule">觀看全部對局 &gt;</Link>
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-8 gap-y-6 sm:gap-y-12">
@@ -474,7 +474,7 @@ export default async function Home() {
           <div className="mt-12 sm:hidden text-center">
             <Link
               className="inline-block rounded-full py-2 px-6 hover:opacity-80 border text-[#1abced] border-[#1abced]"
-              href="/matches"
+              href="/schedule"
             >
               觀看全部對局
             </Link>

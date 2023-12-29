@@ -33,18 +33,13 @@ const Menu = () => {
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/teams">
-            聯賽隊伍
-          </Link>
-        </li>
-        <li>
-          <Link onClick={handleCloseMenu} href="/ruling">
-            聯賽賽制及規則
-          </Link>
-        </li>
-        <li>
           <Link onClick={handleCloseMenu} href="/schedule">
             賽程
+          </Link>
+        </li>
+        <li>
+          <Link onClick={handleCloseMenu} href="/teams">
+            聯賽隊伍
           </Link>
         </li>
         <li>
@@ -53,8 +48,8 @@ const Menu = () => {
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/old-matches">
-            對局紀錄
+          <Link onClick={handleCloseMenu} href="/ruling">
+            聯賽賽制及規則
           </Link>
         </li>
         <li>

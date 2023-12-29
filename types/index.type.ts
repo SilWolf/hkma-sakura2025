@@ -1,7 +1,7 @@
 export type Match = {
   _id: string;
   name: string;
-  startAt: string | null;
+  startAt: string;
   youtubeUrl: string | null;
   bilibiliUrl: string | null;
   playerEast: TeamPlayer;
@@ -50,14 +50,12 @@ export type MatchRoundPlayer = {
 };
 
 export type TeamPlayer = {
-  portraitImageUrl: string | null;
   team: Team;
   player: Player;
   overridedDesignation: string | null;
   overridedName: string | null;
   overridedNickname: string | null;
   overridedColor: string | null;
-  overridedPortraitImage: string | null;
 };
 
 export type Player = {
@@ -65,7 +63,6 @@ export type Player = {
   name: string;
   nickname: string;
   designation: string;
-  portraitImage: string;
 };
 
 export type Team = {

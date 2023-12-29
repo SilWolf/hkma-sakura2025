@@ -17,3 +17,52 @@ body {
   background-color: rgb(var(--background-end-rgb));
   background: linear-gradient(to bottom, rgb(var(--background-start-rgb)), rgb(var(--background-end-rgb)));
 }
+
+@layer components {
+  .document-ruling {
+    h2, h3 {
+      @apply font-semibold;
+    }
+
+    h2 {
+      @apply text-4xl;
+    }
+
+    h3 {
+      @apply text-3xl;
+    }
+
+    h4 {
+      @apply text-2xl;
+    }
+
+    a {
+      @apply text-cyan-400 underline hover:text-cyan-500;
+    }
+
+    p {
+      @apply leading-8;
+    }
+
+    table {
+      th, td {
+        @apply text-center p-2 border border-current;
+      }
+    }
+
+    ul, ol {
+      @apply pl-6;
+      li {
+        @apply pl-4 leading-8;
+      }
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+  }
+}

@@ -30,6 +30,7 @@ export default async function TeamDetail({
           <span>{team.name}</span>
         </div>
       </section>
+
       <section
         className="py-12 w-full text-center"
         style={{
@@ -61,20 +62,6 @@ export default async function TeamDetail({
         <section key={player._id} className="py-12">
           <div className="container mx-auto max-w-screen-md px-2">
             <div className="flex gap-2 md:gap-12 items-center">
-              <div className="shrink-0">
-                <img
-                  className="aspect-square w-16 h-16 md:w-36 md:h-36 rounded-full border"
-                  style={{
-                    borderColor: team.color,
-                    backgroundColor: `${team.color}2D`,
-                  }}
-                  src={
-                    player.portraitImage +
-                    "?w=360&h=360&fit=crop&crop=top&auto=format"
-                  }
-                  alt={player.name}
-                />
-              </div>
               <div className="flex-1">
                 <h3 className="font-bold text-xl">
                   {player.name} ({player.nickname})

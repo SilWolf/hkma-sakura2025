@@ -46,3 +46,18 @@ export const renderMatchResultType = (type: string) => {
 
   return " ";
 };
+
+export const renderPoint = (value: number | undefined | null) => {
+  if (typeof value === "undefined" || value === null) {
+    return "-";
+  }
+
+  if (value >= 0) {
+    return `+${value.toFixed(1)}`;
+  }
+
+  return `▲${Math.abs(value).toFixed(1)}`;
+};
+
+export const renderWeekday = (value: number) =>
+  ["日", "一", "二", "三", "四", "五", "六"][value] ?? "-";

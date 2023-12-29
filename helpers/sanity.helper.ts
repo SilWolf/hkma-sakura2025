@@ -48,7 +48,7 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
 
   const players = await client
     .fetch(
-      `*[_type == "teamPlayer" && team._ref == "${team._id}"]{ team->{_id}, player->{_id, name, nickname, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
+      `*[_type == "teamPlayer" && team._ref == "${team._id}"]{ team->{_id}, player->{_id, name, nickname, designation}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`
     )
     .then((teamPlayers: TeamPlayer[]) =>
       teamPlayers.map((teamPlayer) => ({
@@ -57,10 +57,6 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
         nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
         designation:
           teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
-        portraitImage:
-          teamPlayer.overridedPortraitImage ??
-          teamPlayer.player.portraitImage ??
-          "/images/empty.png",
       }))
     );
 
@@ -85,7 +81,7 @@ export const getPlayersGroupByTeams = cache(async () => {
   const teamPlayers = (await client.fetch(
     `*[_type == "teamPlayer" && team._ref in ${JSON.stringify(
       teamIds
-    )}]{ team->{_id}, player->{_id, name, nickname, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url }`
+    )}]{ team->{_id}, player->{_id, name, nickname, designation}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`
   )) as TeamPlayer[];
 
   const result: Record<string, Player[]> = {};
@@ -102,10 +98,6 @@ export const getPlayersGroupByTeams = cache(async () => {
       nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
       designation:
         teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
-      portraitImage:
-        teamPlayer.overridedPortraitImage ??
-        teamPlayer.player.portraitImage ??
-        "/images/empty.png",
     });
   }
 
@@ -115,7 +107,7 @@ export const getPlayersGroupByTeams = cache(async () => {
 export const getOldMatches = cache(() =>
   client
     .fetch(
-      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && status == "completed"] | order(startAt desc)[0...8]{ _id, name, playerEast->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerSouth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerWest->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerNorth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, startAt, youtubeUrl, bilibiliUrl}`
+      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && status == "completed"] | order(startAt desc)[0...8]{ _id, name, playerEast->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex}, playerSouth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, overridedColor}, playerWest->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, overridedColor}, playerNorth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, overridedColor}, startAt, youtubeUrl, bilibiliUrl}`
     )
     .then((matches: Match[]) =>
       matches.map((match) => ({
@@ -128,7 +120,59 @@ export const getOldMatches = cache(() =>
 export const getMatch = cache((matchId: string) =>
   client
     .fetch(
-      `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerSouth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerWest->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, playerNorth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation, "portraitImage": portraitImage.asset->url}, overridedDesignation, overridedName, overridedColor, "overridedPortraitImage": overridedPortraitImage.asset->url}, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
+      `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, "overridedColor": overridedColor.hex}, playerSouth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, overridedColor}, playerWest->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, overridedColor}, playerNorth->{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}, player->{name, designation}, overridedDesignation, overridedName, overridedColor}, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
     )
     .then((matches: Match[]) => matches[0])
+);
+
+export const getMatchesGroupedByDate = cache(
+  async (year: number, month: number) => {
+    const playerProjection =
+      '{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
+
+    const nextMonth = month === 12 ? 1 : month;
+    const nextYear = month === 12 ? year + 1 : year;
+
+    const filterStartDate = `${year}-${month
+      .toString()
+      .padStart(2, "0")}-01T00:00:00Z`;
+    const filterEndDate = `${nextYear}-${nextMonth
+      .toString()
+      .padStart(2, "0")}-01T00:00:00Z`;
+
+    const scheduledMatches = await client.fetch<Match[]>(
+      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && startAt >= "${filterStartDate}" && startAt < "${filterEndDate}"] | order(startAt asc){ _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
+    );
+
+    const matchesGroupedByDate: Record<
+      string,
+      { weekday: number; matches: Match[] }
+    > = {};
+
+    for (const match of scheduledMatches) {
+      const dateString = `${match.startAt.substring(
+        8,
+        10
+      )}/${match.startAt.substring(5, 7)}`;
+
+      if (!matchesGroupedByDate[dateString]) {
+        const date = new Date(match.startAt);
+        const weekday = date.getDay();
+
+        matchesGroupedByDate[dateString] = {
+          weekday,
+          matches: [],
+        };
+      }
+
+      matchesGroupedByDate[dateString].matches.push(match);
+    }
+
+    const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
+      date: key,
+      ...value,
+    }));
+
+    return result;
+  }
 );

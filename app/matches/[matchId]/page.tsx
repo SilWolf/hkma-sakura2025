@@ -2,6 +2,7 @@ import { getMatch } from "@/helpers/sanity.helper";
 import {
   renderMatchCode,
   renderMatchResultType,
+  renderPoint,
   renderRanking,
 } from "@/helpers/string.helper";
 import {
@@ -10,6 +11,7 @@ import {
   MatchRound,
   TeamPlayer,
 } from "@/types/index.type";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
@@ -22,9 +24,6 @@ const MatchTeamDiv = ({
   result: MatchResultPlayer;
 }) => {
   const teamLogoUrl = player.team.squareLogoImage + "?w=128&auto=format";
-  const playerImageUrl =
-    (player.overridedPortraitImage || player.player.portraitImage) +
-    "?w=128&h=128&fit=crop&crop=top&auto=format";
 
   return (
     <div
@@ -47,7 +46,7 @@ const MatchTeamDiv = ({
         <p className="text-right text-sm">
           {renderRanking(parseInt(result.ranking))}
         </p>
-        <p className="text-right text-2xl">{result.point.toFixed(1)}</p>
+        <p className="text-right text-2xl">{renderPoint(result.point)}</p>
       </div>
     </div>
   );
@@ -60,23 +59,13 @@ const MatchPlayerDiv = ({
   player: TeamPlayer;
   result: MatchResultPlayer;
 }) => {
-  const teamLogoUrl = player.team.squareLogoImage + "?w=128&auto=format";
-  const playerImageUrl =
-    (player.overridedPortraitImage || player.player.portraitImage) +
-    "?w=128&h=128&fit=crop&crop=top&auto=format";
-
   return (
     <div
-      className="text-center"
+      className="text-center py-2"
       style={{
         background: (player.overridedColor || player.team.color) + "2D",
       }}
     >
-      <img
-        className="w-16 h-16 mx-auto"
-        src={playerImageUrl}
-        alt={player.overridedName || player.player.name}
-      />
       <p className="text-center my-2 font-bold">
         {player.overridedName || player.player.name}
       </p>
@@ -187,7 +176,23 @@ export default async function MatchDetailPage({
   }
 
   return (
-    <main className="p-20 relative">
+    <main>
+      <section className="pt-16 md:pt-8 pb-4">
+        <div className="container max-w-screen-lg mx-auto px-2 space-x-2 text-sm">
+          <Link
+            className="opacity-80"
+            href={`/schedule/${match.startAt.substring(
+              0,
+              4
+            )}/${match.startAt.substring(5, 7)}`}
+          >
+            賽程
+          </Link>
+          <span>&gt;</span>
+          <span>{match.name}</span>
+        </div>
+      </section>
+
       <section className="py-8">
         <div className="container max-w-screen-lg mx-auto">
           <table className="w-full">

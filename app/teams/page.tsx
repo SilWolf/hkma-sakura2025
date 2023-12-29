@@ -84,16 +84,6 @@ export default async function Teams() {
                         key={player._id}
                         className="flex gap-x-4 items-center"
                       >
-                        <div className="shrink-0">
-                          <img
-                            className="aspect-square w-12"
-                            src={
-                              player.portraitImage +
-                              "?w=360&h=360&fit=crop&crop=top&auto=format"
-                            }
-                            alt={player.name}
-                          />
-                        </div>
                         <div className="flex-1">
                           <h3 className="text-xl font-bold">{player.name}</h3>
                         </div>
