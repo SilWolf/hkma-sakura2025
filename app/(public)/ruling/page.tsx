@@ -286,7 +286,7 @@ export default function RulingPage() {
               </ol>
             </div>
           </div>
-
+          {/* 
           <hr />
 
           <div className="space-y-6">
@@ -2055,7 +2055,7 @@ export default function RulingPage() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </main>
