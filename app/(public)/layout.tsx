@@ -70,7 +70,7 @@ export default function PublicLayout({
                 <a
                   href="https://www.instagram.com/mahjongbattlestadium/"
                   target="_blank"
-                  aria-label="週一至四日本麻雀聚會"
+                  aria-label="週一至四立直麻雀聚會"
                 >
                   <img src="/images/promo-1.jpg" alt="" />
                 </a>
@@ -84,7 +84,7 @@ export default function PublicLayout({
                 <a
                   href="https://www.instagram.com/mahjongbattlestadium/"
                   target="_blank"
-                  aria-label="週五日本麻雀聚會"
+                  aria-label="週五立直麻雀聚會"
                 >
                   <img src="/images/promo-3.jpg" alt="" />
                 </a>

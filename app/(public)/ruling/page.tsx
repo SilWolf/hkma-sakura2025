@@ -42,7 +42,7 @@ export default function RulingPage() {
             <h3>比賽簡介</h3>
             <p>
               HK LEAGUE
-              是一個為期一年的隊制日麻競技比賽，比賽中共有十二隊名額，每隊4人。
+              是一個為期一年的隊制立直麻雀競技比賽，比賽中共有十二隊名額，每隊4人。
               <br />
               HK
               League將於每週二至四（1至11月）作賽。比賽其間將會全程直播至YouTube
