@@ -5,19 +5,19 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://hkleague2024.hkmahjong.org"),
   title: {
-    default: "HK-League 2024 香港麻雀協會 日本麻將隊際競技聯賽2024",
-    template: "%s | HK-League 2024 香港麻雀協會 日本麻將隊際競技聯賽2024",
+    default: "HK-League 2024 香港麻雀協會 日本麻雀隊際競技聯賽2024",
+    template: "%s | HK-League 2024 香港麻雀協會 日本麻雀隊際競技聯賽2024",
   },
   description:
-    "《HK-League 2024 香港麻雀協會日本麻將隊際競技聯賽2024》是由香港麻雀協會在2024年籌備的，在香港內賽程最長的日麻隊際競技聯賽，預計將進行近250場半莊戰，從12隊隊伍中決定最佳隊伍。",
+    "《HK-League 2024 香港麻雀協會日本麻雀隊際競技聯賽2024》是由香港麻雀協會在2024年籌備的，在香港內賽程最長的日麻隊際競技聯賽，預計將進行近250場半莊戰，從12隊隊伍中決定最佳隊伍。",
   keywords: [
     "HK-League",
     "2024",
     "香港麻雀協會",
-    "日本麻將",
+    "日本麻雀",
     "日麻",
     "mahjong",
-    "立直麻將",
+    "立直麻雀",
     "立直麻雀",
     "牌藝攻防",
   ],

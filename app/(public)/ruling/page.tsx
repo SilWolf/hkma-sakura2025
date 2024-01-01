@@ -378,7 +378,7 @@ export default function RulingPage() {
             <div className="space-y-2">
               <h3>麻雀用具</h3>
               <ol>
-                <li>採用兩副136張的麻將牌，不使用花牌。</li>
+                <li>採用兩副136張的麻雀牌，不使用花牌。</li>
                 <li>136張牌分為數牌、字牌兩大類。</li>
                 <li>
                   <strong>數牌：</strong>
