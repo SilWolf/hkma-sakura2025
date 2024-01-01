@@ -1,6 +1,7 @@
 import { getMatchesGroupedByDate } from "@/helpers/sanity.helper";
 import { renderPoint, renderWeekday } from "@/helpers/string.helper";
 import { Match } from "@/types/index.type";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -35,6 +36,16 @@ const ScheduleTeam = ({
   );
 };
 
+export async function generateMetadata({
+  params: { year, month },
+}: {
+  params: { year: string; month: string };
+}): Promise<Metadata> {
+  return {
+    title: `賽程及對局紀錄 - ${year}年${month}月`,
+  };
+}
+
 export default async function SchedulePage({
   params: { year, month },
 }: {
@@ -59,7 +70,9 @@ export default async function SchedulePage({
   return (
     <main>
       <section className="py-10">
-        <h2 className="text-center text-4xl lg:text-5xl font-semibold">賽程</h2>
+        <h2 className="text-center text-4xl lg:text-5xl font-semibold">
+          賽程及對局紀錄
+        </h2>
       </section>
 
       {/* <section className="pb-12">

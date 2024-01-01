@@ -1,3 +1,9 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "聯賽賽制及規則",
+};
+
 export default function RulingPage() {
   return (
     <main>

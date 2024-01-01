@@ -34,7 +34,7 @@ const Menu = () => {
         </li>
         <li>
           <Link onClick={handleCloseMenu} href="/schedule">
-            賽程
+            賽程及對局紀錄
           </Link>
         </li>
         <li>

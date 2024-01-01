@@ -1,9 +1,11 @@
 import { getMatch } from "@/helpers/sanity.helper";
 import {
+  renderDate,
   renderMatchCode,
   renderMatchResultType,
   renderPoint,
   renderRanking,
+  renderScore,
 } from "@/helpers/string.helper";
 import {
   Match,
@@ -11,6 +13,7 @@ import {
   MatchRound,
   TeamPlayer,
 } from "@/types/index.type";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -163,6 +166,38 @@ const MatchFinalScoreTd = ({
     </td>
   );
 };
+
+export async function generateMetadata({
+  params: { matchId },
+}: {
+  params: { matchId: string };
+}): Promise<Metadata> {
+  const match = await getMatch(matchId);
+
+  if (!match || !match.result) {
+    return {
+      title: "對局結果",
+    };
+  }
+
+  const playersResultString = (
+    ["playerEast", "playerSouth", "playerWest", "playerNorth"] as const
+  )
+    .map(
+      (key) =>
+        `${match[key].overridedName ?? match[key].player.name}：${renderRanking(
+          match.result?.[key].ranking
+        )},${renderScore(match.result?.[key].score)}(${renderPoint(
+          match.result?.[key].point
+        )})`
+    )
+    .join(" / ");
+
+  return {
+    title: `${match.name} (${renderDate(match.startAt)})`,
+    description: `[${match.name}] ${playersResultString}`,
+  };
+}
 
 export default async function MatchDetailPage({
   params: { matchId },

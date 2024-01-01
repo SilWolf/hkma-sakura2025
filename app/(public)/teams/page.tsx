@@ -1,7 +1,12 @@
 import { getPlayersGroupByTeams, getTeams } from "@/helpers/sanity.helper";
+import { Metadata } from "next";
 import Link from "next/link";
 
 export const revalidate = 900;
+
+export const metadata: Metadata = {
+  title: "聯賽隊伍",
+};
 
 export default async function Teams() {
   const [tournamentTeams, playersInTeamIds] = await Promise.all([

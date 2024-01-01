@@ -1,4 +1,5 @@
 import { getTeamDetailBySlug, getTeamSlugs } from "@/helpers/sanity.helper";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -6,6 +7,19 @@ export const revalidate = 900;
 
 export async function generateStaticParams() {
   return getTeamSlugs();
+}
+
+export async function generateMetadata({
+  params: { slug },
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const team = await getTeamDetailBySlug(slug);
+
+  return {
+    title: team ? team.name : "隊伍介紹",
+    description: team?.description,
+  };
 }
 
 export default async function TeamDetail({

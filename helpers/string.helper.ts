@@ -1,9 +1,15 @@
-export const renderRanking = (i: number) => {
-  if (i === 1) {
+export const renderRanking = (
+  i: number | undefined | null | "1" | "2" | "3" | "4"
+) => {
+  if (typeof i === "undefined" || i === null) {
+    return "-";
+  }
+
+  if (i === 1 || i === "1") {
     return "1st";
-  } else if (i === 2) {
+  } else if (i === 2 || i === "2") {
     return "2nd";
-  } else if (i === 3) {
+  } else if (i === 3 || i === "3") {
     return "3rd";
   }
 
@@ -59,5 +65,26 @@ export const renderPoint = (value: number | undefined | null) => {
   return `▲${Math.abs(value).toFixed(1)}`;
 };
 
+export const renderScore = (value: number | undefined | null) => {
+  if (typeof value === "undefined" || value === null) {
+    return "-";
+  }
+
+  if (value >= 0) {
+    return `+${value.toFixed(0)}`;
+  }
+
+  return `▲${Math.abs(value).toFixed(0)}`;
+};
+
 export const renderWeekday = (value: number) =>
   ["日", "一", "二", "三", "四", "五", "六"][value] ?? "-";
+
+export const renderDate = (value: string) => {
+  const date = new Date(value);
+  if (!date) {
+    return "-";
+  }
+
+  return date.toISOString().substring(0, 10);
+};
