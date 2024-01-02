@@ -2,12 +2,16 @@ export type Match = {
   _id: string;
   name: string;
   startAt: string;
-  youtubeUrl: string | null;
-  bilibiliUrl: string | null;
-  playerEast: TeamPlayer;
-  playerSouth: TeamPlayer;
-  playerWest: TeamPlayer;
-  playerNorth: TeamPlayer;
+  youtubeUrl?: string | null;
+  bilibiliUrl?: string | null;
+  playerEastTeam?: Team;
+  playerEast?: TeamPlayer;
+  playerSouthTeam?: Team;
+  playerSouth?: TeamPlayer;
+  playerWestTeam?: Team;
+  playerWest?: TeamPlayer;
+  playerNorthTeam?: Team;
+  playerNorth?: TeamPlayer;
   result?: {
     playerEast: MatchResultPlayer;
     playerSouth: MatchResultPlayer;

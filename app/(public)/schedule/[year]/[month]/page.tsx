@@ -1,6 +1,5 @@
-import { getMatchesGroupedByDate } from "@/helpers/sanity.helper";
+import { MatchDTO, getMatchesGroupedByDate } from "@/helpers/sanity.helper";
 import { renderPoint, renderWeekday } from "@/helpers/string.helper";
-import { Match } from "@/types/index.type";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,7 +8,7 @@ const ScheduleTeam = ({
   match,
   playerIndex,
 }: {
-  match: Match;
+  match: MatchDTO;
   playerIndex: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
 }) => {
   const point = match.result?.[playerIndex]?.point;
@@ -18,12 +17,9 @@ const ScheduleTeam = ({
   return (
     <div>
       <img
-        src={
-          (match[playerIndex].team.squareLogoImage ?? "/images/empty.png") +
-          "?w=512&auto=format"
-        }
+        src={match[playerIndex].teamLogoImageUrl + "?w=512&auto=format"}
         className="w-full"
-        alt={match.playerEast.team.name}
+        alt={match[playerIndex].teamName}
         style={{
           opacity: isLoser ? 0.4 : 1,
           filter: isLoser ? "grayscale(100%)" : "",

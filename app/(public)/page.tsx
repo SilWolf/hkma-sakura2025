@@ -426,42 +426,40 @@ export default async function Home() {
                     />
                   )}
                 </div>
-                <div className="flex flex-col sm:flex-row justify-between items-center sm:pr-1 mt-1">
+                <div className="flex flex-row justify-between items-center sm:pr-1 mt-1">
                   <div>
                     <p>{match.name}</p>
                     <p className="text-sm text-neutral-300">
                       {match.startAt?.substring(0, 10)}
                     </p>
                   </div>
-                  <div>
+                  <div className="grid grid-cols-2">
                     <img
                       src={
-                        (match.playerEast.team.squareLogoImage ??
-                          "/images/empty.png") + "?w=128&auto=format"
+                        match.playerEast.teamLogoImageUrl + "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
                     />
                     <img
                       src={
-                        (match.playerSouth.team.squareLogoImage ??
-                          "/images/empty.png") + "?w=128&auto=format"
+                        match.playerSouth.teamLogoImageUrl +
+                        "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
                     />
                     <img
                       src={
-                        (match.playerWest.team.squareLogoImage ??
-                          "/images/empty.png") + "?w=128&auto=format"
+                        match.playerWest.teamLogoImageUrl + "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
                     />
                     <img
                       src={
-                        (match.playerNorth.team.squareLogoImage ??
-                          "/images/empty.png") + "?w=128&auto=format"
+                        match.playerNorth.teamLogoImageUrl +
+                        "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
