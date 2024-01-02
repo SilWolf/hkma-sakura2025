@@ -75,7 +75,7 @@ export default async function Home() {
               >
                 香港麻雀協會
                 <br />
-                立直麻雀隊際競技聯賽2024
+                香港立直麻雀團體聯賽2024
               </h2>
             </div>
           </div>
@@ -240,7 +240,7 @@ export default async function Home() {
               <p>
                 2024年1月-11月，共有十二隊隊伍角逐由
                 <br />
-                香港麻雀協會首次舉辦的立直麻雀隊際聯賽冠軍
+                香港麻雀協會首次舉辦的立直麻雀團體聯賽冠軍
               </p>
             </div>
             <div>
