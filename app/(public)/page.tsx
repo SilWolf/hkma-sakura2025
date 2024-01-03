@@ -1,9 +1,48 @@
-import { getOldMatches, getTeams } from "@/helpers/sanity.helper";
-import { renderRanking } from "@/helpers/string.helper";
+import {
+  MatchDTO,
+  getLatestComingMatchesGroupedByDate,
+  getOldMatches,
+  getTeams,
+} from "@/helpers/sanity.helper";
+import {
+  renderPoint,
+  renderRanking,
+  renderWeekday,
+} from "@/helpers/string.helper";
 import { Team } from "@/types/index.type";
 import Link from "next/link";
 
 export const revalidate = 900;
+
+const ScheduleTeam = ({
+  match,
+  playerIndex,
+}: {
+  match: MatchDTO;
+  playerIndex: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
+}) => {
+  const point = match.result?.[playerIndex]?.point;
+  const isLoser = match.result && match.result?.[playerIndex]?.ranking !== "1";
+
+  return (
+    <div>
+      <a href={`/teams/${match[playerIndex].teamSlug}`} target="_blank">
+        <img
+          src={match[playerIndex].teamLogoImageUrl + "?w=512&auto=format"}
+          className="w-full"
+          alt={match[playerIndex].teamName}
+          style={{
+            opacity: isLoser ? 0.4 : 1,
+            filter: isLoser ? "grayscale(100%)" : "",
+          }}
+        />
+      </a>
+      {match.result && (
+        <p className="text-center text-sm">{renderPoint(point)}pt</p>
+      )}
+    </div>
+  );
+};
 
 const TeamLogoForIntro = ({ team }: { team: Team }) => {
   return (
@@ -19,8 +58,12 @@ const TeamLogoForIntro = ({ team }: { team: Team }) => {
 };
 
 export default async function Home() {
-  const tournamentTeams = await getTeams();
-  const oldMatches = await getOldMatches();
+  const [tournamentTeams, comingMatchesGroupedByDate, oldMatches] =
+    await Promise.all([
+      getTeams(),
+      getLatestComingMatchesGroupedByDate(),
+      getOldMatches(),
+    ]);
 
   const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
     (a, b) => a.ranking - b.ranking
@@ -51,14 +94,14 @@ export default async function Home() {
         </div>
         <div className="pt-8 md:pt-20 pb-20 relative z-10 text-center">
           <div className="container px-2 mx-auto flex flex-col sm:flex-row justify-center items-stretch gap-4">
-            <div className="shrink-0">
+            <div className="shrink-0 animate-fadeInFromLeft">
               <img
                 src="/images/logo.png"
                 className="block mx-auto w-36 h-36 xl:w-40 xl:h-40"
                 alt="HK-League"
               />
             </div>
-            <div className="text-center sm:text-left flex flex-col justify-between pb-[4px]">
+            <div className="text-center sm:text-left flex flex-col justify-between pb-[4px] animate-fadeInFromRight">
               <h1
                 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] leading-[1] sm:leading-[1.1] md:leading-[0.8] font-serif font-semibold"
                 style={{
@@ -91,7 +134,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section
+      {/* <section
         className="py-12 bg-[url('/images/bg-3.jpg')] bg-cover bg-center"
         style={{ backgroundColor: "#85753c" }}
       >
@@ -122,27 +165,58 @@ export default async function Home() {
             ></iframe>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className="py-24">
         <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">
           <div className="flex-1">
-            <h2 className="font-semibold text-4xl mb-4">賽程</h2>
-            <table className="w-full [&_img]:w-10 [&_img]:h-10 sm:[&_img]:w-24 sm:[&_img]:h-24">
-              <thead>
-                <tr>
-                  <th>場次</th>
-                  <th colSpan={4}>隊伍</th>
-                </tr>
-              </thead>
-              <tbody className="odd:[&_tr]:bg-[rgba(255,255,255,0.1)]">
-                <tr>
-                  <td colSpan={5} className="text-center py-8">
-                    稍後公佈
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <h2 className="font-semibold text-4xl mb-10">賽程</h2>
+
+            <div className="space-y-6">
+              {comingMatchesGroupedByDate.map(({ date, weekday, matches }) => (
+                <div
+                  key={date}
+                  className="flex flex-col lg:flex-row gap-4 px-2 py-4 lg:px-4 lg:py-4 rounded-lg bg-[rgba(255,255,255,0.1)] first-of-type:bg-cyan-900"
+                >
+                  <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
+                    <p className="text-2xl font-semibold">{date}</p>
+                    <p className="text-2xl font-semibold">
+                      ({renderWeekday(weekday)})
+                    </p>
+                  </div>
+                  <div className="flex-1">
+                    <div>
+                      <div className="match-team-logos-grid grid grid-cols-4 gap-2">
+                        <ScheduleTeam
+                          match={matches[0]}
+                          playerIndex="playerEast"
+                        />
+                        <ScheduleTeam
+                          match={matches[0]}
+                          playerIndex="playerSouth"
+                        />
+                        <ScheduleTeam
+                          match={matches[0]}
+                          playerIndex="playerWest"
+                        />
+                        <ScheduleTeam
+                          match={matches[0]}
+                          playerIndex="playerNorth"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="container mx-auto text-center mt-8">
+              <Link
+                className="inline-block text-lg rounded-full py-4 px-12 hover:opacity-80 bg-[#1abced]"
+                href="/schedule"
+              >
+                其他賽事
+              </Link>
+            </div>
           </div>
           <div className="flex-1">
             <h2 className="font-semibold text-4xl mb-4">排名</h2>
@@ -161,7 +235,7 @@ export default async function Home() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="[&_img]:w-8 [&_img]:h-8 [&_td]:py-2">
+              <tbody className="[&_img]:w-10 [&_img]:h-10 [&_td]:py-3">
                 {tournamentTeamsOrderedByRanking.map(
                   ({ team, ranking, point, matchCount }, i) => (
                     <tr
@@ -176,11 +250,10 @@ export default async function Home() {
                         </span>
                         <span className="sm:hidden">{ranking}</span>
                       </td>
-                      <td className="w-9">
+                      <td className="w-10 !p-0">
                         <img
                           src={team.squareLogoImage + "?w=128&auto=format"}
                           alt={team.name}
-                          className="h-4 w-4"
                         />
                       </td>
                       <td>
@@ -212,6 +285,14 @@ export default async function Home() {
                 )}
               </tbody>
             </table>
+            <div className="mt-8">
+              <Link
+                className="inline-block text-lg rounded-full py-4 px-12 hover:opacity-80 bg-[#1abced]"
+                href="/ranking"
+              >
+                詳細數據
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -480,14 +561,14 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="py-12" id="new-players">
+      {/* <section className="py-12" id="new-players">
         <div className="container px-2 mx-auto">
           <h2 className="text-center sm:text-left font-semibold text-4xl mb-8">
             新手專區
           </h2>
           <p>（Dicky: 想放新手教學既文章、友站連結、Youtube片之類，求提供）</p>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

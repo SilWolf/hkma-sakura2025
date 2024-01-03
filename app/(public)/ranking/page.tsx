@@ -2,6 +2,8 @@ import { getTeams } from "@/helpers/sanity.helper";
 import { renderRanking } from "@/helpers/string.helper";
 import { Metadata } from "next";
 
+export const revalidate = 900;
+
 const statRows = [
   {
     label: "排名",

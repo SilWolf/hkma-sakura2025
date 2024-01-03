@@ -1,5 +1,7 @@
 import SchedulePage from "./[year]/[month]/page";
 
+export const revalidate = 900;
+
 export default async function ScheduleDefaultPage() {
   const date = new Date();
   const params = {

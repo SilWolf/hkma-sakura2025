@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const revalidate = 900;
+export const revalidate = 1800;
 
 export async function generateStaticParams() {
   return getTeamSlugs();
@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   return {
     title: team ? team.name : "隊伍介紹",
-    description: team?.description,
+    description: team?.introduction,
   };
 }
 
@@ -66,8 +66,8 @@ export default async function TeamDetail({
           >
             {team.name}
           </h2>
-          <p className="text-center text-[16px] leading-[28px] mt-12 md:px-8 whitespace-pre-wrap">
-            {team.description}
+          <p className="text-center text-2xl leading-10 mt-12 md:px-8 whitespace-pre-wrap">
+            {team.introduction}
           </p>
         </div>
       </section>
@@ -80,7 +80,9 @@ export default async function TeamDetail({
                 <h3 className="font-bold text-xl">
                   {player.name} ({player.nickname})
                 </h3>
-                <p className="mt-2">天鳳X段 | 麻齡 10年</p>
+                <p className="mt-2 whitespace-pre-wrap">
+                  {player.introduction}
+                </p>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-x-4 mt-4">

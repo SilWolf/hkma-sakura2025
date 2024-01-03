@@ -4,6 +4,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+export const revalidate = 600;
+
 const ScheduleTeam = ({
   match,
   playerIndex,
@@ -62,6 +64,8 @@ export default async function SchedulePage({
     trueYear,
     trueMonth
   );
+
+  console.log(matchesGroupedByDate);
 
   return (
     <main>

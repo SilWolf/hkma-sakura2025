@@ -12,7 +12,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const revalidate = 3600;
+export const revalidate = 600;
 
 const MatchTeamDiv = ({
   player,

@@ -56,6 +56,7 @@ export type MatchRoundPlayer = {
 export type TeamPlayer = {
   team: Team;
   player: Player;
+  introduction: string;
   overridedDesignation: string | null;
   overridedName: string | null;
   overridedNickname: string | null;
@@ -73,9 +74,9 @@ export type Team = {
   _id: string;
   slug: string;
   name: string;
-  description: string;
   squareLogoImage: string | null;
   color: string;
+  introduction: string;
 };
 
 export type TournamentTeam = {

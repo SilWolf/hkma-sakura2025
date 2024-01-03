@@ -148,7 +148,7 @@ export default function PublicLayout({
               </a>
             </div>
             <div className="space-x-6 text-center md:text-right pr-1">
-              <a href="#">聯賽章程</a>
+              {/* <a href="#">聯賽章程</a> */}
               <a href="mailto:info@hkmahjong.org">聯絡我們</a>
             </div>
             <p className="text-center md:text-right">
