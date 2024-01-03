@@ -36,6 +36,10 @@ body {
       @apply text-2xl;
     }
 
+    h5 {
+      @apply text-xl;
+    }
+
     a {
       @apply text-cyan-400 underline hover:text-cyan-500;
     }
@@ -45,6 +49,9 @@ body {
     }
 
     table {
+      th {
+        @apply whitespace-nowrap
+      }
       th, td {
         @apply text-center p-2 border border-current;
       }

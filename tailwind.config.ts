@@ -23,9 +23,19 @@ const config: Config = {
           "0%": { left: "-200px" },
           "100%": { left: "100%" },
         },
+        fadeInFromLeft: {
+          "0%": { opacity: "0", transform: "translateX(-100px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        fadeInFromRight: {
+          "0%": { opacity: "0", transform: "translateX(100px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
       },
       animation: {
         carousel: "carousel 30s linear infinite",
+        fadeInFromLeft: "fadeInFromLeft 0.8s ease-out 1",
+        fadeInFromRight: "fadeInFromRight 0.8s ease-out 1",
       },
     },
   },

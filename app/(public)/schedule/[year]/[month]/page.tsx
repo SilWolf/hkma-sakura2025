@@ -1,14 +1,16 @@
-import { getMatchesGroupedByDate } from "@/helpers/sanity.helper";
+import { MatchDTO, getMatchesGroupedByDate } from "@/helpers/sanity.helper";
 import { renderPoint, renderWeekday } from "@/helpers/string.helper";
-import { Match } from "@/types/index.type";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export const revalidate = 600;
 
 const ScheduleTeam = ({
   match,
   playerIndex,
 }: {
-  match: Match;
+  match: MatchDTO;
   playerIndex: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
 }) => {
   const point = match.result?.[playerIndex]?.point;
@@ -17,12 +19,9 @@ const ScheduleTeam = ({
   return (
     <div>
       <img
-        src={
-          (match[playerIndex].team.squareLogoImage ?? "/images/empty.png") +
-          "?w=512&auto=format"
-        }
+        src={match[playerIndex].teamLogoImageUrl + "?w=512&auto=format"}
         className="w-full"
-        alt={match.playerEast.team.name}
+        alt={match[playerIndex].teamName}
         style={{
           opacity: isLoser ? 0.4 : 1,
           filter: isLoser ? "grayscale(100%)" : "",
@@ -34,6 +33,16 @@ const ScheduleTeam = ({
     </div>
   );
 };
+
+export async function generateMetadata({
+  params: { year, month },
+}: {
+  params: { year: string; month: string };
+}): Promise<Metadata> {
+  return {
+    title: `賽程及對局紀錄 - ${year}年${month}月`,
+  };
+}
 
 export default async function SchedulePage({
   params: { year, month },
@@ -56,10 +65,14 @@ export default async function SchedulePage({
     trueMonth
   );
 
+  console.log(matchesGroupedByDate);
+
   return (
     <main>
       <section className="py-10">
-        <h2 className="text-center text-4xl lg:text-5xl font-semibold">賽程</h2>
+        <h2 className="text-center text-4xl lg:text-5xl font-semibold">
+          賽程及對局紀錄
+        </h2>
       </section>
 
       {/* <section className="pb-12">

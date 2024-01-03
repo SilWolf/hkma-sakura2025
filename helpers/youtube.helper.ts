@@ -1,4 +1,4 @@
-export const getVideoIdFromYoutubeUrl = (url: string | null) => {
+export const getVideoIdFromYoutubeUrl = (url: string | null | undefined) => {
   if (!url) {
     return null;
   }
@@ -10,8 +10,9 @@ export const getVideoIdFromYoutubeUrl = (url: string | null) => {
   );
 };
 
-export const getYoutubeThumbnailByVideoId = (videoId: string | null) =>
-  `https://img.youtube.com/vi/${videoId ?? "0"}/0.jpg`;
+export const getYoutubeThumbnailByVideoId = (
+  videoId: string | null | undefined
+) => `https://img.youtube.com/vi/${videoId ?? "0"}/0.jpg`;
 
-export const getYoutubeThumbnailByUrl = (url: string | null) =>
+export const getYoutubeThumbnailByUrl = (url: string | null | undefined) =>
   getYoutubeThumbnailByVideoId(getVideoIdFromYoutubeUrl(url));

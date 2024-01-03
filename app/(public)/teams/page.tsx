@@ -1,7 +1,12 @@
 import { getPlayersGroupByTeams, getTeams } from "@/helpers/sanity.helper";
+import { Metadata } from "next";
 import Link from "next/link";
 
-export const revalidate = 900;
+export const revalidate = 1800;
+
+export const metadata: Metadata = {
+  title: "聯賽隊伍",
+};
 
 export default async function Teams() {
   const [tournamentTeams, playersInTeamIds] = await Promise.all([
@@ -18,7 +23,7 @@ export default async function Teams() {
       </section>
 
       <section className="hidden lg:block pb-12 sticky top-0 z-50 bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-transparent">
-        <div className="container mx-auto max-w-screen-lg bg-neutral-800 p-4 rounded-full shadow-xl">
+        <div className="container mx-auto max-w-screen-lg bg-white bg-opacity-10 p-4 rounded-full shadow-xl">
           <nav className="grid grid-cols-4 lg:grid-cols-12 justify-center items-center">
             {tournamentTeams.map(({ team }) => (
               <div key={team.slug} className="text-center">
@@ -26,7 +31,7 @@ export default async function Teams() {
                   <img
                     src={
                       (team.squareLogoImage ?? "/images/empty.png") +
-                      "?w=64&auto=format"
+                      "?w=128&auto=format"
                     }
                     className="w-16 h-16"
                     alt={team.name}
@@ -75,7 +80,7 @@ export default async function Teams() {
                     {team.name}
                   </h2>
                   <p className="text-base leading-8 text-justify lg:text-lg lg:leading-9 whitespace-pre-wrap">
-                    {team.description}
+                    {team.introduction}
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-8 mt-12">

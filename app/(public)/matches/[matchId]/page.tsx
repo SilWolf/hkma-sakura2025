@@ -1,39 +1,37 @@
-import { getMatch } from "@/helpers/sanity.helper";
+import { MatchDTO, TeamPlayerDTO, getMatch } from "@/helpers/sanity.helper";
 import {
+  renderDate,
   renderMatchCode,
   renderMatchResultType,
   renderPoint,
   renderRanking,
+  renderScore,
 } from "@/helpers/string.helper";
-import {
-  Match,
-  MatchResultPlayer,
-  MatchRound,
-  TeamPlayer,
-} from "@/types/index.type";
+import { MatchResultPlayer, MatchRound } from "@/types/index.type";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const revalidate = 3600;
+export const revalidate = 600;
 
 const MatchTeamDiv = ({
   player,
   result,
 }: {
-  player: TeamPlayer;
+  player: TeamPlayerDTO;
   result: MatchResultPlayer;
 }) => {
-  const teamLogoUrl = player.team.squareLogoImage + "?w=128&auto=format";
+  const teamLogoUrl = player.teamLogoImageUrl + "?w=128&auto=format";
 
   return (
     <div
       className="flex p-1 items-center"
       style={{
-        background: (player.overridedColor || player.team.color) + "2D",
+        background: player.color + "2D",
       }}
     >
       <div className="shrink-0">
-        <img className="w-16 h-16" src={teamLogoUrl} alt={player.team.name} />
+        <img className="w-16 h-16" src={teamLogoUrl} alt={player.teamName} />
       </div>
       {/* <div className="shrink-0">
         <img
@@ -56,19 +54,17 @@ const MatchPlayerDiv = ({
   player,
   result,
 }: {
-  player: TeamPlayer;
+  player: TeamPlayerDTO;
   result: MatchResultPlayer;
 }) => {
   return (
     <div
       className="text-center py-2"
       style={{
-        background: (player.overridedColor || player.team.color) + "2D",
+        background: player.color + "2D",
       }}
     >
-      <p className="text-center my-2 font-bold">
-        {player.overridedName || player.player.name}
-      </p>
+      <p className="text-center my-2 font-bold">{player.playerFullname}</p>
     </div>
   );
 };
@@ -90,7 +86,7 @@ const MatchScoreChangeTd = ({
   round,
   playerKey,
 }: {
-  match: Match;
+  match: MatchDTO;
   round: MatchRound;
   playerKey: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
 }) => {
@@ -98,8 +94,7 @@ const MatchScoreChangeTd = ({
     <td
       className="text-center p-2 data-[win='1']:border"
       style={{
-        borderColor:
-          match[playerKey].overridedColor || match[playerKey].team.color,
+        borderColor: match[playerKey].color,
       }}
       data-win={
         (round.type === "tsumo" || round.type === "ron") &&
@@ -145,16 +140,14 @@ const MatchFinalScoreTd = ({
   match,
   playerKey,
 }: {
-  match: Match;
+  match: MatchDTO;
   playerKey: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
 }) => {
   return (
     <td
       className="py-4 text-center"
       style={{
-        background:
-          (match[playerKey].overridedColor || match[playerKey].team.color) +
-          "2D",
+        background: match[playerKey].color + "2D",
       }}
     >
       <p className="text-xl font-bold">
@@ -163,6 +156,38 @@ const MatchFinalScoreTd = ({
     </td>
   );
 };
+
+export async function generateMetadata({
+  params: { matchId },
+}: {
+  params: { matchId: string };
+}): Promise<Metadata> {
+  const match = await getMatch(matchId);
+
+  if (!match || !match.result) {
+    return {
+      title: "對局結果",
+    };
+  }
+
+  const playersResultString = (
+    ["playerEast", "playerSouth", "playerWest", "playerNorth"] as const
+  )
+    .map(
+      (key) =>
+        `${match[key].playerFullname}：${renderRanking(
+          match.result?.[key].ranking
+        )},${renderScore(match.result?.[key].score)}(${renderPoint(
+          match.result?.[key].point
+        )})`
+    )
+    .join(" / ");
+
+  return {
+    title: `${match.name} (${renderDate(match.startAt)})`,
+    description: `[${match.name}] ${playersResultString}`,
+  };
+}
 
 export default async function MatchDetailPage({
   params: { matchId },

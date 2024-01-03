@@ -1,5 +1,8 @@
 import { getTeams } from "@/helpers/sanity.helper";
 import { renderRanking } from "@/helpers/string.helper";
+import { Metadata } from "next";
+
+export const revalidate = 900;
 
 const statRows = [
   {
@@ -55,6 +58,10 @@ const statRows = [
     name: "revealP",
   },
 ] as const;
+
+export const metadata: Metadata = {
+  title: "排名及數據",
+};
 
 export default async function RankingPage() {
   const tournamentTeams = await getTeams();

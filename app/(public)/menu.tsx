@@ -34,7 +34,7 @@ const Menu = () => {
         </li>
         <li>
           <Link onClick={handleCloseMenu} href="/schedule">
-            賽程
+            賽程及對局紀錄
           </Link>
         </li>
         <li>
@@ -52,11 +52,11 @@ const Menu = () => {
             聯賽賽制及規則
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link onClick={handleCloseMenu} href="/#new-players">
             新手專區
           </Link>
-        </li>
+        </li> */}
       </ul>
     </div>
   );
