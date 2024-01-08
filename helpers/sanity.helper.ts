@@ -21,8 +21,15 @@ export const client = createClient({
   token: process.env.SANITY_SECRET_TOKEN, // Only if you want to update content with the client
 });
 
+const publicClient = createClient({
+  projectId: process.env.SANITY_PROJECT_ID,
+  dataset: process.env.SANITY_DATASET_ID,
+  useCdn: true,
+  apiVersion: "2023-05-03",
+});
+
 export const getTeams = cache(() =>
-  client
+  publicClient
     .fetch(
       `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION} } }`
     )
@@ -30,7 +37,7 @@ export const getTeams = cache(() =>
 );
 
 export const getTeamSlugs = cache(() =>
-  client
+  publicClient
     .fetch(
       `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "slug": team.slug.current } }`
     )
@@ -40,7 +47,7 @@ export const getTeamSlugs = cache(() =>
 );
 
 export const getTeamDetailBySlug = cache(async (slug: string) => {
-  const team = await client
+  const team = await publicClient
     .fetch(`*[_type == "team" && slug.current == "${slug}"]${TEAM_PROJECTION}`)
     .then((teams) => teams[0] as Team);
 
@@ -48,7 +55,7 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
     return null;
   }
 
-  const players = await client
+  const players = await publicClient
     .fetch(
       `*[_type == "teamPlayer" && team._ref == "${team._id}"] | order(player->name asc){ team->{_id}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, introduction}`
     )
@@ -70,7 +77,7 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
 });
 
 export const getPlayersGroupByTeams = cache(async () => {
-  const teamIds = await client
+  const teamIds = await publicClient
     .fetch(
       `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "teamId": team->_id } }`
     )
@@ -81,7 +88,7 @@ export const getPlayersGroupByTeams = cache(async () => {
         ) as string[]
     );
 
-  const teamPlayers = (await client.fetch(
+  const teamPlayers = (await publicClient.fetch(
     `*[_type == "teamPlayer" && team._ref in ${JSON.stringify(
       teamIds
     )}] | order(player->name asc) { team->{_id}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`
@@ -109,7 +116,7 @@ export const getPlayersGroupByTeams = cache(async () => {
 });
 
 export const getOldMatches = cache(() =>
-  client
+  publicClient
     .fetch(
       `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && status == "completed"] | order(startAt desc)[0...8]{ _id, name, playerEast->${TEAM_PLAYER_PROJECTION}, playerSouth->${TEAM_PLAYER_PROJECTION}, playerWest->${TEAM_PLAYER_PROJECTION}, playerNorth->${TEAM_PLAYER_PROJECTION}, playerEastTeam->${TEAM_PROJECTION}, playerSouthTeam->${TEAM_PROJECTION}, playerWestTeam->${TEAM_PROJECTION}, playerNorthTeam->${TEAM_PROJECTION}, startAt, youtubeUrl, bilibiliUrl, result}`
     )
@@ -139,7 +146,7 @@ export const getOldMatches = cache(() =>
 
 export const getMatch = cache(
   (matchId: string): Promise<MatchDTO> =>
-    client
+    publicClient
       .fetch(
         `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast->${TEAM_PLAYER_PROJECTION}, playerSouth->${TEAM_PLAYER_PROJECTION}, playerWest->${TEAM_PLAYER_PROJECTION}, playerNorth->${TEAM_PLAYER_PROJECTION}, playerEastTeam->${TEAM_PROJECTION}, playerSouthTeam->${TEAM_PROJECTION}, playerWestTeam->${TEAM_PROJECTION}, playerNorthTeam->${TEAM_PROJECTION}, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
       )
@@ -171,7 +178,7 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
     '{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
   const teamProjection = TEAM_PROJECTION;
 
-  const scheduledMatches = await client.fetch<Match[]>(
+  const scheduledMatches = await publicClient.fetch<Match[]>(
     `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${
       process.env.SANITY_DEFAULT_TOURNAMENT_ID
     }" && startAt >= "${new Date()
@@ -247,7 +254,7 @@ export const getMatchesGroupedByDate = cache(
       .toString()
       .padStart(2, "0")}-01T00:00:00Z`;
 
-    const scheduledMatches = await client.fetch<Match[]>(
+    const scheduledMatches = await publicClient.fetch<Match[]>(
       `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && startAt >= "${filterStartDate}" && startAt < "${filterEndDate}"] | order(startAt asc){ _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
     );
 
