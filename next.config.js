@@ -9,8 +9,8 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: "http://localhost:5173",
-          }, // replace this your actual origin
+            value: "*",
+          },
           {
             key: "Access-Control-Allow-Methods",
             value: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
