@@ -153,7 +153,7 @@ const render = (match: MatchDTO) => (
       }}
     >
       <div
-        style={{ display: "flex", marginTop: "0.5em", marginBottom: "0.5em" }}
+        style={{ display: "flex", marginTop: "0.85em", marginBottom: "0.35em" }}
       >
         {match.startAt.substring(0, 10)} 出戰隊伍
       </div>
@@ -199,8 +199,7 @@ const render = (match: MatchDTO) => (
           <div
             style={{
               display: "flex",
-              position: "absolute",
-              opacity: 0.15,
+              position: "relative",
             }}
           >
             <img
@@ -211,42 +210,15 @@ const render = (match: MatchDTO) => (
               alt=""
             />
           </div>
-          <div
-            style={{
-              display: "flex",
-              position: "relative",
-              paddingLeft: "1em",
-              paddingRight: "0.25em",
-            }}
-          >
-            <img
-              style={{
-                width: "100%",
-              }}
-              src={`${
-                match[key].playerPortraitImageUrl + "?w=576&h=800&fm=png"
-              }`}
-              alt=""
-            />
-            <img
-              style={{
-                position: "absolute",
-                left: "0",
-                bottom: "0",
-                width: "60%",
-              }}
-              src={`${match[key].teamLogoImageUrl + "?w=480&h=480&fm=png"}`}
-              alt=""
-            />
-          </div>
-          <div style={{ display: "flex" }}>{match[key].playerNickname}</div>
+          <div style={{ display: "flex" }}>{match[key].teamName}</div>
           <div
             style={{
               display: "flex",
               fontSize: "0.75em",
+              height: "2em",
             }}
           >
-            {match[key].playerName}
+            {match[key].teamSecondaryName || " "}
           </div>
           <div
             style={{
@@ -255,7 +227,7 @@ const render = (match: MatchDTO) => (
               marginTop: "0.5em",
             }}
           >
-            {match[key].teamFullname}
+            {match[key].playerFullname}
           </div>
         </div>
       ))}
