@@ -23,6 +23,12 @@
                 },
                 "point": {
                   "type": "number"
+                },
+                "penalty": {
+                  "type": "number"
+                },
+                "penaltyReason": {
+                  "type": "string"
                 }
               },
               "required": ["score", "ranking", "point"],
@@ -40,6 +46,12 @@
                 },
                 "point": {
                   "type": "number"
+                },
+                "penalty": {
+                  "type": "number"
+                },
+                "penaltyReason": {
+                  "type": "string"
                 }
               },
               "required": ["score", "ranking", "point"],
@@ -57,6 +69,12 @@
                 },
                 "point": {
                   "type": "number"
+                },
+                "penalty": {
+                  "type": "number"
+                },
+                "penaltyReason": {
+                  "type": "string"
                 }
               },
               "required": ["score", "ranking", "point"],
@@ -74,6 +92,12 @@
                 },
                 "point": {
                   "type": "number"
+                },
+                "penalty": {
+                  "type": "number"
+                },
+                "penaltyReason": {
+                  "type": "string"
                 }
               },
               "required": ["score", "ranking", "point"],
