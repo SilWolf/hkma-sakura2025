@@ -296,7 +296,7 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
       ];
     }
 
-    matchesGroupedByDate[dateString].matches.push();
+    matchesGroupedByDate[dateString].matches.push(newMatch);
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
