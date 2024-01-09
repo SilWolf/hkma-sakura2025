@@ -48,36 +48,36 @@ const render = (match: MatchDTO) => (
           alt=""
         />
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <p
+          <div
             style={{
+              display: "flex",
               fontFamily: "Noto Serif",
               fontSize: "4em",
-              lineHeight: ".5em",
               marginLeft: "0.125em",
             }}
           >
             HK-League 2024
-          </p>
-          <p
+          </div>
+          <div
             style={{
+              display: "flex",
               fontSize: "1.5em",
-              lineHeight: "1px",
               marginLeft: ".3em",
               textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
             }}
           >
             香港麻雀協會
-          </p>
-          <p
+          </div>
+          <div
             style={{
+              display: "flex",
               fontSize: "1.5em",
-              lineHeight: "1px",
               marginLeft: ".3em",
               textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
             }}
           >
             香港立直麻雀團體聯賽2024
-          </p>
+          </div>
         </div>
       </div>
       <div
@@ -93,7 +93,13 @@ const render = (match: MatchDTO) => (
             gap: "1em",
           }}
         >
-          <p>主辦機構</p>
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            主辦機構
+          </div>
           <div
             style={{
               display: "flex",
@@ -114,7 +120,13 @@ const render = (match: MatchDTO) => (
             gap: "1em",
           }}
         >
-          <p>場地提供</p>
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            場地提供
+          </div>
           <div
             style={{
               display: "flex",
@@ -137,11 +149,14 @@ const render = (match: MatchDTO) => (
         justifyContent: "center",
         width: "100%",
         fontSize: "4em",
-        lineHeight: ".25em",
         fontWeight: 600,
       }}
     >
-      <p>{match.startAt.substring(0, 10)} 出戰隊伍</p>
+      <div
+        style={{ display: "flex", marginTop: "0.5em", marginBottom: "0.5em" }}
+      >
+        {match.startAt.substring(0, 10)} 出戰隊伍
+      </div>
     </div>
 
     <div
@@ -151,7 +166,6 @@ const render = (match: MatchDTO) => (
         justifyContent: "center",
         width: "100%",
         fontSize: "2em",
-        lineHeight: "1em",
         fontWeight: 600,
         textAlign: "center",
       }}
@@ -174,6 +188,7 @@ const render = (match: MatchDTO) => (
               display: "flex",
               position: "absolute",
               background: `linear-gradient(to bottom, transparent, ${match[key].color})`,
+              justifyContent: "flex-start",
               opacity: 0.5,
               top: 0,
               bottom: 0,
@@ -194,8 +209,15 @@ const render = (match: MatchDTO) => (
               alt=""
             />
           </div>
-          <p>{match[key].teamName}</p>
-          <p>{match[key].teamSecondaryName}</p>
+          <div style={{ display: "flex" }}>{match[key].teamName}</div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: "0.8em",
+            }}
+          >
+            {match[key].teamSecondaryName}
+          </div>
         </div>
       ))}
     </div>
