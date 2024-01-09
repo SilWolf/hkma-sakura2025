@@ -61,6 +61,7 @@ export type TeamPlayer = {
   overridedName: string | null;
   overridedNickname: string | null;
   overridedColor: string | null;
+  overridedPortraitImage: string | null;
 };
 
 export type Player = {
@@ -69,6 +70,7 @@ export type Player = {
   nickname: string;
   designation: string;
   statistic?: PlayerStatistic;
+  portraitImage: string;
 };
 
 export type PlayerStatistic = {

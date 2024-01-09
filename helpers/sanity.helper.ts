@@ -9,9 +9,9 @@ import {
   TournamentTeam,
 } from "@/types/index.type";
 
-const PLAYER_PROJECTION = `_id, name, nickname, designation, introduction`;
+const PLAYER_PROJECTION = `_id, name, nickname, designation, "portraitImage": portraitImage.asset->url, introduction`;
 const TEAM_PROJECTION = `{_id, "slug": slug.current, name, secondaryName, thirdName, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
-const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`;
+const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}`;
 
 export const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID,
@@ -92,7 +92,7 @@ export const getPlayersGroupByTeams = cache(async () => {
   const teamPlayers = (await publicClient.fetch(
     `*[_type == "teamPlayer" && team._ref in ${JSON.stringify(
       teamIds
-    )}] | order(player->name asc) { team->{_id}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`
+    )}] | order(player->name asc) { team->{_id}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}`
   )) as TeamPlayer[];
 
   const result: Record<string, (Player & { introduction: string })[]> = {};
@@ -107,6 +107,8 @@ export const getPlayersGroupByTeams = cache(async () => {
       _id: teamPlayer.player._id,
       name: teamPlayer.overridedName ?? teamPlayer.player.name,
       nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
+      portraitImage:
+        teamPlayer.overridedPortraitImage ?? teamPlayer.player.portraitImage,
       designation:
         teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
       introduction: teamPlayer.introduction,
@@ -163,6 +165,8 @@ export const getMatch = cache(
           playerNorthTeam,
           ...match
         } = matches[0];
+
+        console.log(playerEast?.player);
 
         return {
           ...match,
@@ -313,6 +317,7 @@ export type TeamPlayerDTO = {
   playerName: string;
   playerNickname: string;
   playerDesignation: string;
+  playerPortraitImageUrl: string;
   playerIntroduction: string;
   playerFullname: string;
   teamId: string;
@@ -360,6 +365,10 @@ export const formatTeamPlayerDTO = (
       : playerName,
     playerDesignation:
       teamPlayer?.overridedDesignation || teamPlayer?.player?.designation || "",
+    playerPortraitImageUrl:
+      teamPlayer?.overridedPortraitImage ||
+      teamPlayer?.player?.portraitImage ||
+      "https://hkleague2024.hkmahjong.org/images/empty.png",
     playerIntroduction: teamPlayer?.introduction || "",
     teamId: teamPlayer?.team?._id || (placeholderTeam?._id as string),
     teamName: teamPlayer?.team?.name || placeholderTeam?.name || "",

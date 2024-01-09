@@ -148,7 +148,7 @@ const render = (match: MatchDTO) => (
         display: "flex",
         justifyContent: "center",
         width: "100%",
-        fontSize: "4em",
+        fontSize: "3em",
         fontWeight: 600,
       }}
     >
@@ -199,6 +199,8 @@ const render = (match: MatchDTO) => (
           <div
             style={{
               display: "flex",
+              position: "absolute",
+              opacity: 0.15,
             }}
           >
             <img
@@ -209,14 +211,51 @@ const render = (match: MatchDTO) => (
               alt=""
             />
           </div>
-          <div style={{ display: "flex" }}>{match[key].teamName}</div>
           <div
             style={{
               display: "flex",
-              fontSize: "0.8em",
+              position: "relative",
+              paddingLeft: "1em",
+              paddingRight: "0.25em",
             }}
           >
-            {match[key].teamSecondaryName}
+            <img
+              style={{
+                width: "100%",
+              }}
+              src={`${
+                match[key].playerPortraitImageUrl + "?w=576&h=800&fm=png"
+              }`}
+              alt=""
+            />
+            <img
+              style={{
+                position: "absolute",
+                left: "0",
+                bottom: "0",
+                width: "60%",
+              }}
+              src={`${match[key].teamLogoImageUrl + "?w=480&h=480&fm=png"}`}
+              alt=""
+            />
+          </div>
+          <div style={{ display: "flex" }}>{match[key].playerNickname}</div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: "0.75em",
+            }}
+          >
+            {match[key].playerName}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: "0.5em",
+              marginTop: "0.5em",
+            }}
+          >
+            {match[key].teamFullname}
           </div>
         </div>
       ))}
