@@ -1,6 +1,7 @@
 import {
   MatchDTO,
   TeamPlayerDTO,
+  getLastDateFinishedMatchesGroupedByDate,
   getLatestComingMatchesGroupedByDate,
   getOldMatches,
   getTeams,
@@ -56,12 +57,17 @@ const TeamLogoForIntro = ({ team }: { team: TeamPlayerDTO }) => {
 };
 
 export default async function Home() {
-  const [tournamentTeams, comingMatchesGroupedByDate, oldMatches] =
-    await Promise.all([
-      getTeams(),
-      getLatestComingMatchesGroupedByDate(),
-      getOldMatches(),
-    ]);
+  const [
+    tournamentTeams,
+    lastMatchesGroupedByDate,
+    comingMatchesGroupedByDate,
+    oldMatches,
+  ] = await Promise.all([
+    getTeams(),
+    getLastDateFinishedMatchesGroupedByDate(),
+    getLatestComingMatchesGroupedByDate(),
+    getOldMatches(),
+  ]);
 
   const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
     (a, b) => a.ranking - b.ranking
@@ -165,7 +171,67 @@ export default async function Home() {
       <section className="py-24">
         <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">
           <div className="flex-1">
-            <h2 className="font-semibold text-4xl mb-10">賽程</h2>
+            <h2 className="font-semibold text-4xl mb-10">最新賽果</h2>
+
+            <div className="space-y-6">
+              {lastMatchesGroupedByDate.map(({ date, weekday, matches }) => (
+                <div
+                  key={date}
+                  className="flex flex-col lg:flex-row gap-4 px-2 py-4 lg:px-4 lg:py-4 rounded-lg bg-[rgba(255,255,255,0.1)]"
+                >
+                  <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
+                    <p className="text-2xl font-semibold">{date}</p>
+                    <p className="text-2xl font-semibold">
+                      ({renderWeekday(weekday)})
+                    </p>
+                  </div>
+                  <div className="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    {matches.map((match, index) => (
+                      <div key={match._id}>
+                        <div className="bg-gray-900 py-1 px-4 rounded-full mb-2">
+                          <div className="flex">
+                            <h6 className="flex-1 text-left font-semibold">
+                              第{index + 1}回戰
+                            </h6>
+                            <div className="shrink-0 text-sm flex items-center gap-x-4 underline">
+                              {match.youtubeUrl && (
+                                <a href={match.youtubeUrl} target="_blank">
+                                  <i className="bi bi-youtube text-lg"></i>
+                                </a>
+                              )}
+                              {match.bilibiliUrl && (
+                                <a href={match.bilibiliUrl} target="_blank">
+                                  Bilibili
+                                </a>
+                              )}
+                              {match.result && (
+                                <Link
+                                  className="inline-block"
+                                  href={`/matches/${match._id}`}
+                                >
+                                  詳情
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-2">
+                          {match._order.map((playerIndex) => (
+                            <ScheduleTeam
+                              key={playerIndex}
+                              match={match}
+                              playerIndex={playerIndex}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h2 className="font-semibold text-4xl mb-10 mt-12">賽程</h2>
 
             <div className="space-y-6">
               {comingMatchesGroupedByDate.map(({ date, weekday, matches }) => (
