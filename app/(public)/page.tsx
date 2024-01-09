@@ -10,7 +10,6 @@ import {
   renderRanking,
   renderWeekday,
 } from "@/helpers/string.helper";
-import { Team } from "@/types/index.type";
 import Link from "next/link";
 
 export const revalidate = 900;
@@ -183,22 +182,13 @@ export default async function Home() {
                   <div className="flex-1">
                     <div>
                       <div className="match-team-logos-grid grid grid-cols-4 gap-2">
-                        <ScheduleTeam
-                          match={matches[0]}
-                          playerIndex="playerEast"
-                        />
-                        <ScheduleTeam
-                          match={matches[0]}
-                          playerIndex="playerSouth"
-                        />
-                        <ScheduleTeam
-                          match={matches[0]}
-                          playerIndex="playerWest"
-                        />
-                        <ScheduleTeam
-                          match={matches[0]}
-                          playerIndex="playerNorth"
-                        />
+                        {matches[0]._order.map((playerIndex) => (
+                          <ScheduleTeam
+                            key={playerIndex}
+                            match={matches[0]}
+                            playerIndex={playerIndex}
+                          />
+                        ))}
                       </div>
                     </div>
                   </div>

@@ -147,8 +147,8 @@ const render = (match: MatchDTO) => (
 
     {(
       [
-        ["playerEast", "playerSouth"],
-        ["playerWest", "playerNorth"],
+        [match._order[0], match._order[1]],
+        [match._order[2], match._order[3]],
       ] as const
     ).map((group, groupI) => (
       <div

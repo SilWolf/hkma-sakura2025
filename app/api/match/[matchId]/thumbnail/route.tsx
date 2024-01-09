@@ -170,9 +170,7 @@ const render = (match: MatchDTO) => (
         textAlign: "center",
       }}
     >
-      {(
-        ["playerEast", "playerSouth", "playerWest", "playerNorth"] as const
-      ).map((key) => (
+      {match._order.map((key) => (
         <div
           key={key}
           style={{

@@ -211,10 +211,13 @@ export default async function SchedulePage({
                       </div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
-                      <ScheduleTeam match={match} playerIndex="playerEast" />
-                      <ScheduleTeam match={match} playerIndex="playerSouth" />
-                      <ScheduleTeam match={match} playerIndex="playerWest" />
-                      <ScheduleTeam match={match} playerIndex="playerNorth" />
+                      {match._order.map((playerIndex) => (
+                        <ScheduleTeam
+                          key={playerIndex}
+                          match={match}
+                          playerIndex={playerIndex}
+                        />
+                      ))}
                     </div>
                   </div>
                 ))}

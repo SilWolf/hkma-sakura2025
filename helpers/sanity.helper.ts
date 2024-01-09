@@ -163,18 +163,49 @@ export const getMatch = cache(
           playerWestTeam,
           playerNorth,
           playerNorthTeam,
-          ...match
+          ...matchRest
         } = matches[0];
 
-        console.log(playerEast?.player);
-
-        return {
-          ...match,
+        const newMatch: MatchDTO = {
+          ...matchRest,
           playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
           playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
           playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
           playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
+          _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
         };
+
+        if (
+          playerEast &&
+          playerEastTeam &&
+          playerSouth &&
+          playerSouthTeam &&
+          playerWest &&
+          playerWestTeam &&
+          playerNorth &&
+          playerNorthTeam
+        ) {
+          // assume both player and placeholder team exist
+
+          const playersMap: Record<
+            string,
+            "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
+          > = {
+            [playerEast.team._id]: "playerEast",
+            [playerSouth.team._id]: "playerSouth",
+            [playerWest.team._id]: "playerWest",
+            [playerNorth.team._id]: "playerNorth",
+          };
+
+          newMatch._order = [
+            playersMap[playerEastTeam._id],
+            playersMap[playerSouthTeam._id],
+            playersMap[playerWestTeam._id],
+            playersMap[playerNorthTeam._id],
+          ];
+        }
+
+        return newMatch;
       })
 );
 
@@ -226,13 +257,46 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
       };
     }
 
-    matchesGroupedByDate[dateString].matches.push({
+    const newMatch: MatchDTO = {
       ...matchRest,
       playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
       playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
       playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
       playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-    });
+      _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
+    };
+
+    if (
+      playerEast &&
+      playerEastTeam &&
+      playerSouth &&
+      playerSouthTeam &&
+      playerWest &&
+      playerWestTeam &&
+      playerNorth &&
+      playerNorthTeam
+    ) {
+      // assume both player and placeholder team exist
+
+      const playersMap: Record<
+        string,
+        "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
+      > = {
+        [playerEast.team._id]: "playerEast",
+        [playerSouth.team._id]: "playerSouth",
+        [playerWest.team._id]: "playerWest",
+        [playerNorth.team._id]: "playerNorth",
+      };
+
+      newMatch._order = [
+        playersMap[playerEastTeam._id],
+        playersMap[playerSouthTeam._id],
+        playersMap[playerWestTeam._id],
+        playersMap[playerNorthTeam._id],
+      ];
+    }
+
+    matchesGroupedByDate[dateString].matches.push();
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -295,13 +359,46 @@ export const getMatchesGroupedByDate = cache(
         };
       }
 
-      matchesGroupedByDate[dateString].matches.push({
+      const newMatch: MatchDTO = {
         ...matchRest,
         playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
         playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
         playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
         playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-      });
+        _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
+      };
+
+      if (
+        playerEast &&
+        playerEastTeam &&
+        playerSouth &&
+        playerSouthTeam &&
+        playerWest &&
+        playerWestTeam &&
+        playerNorth &&
+        playerNorthTeam
+      ) {
+        // assume both player and placeholder team exist
+
+        const playersMap: Record<
+          string,
+          "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
+        > = {
+          [playerEast.team._id]: "playerEast",
+          [playerSouth.team._id]: "playerSouth",
+          [playerWest.team._id]: "playerWest",
+          [playerNorth.team._id]: "playerNorth",
+        };
+
+        newMatch._order = [
+          playersMap[playerEastTeam._id],
+          playersMap[playerSouthTeam._id],
+          playersMap[playerWestTeam._id],
+          playersMap[playerNorthTeam._id],
+        ];
+      }
+
+      matchesGroupedByDate[dateString].matches.push(newMatch);
     }
 
     const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -346,6 +443,7 @@ export type MatchDTO = Omit<
   playerSouth: TeamPlayerDTO;
   playerWest: TeamPlayerDTO;
   playerNorth: TeamPlayerDTO;
+  _order: ("playerEast" | "playerSouth" | "playerWest" | "playerNorth")[];
 };
 
 export const formatTeamPlayerDTO = (
