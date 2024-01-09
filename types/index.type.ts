@@ -113,6 +113,8 @@ export type Team = {
   _id: string;
   slug: string;
   name: string;
+  secondaryName: string;
+  thirdName: string;
   squareLogoImage: string | null;
   color: string;
   introduction: string;

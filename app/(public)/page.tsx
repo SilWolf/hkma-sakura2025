@@ -1,5 +1,6 @@
 import {
   MatchDTO,
+  TeamPlayerDTO,
   getLatestComingMatchesGroupedByDate,
   getOldMatches,
   getTeams,
@@ -44,14 +45,12 @@ const ScheduleTeam = ({
   );
 };
 
-const TeamLogoForIntro = ({ team }: { team: Team }) => {
+const TeamLogoForIntro = ({ team }: { team: TeamPlayerDTO }) => {
   return (
-    <a href={`/teams/${team.slug}`} target="_blank">
+    <a href={`/teams/${team.teamSlug}`} target="_blank">
       <img
-        src={
-          (team.squareLogoImage ?? "/images/empty.png") + "?w=320&auto=format"
-        }
-        alt={team.name}
+        src={team.teamLogoImageUrl + "?w=320&auto=format"}
+        alt={team.teamFullname}
       />
     </a>
   );
@@ -79,14 +78,11 @@ export default async function Home() {
           ></iframe> */}
           <div className="grid grid-cols-4 lg:grid-cols-6 items-center justify-center text-center max-w-screen-xl mx-auto">
             {tournamentTeams.map(({ team }) => (
-              <div key={team.slug}>
+              <div key={team.teamSlug}>
                 <img
-                  src={
-                    (team.squareLogoImage ?? "/images/empty.png") +
-                    "?w=512&auto=format"
-                  }
+                  src={team.teamLogoImageUrl + "?w=512&auto=format"}
                   className="w-48"
-                  alt={team.name}
+                  alt={team.teamSlug}
                 />
               </div>
             ))}
@@ -239,7 +235,7 @@ export default async function Home() {
                 {tournamentTeamsOrderedByRanking.map(
                   ({ team, ranking, point, matchCount }, i) => (
                     <tr
-                      key={team._id}
+                      key={team.teamId}
                       style={{
                         background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
                       }}
@@ -252,12 +248,14 @@ export default async function Home() {
                       </td>
                       <td className="w-10 !p-0">
                         <img
-                          src={team.squareLogoImage + "?w=128&auto=format"}
-                          alt={team.name}
+                          src={team.teamLogoImageUrl + "?w=128&auto=format"}
+                          alt={team.teamFullname}
                         />
                       </td>
                       <td>
-                        <span className="text-sm sm:text-xl">{team.name}</span>
+                        <span className="text-sm sm:text-xl">
+                          {team.teamFullname}
+                        </span>
                       </td>
                       <td>
                         <span className="text-xs sm:text-base">

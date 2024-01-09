@@ -10,7 +10,7 @@ import {
 } from "@/types/index.type";
 
 const PLAYER_PROJECTION = `_id, name, nickname, designation, introduction`;
-const TEAM_PROJECTION = `{_id, "slug": slug.current, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
+const TEAM_PROJECTION = `{_id, "slug": slug.current, name, secondaryName, thirdName, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
 const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`;
 
 export const client = createClient({
@@ -33,7 +33,12 @@ export const getTeams = cache(() =>
     .fetch(
       `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION} } }`
     )
-    .then((tournaments) => tournaments[0]?.teams as TournamentTeam[])
+    .then((tournaments) =>
+      (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
+        ...team,
+        team: formatTeamPlayerDTO(team.team, null),
+      }))
+    )
 );
 
 export const getTeamSlugs = cache(() =>
@@ -61,18 +66,13 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
     )
     .then((teamPlayers: TeamPlayer[]) =>
       teamPlayers.map((teamPlayer) => ({
-        _id: teamPlayer.player._id,
-        name: teamPlayer.overridedName ?? teamPlayer.player.name,
-        nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
-        designation:
-          teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
-        introduction: teamPlayer.introduction,
+        ...formatTeamPlayerDTO(null, teamPlayer),
         statistic: teamPlayer.player.statistic!,
       }))
     );
 
   return {
-    ...team,
+    ...formatTeamPlayerDTO(team),
     players,
   };
 });
@@ -313,11 +313,17 @@ export type TeamPlayerDTO = {
   playerName: string;
   playerNickname: string;
   playerDesignation: string;
+  playerIntroduction: string;
   playerFullname: string;
+  teamId: string;
   teamName: string;
+  teamSecondaryName: string;
+  teamThirdName: string;
+  teamFullname: string;
   color: string;
   teamLogoImageUrl: string;
   teamSlug: string;
+  teamIntroduction: string;
 };
 
 export type MatchDTO = Omit<
@@ -338,7 +344,7 @@ export type MatchDTO = Omit<
 };
 
 export const formatTeamPlayerDTO = (
-  team: Team | null | undefined,
+  placeholderTeam: Team | null | undefined,
   teamPlayer?: TeamPlayer | null | undefined
 ): TeamPlayerDTO => {
   const playerName =
@@ -354,16 +360,31 @@ export const formatTeamPlayerDTO = (
       : playerName,
     playerDesignation:
       teamPlayer?.overridedDesignation || teamPlayer?.player?.designation || "",
-    teamName: teamPlayer?.team?.name || team?.name || "",
+    playerIntroduction: teamPlayer?.introduction || "",
+    teamId: teamPlayer?.team?._id || (placeholderTeam?._id as string),
+    teamName: teamPlayer?.team?.name || placeholderTeam?.name || "",
+    teamSecondaryName:
+      teamPlayer?.team?.secondaryName || placeholderTeam?.secondaryName || "",
+    teamThirdName:
+      teamPlayer?.team?.thirdName || placeholderTeam?.thirdName || "",
+    teamFullname: [
+      teamPlayer?.team?.name || placeholderTeam?.name || "",
+      teamPlayer?.team?.secondaryName || placeholderTeam?.secondaryName || "",
+      teamPlayer?.team?.thirdName || placeholderTeam?.thirdName || "",
+    ]
+      .filter((item) => !!item)
+      .join(" "),
     color:
       teamPlayer?.overridedColor ||
       teamPlayer?.team?.color ||
-      team?.color ||
+      placeholderTeam?.color ||
       "#000000",
     teamLogoImageUrl:
       teamPlayer?.team?.squareLogoImage ||
-      team?.squareLogoImage ||
+      placeholderTeam?.squareLogoImage ||
       "/images/empty.png",
-    teamSlug: team?.slug ?? teamPlayer?.team?.slug ?? "",
+    teamSlug: placeholderTeam?.slug ?? teamPlayer?.team?.slug ?? "",
+    teamIntroduction:
+      placeholderTeam?.introduction ?? teamPlayer?.team?.introduction ?? "",
   };
 };

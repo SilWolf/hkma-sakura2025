@@ -23,8 +23,8 @@ export async function generateMetadata({
   const team = await getTeamDetailBySlug(slug);
 
   return {
-    title: team ? team.name : "隊伍介紹",
-    description: team?.introduction,
+    title: team?.teamFullname || "隊伍介紹",
+    description: team?.teamIntroduction,
   };
 }
 
@@ -47,7 +47,7 @@ export default async function TeamDetail({
             聯賽隊伍
           </Link>
           <span>&gt;</span>
-          <span>{team.name}</span>
+          <span>{team.teamFullname}</span>
         </div>
       </section>
 
@@ -59,7 +59,7 @@ export default async function TeamDetail({
       >
         <div className="container mx-auto max-w-screen-md px-2">
           <img
-            src={team.squareLogoImage ?? "/images/empty.png"}
+            src={team.teamLogoImageUrl}
             className="w-64 h-64 mx-auto"
             alt=""
           />
@@ -70,24 +70,22 @@ export default async function TeamDetail({
               backgroundColor: `${team.color}2D`,
             }}
           >
-            {team.name}
+            {team.teamFullname}
           </h2>
           <p className="text-center text-2xl leading-10 mt-12 md:px-8 whitespace-pre-wrap">
-            {team.introduction}
+            {team.teamIntroduction}
           </p>
         </div>
       </section>
 
       {team.players.map((player) => (
-        <section key={player._id} className="py-12">
+        <section key={player.playerName} className="py-12">
           <div className="container mx-auto max-w-screen-md px-2">
             <div className="flex gap-2 md:gap-12 items-center">
               <div className="flex-1">
-                <h3 className="font-bold text-xl">
-                  {player.name} ({player.nickname})
-                </h3>
+                <h3 className="font-bold text-xl">{player.playerFullname}</h3>
                 <p className="mt-2 whitespace-pre-wrap">
-                  {player.introduction}
+                  {player.playerIntroduction}
                 </p>
               </div>
             </div>

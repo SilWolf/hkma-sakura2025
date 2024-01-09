@@ -99,7 +99,7 @@ export default async function RankingPage() {
               {tournamentTeamsOrderedByRanking.map(
                 ({ team, ranking, point, matchCount }, i) => (
                   <tr
-                    key={team._id}
+                    key={team.teamId}
                     style={{
                       background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
                     }}
@@ -112,13 +112,15 @@ export default async function RankingPage() {
                     </td>
                     <td className="w-9">
                       <img
-                        src={team.squareLogoImage + "?w=128&auto=format"}
-                        alt={team.name}
+                        src={team.teamLogoImageUrl + "?w=128&auto=format"}
+                        alt={team.teamSlug}
                         className="h-4 w-4"
                       />
                     </td>
                     <td>
-                      <span className="text-sm sm:text-xl">{team.name}</span>
+                      <span className="text-sm sm:text-xl">
+                        {team.teamFullname}
+                      </span>
                     </td>
                     <td>
                       <span className="text-xs sm:text-base">
@@ -166,8 +168,8 @@ export default async function RankingPage() {
                       }}
                     >
                       <img
-                        src={team.team.squareLogoImage + "?w=64&auto=format"}
-                        alt={team.team.name}
+                        src={team.team.teamLogoImageUrl + "?w=64&auto=format"}
+                        alt={team.team.teamSlug}
                       />
                     </th>
                   ))}

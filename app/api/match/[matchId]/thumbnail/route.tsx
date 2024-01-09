@@ -195,6 +195,7 @@ const render = (match: MatchDTO) => (
             />
           </div>
           <p>{match[key].teamName}</p>
+          <p>{match[key].teamSecondaryName}</p>
         </div>
       ))}
     </div>

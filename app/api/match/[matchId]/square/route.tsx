@@ -205,6 +205,13 @@ const render = (match: MatchDTO) => (
           >
             {match[key].teamName}
           </p>
+          <p
+            style={{
+              height: "2em",
+            }}
+          >
+            {match[key].teamSecondaryName}
+          </p>
         </div>
       ))}
     </div>
