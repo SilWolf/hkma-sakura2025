@@ -211,7 +211,7 @@ export const getMatch = cache(
 
 export const getLatestComingMatchesGroupedByDate = cache(async () => {
   const playerProjection =
-    '{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
+    '{team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
   const teamProjection = TEAM_PROJECTION;
 
   const scheduledMatches = await publicClient.fetch<Match[]>(
@@ -310,7 +310,7 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
 export const getMatchesGroupedByDate = cache(
   async (year: number, month: number) => {
     const playerProjection =
-      '{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
+      '{team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
     const teamProjection = TEAM_PROJECTION;
 
     const nextMonth = month === 12 ? 2 : month + 1;

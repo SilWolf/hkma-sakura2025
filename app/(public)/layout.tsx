@@ -133,6 +133,20 @@ export default function PublicLayout({
           <div className="space-y-4">
             <div className="space-x-4 text-center md:text-right pr-1 text-2xl">
               <a
+                href="https://www.youtube.com/@HKMAHJONG/streams"
+                target="_blank"
+                aria-label="Youtube"
+              >
+                <i className="bi bi-youtube"></i>
+              </a>
+              <a
+                href="https://twitter.com/HK_League_MJ"
+                target="_blank"
+                aria-label="Twitter"
+              >
+                <i className="bi bi-twitter-x"></i>
+              </a>
+              <a
                 href="https://www.facebook.com/hkmjassn/"
                 target="_blank"
                 aria-label="Facebook"
