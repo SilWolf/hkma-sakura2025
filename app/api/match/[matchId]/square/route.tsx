@@ -136,11 +136,11 @@ const render = (match: MatchDTO) => (
         display: "flex",
         justifyContent: "center",
         width: "100%",
-        fontSize: "4em",
+        fontSize: "3em",
         fontWeight: 600,
       }}
     >
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", marginTop: "0.5em" }}>
         {match.startAt.substring(0, 10)} 出戰隊伍
       </div>
     </div>
