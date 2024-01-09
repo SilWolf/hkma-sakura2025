@@ -145,141 +145,123 @@ const render = (match: MatchDTO) => (
       </div>
     </div>
 
-    <div
-      style={{
-        flexGrow: 1,
-        display: "flex",
-        justifyContent: "center",
-        fontSize: "2em",
-        fontWeight: 600,
-        textAlign: "center",
-        marginLeft: "4em",
-        marginRight: "4em",
-        marginTop: "1em",
-      }}
-    >
-      {(["playerEast", "playerSouth"] as const).map((key) => (
-        <div
-          key={key}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            position: "relative",
-            flex: 1,
-            padding: "0.75em 2em 0.75em 2em",
-          }}
-        >
+    {(
+      [
+        ["playerEast", "playerSouth"],
+        ["playerWest", "playerNorth"],
+      ] as const
+    ).map((group, groupI) => (
+      <div
+        key={groupI}
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "2em",
+          lineHeight: "1em",
+          fontWeight: 600,
+          textAlign: "center",
+          marginLeft: "4em",
+          marginRight: "4em",
+        }}
+      >
+        {group.map((key) => (
           <div
+            key={key}
             style={{
               display: "flex",
-              position: "absolute",
-              background: `linear-gradient(to bottom, transparent, ${match[key].color})`,
-              opacity: 0.5,
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}
-          ></div>
-          <img
-            style={{
-              width: "100%",
-            }}
-            src={`${match[key].teamLogoImageUrl + "?w=800&h=800&fm=png"}`}
-            alt=""
-          />
-          <div
-            style={{
-              display: "flex",
-              height: "1.25em",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              position: "relative",
+              flex: 1,
+              padding: "0.75em 1.25em 0.75em 1.25em",
             }}
           >
-            {match[key].teamName}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              height: "1.25em",
-            }}
-          >
-            {match[key].teamSecondaryName || "　"}
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div
-      style={{
-        flexGrow: 1,
-        display: "flex",
-        justifyContent: "center",
-        fontSize: "2em",
-        lineHeight: "1em",
-        fontWeight: 600,
-        textAlign: "center",
-        marginLeft: "4em",
-        marginRight: "4em",
-      }}
-    >
-      {(["playerWest", "playerNorth"] as const).map((key) => (
-        <div
-          key={key}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            position: "relative",
-            flex: 1,
-            padding: "0.75em 2em 0.75em 2em",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              position: "absolute",
-              background: `linear-gradient(to bottom, transparent, ${match[key].color})`,
-              opacity: 0.5,
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}
-          ></div>
-          <div
-            style={{
-              display: "flex",
-            }}
-          >
-            <img
+            <div
               style={{
-                width: "100%",
+                display: "flex",
+                position: "absolute",
+                background: `linear-gradient(to bottom, transparent, ${match[key].color})`,
+                opacity: 0.5,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
               }}
-              src={`${match[key].teamLogoImageUrl + "?w=800&h=800&fm=png"}`}
-              alt=""
-            />
+            ></div>
+
+            <div
+              style={{
+                display: "flex",
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                opacity: 0.08,
+              }}
+            >
+              <img
+                style={{
+                  width: "100%",
+                }}
+                src={`${match[key].teamLogoImageUrl + "?w=800&h=800&fm=png"}`}
+                alt=""
+              />
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                position: "relative",
+                paddingLeft: "1em",
+                paddingRight: "0.25em",
+              }}
+            >
+              <img
+                style={{
+                  width: "100%",
+                }}
+                src={`${
+                  match[key].playerPortraitImageUrl +
+                  "?w=576&h=576&fm=png&fit=crop&crop=top"
+                }`}
+                alt=""
+              />
+              <img
+                style={{
+                  position: "absolute",
+                  left: "0",
+                  bottom: "0",
+                  width: "60%",
+                }}
+                src={`${match[key].teamLogoImageUrl + "?w=480&h=480&fm=png"}`}
+                alt=""
+              />
+            </div>
+            <div style={{ display: "flex" }}>{match[key].playerNickname}</div>
+            <div
+              style={{
+                display: "flex",
+                fontSize: "0.75em",
+              }}
+            >
+              {match[key].playerName}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                fontSize: "0.5em",
+                marginTop: "0.5em",
+              }}
+            >
+              {match[key].teamFullname}
+            </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              height: "1.25em",
-            }}
-          >
-            {match[key].teamName}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              height: "1.25em",
-            }}
-          >
-            {match[key].teamSecondaryName || "　"}
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    ))}
   </div>
 );
 
