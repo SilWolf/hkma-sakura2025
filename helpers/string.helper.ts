@@ -65,6 +65,34 @@ export const renderPoint = (value: number | undefined | null) => {
   return `▲${Math.abs(value).toFixed(1)}`;
 };
 
+export const renderPercentage = (value: number | undefined | null) => {
+  if (typeof value === "undefined" || value === null || isNaN(value)) {
+    return "-";
+  }
+
+  return value.toFixed(2);
+};
+
+export const renderRankingAvg = ({
+  firstCount,
+  secondCount,
+  thirdCount,
+  fourthCount,
+  matchCount,
+}: {
+  firstCount: number;
+  secondCount: number;
+  thirdCount: number;
+  fourthCount: number;
+  matchCount: number;
+}) =>
+  matchCount > 0
+    ? (
+        (firstCount + 2 * secondCount + 3 * thirdCount + 4 * fourthCount) /
+        matchCount
+      ).toFixed(1)
+    : "-";
+
 export const renderScore = (value: number | undefined | null) => {
   if (typeof value === "undefined" || value === null) {
     return "-";

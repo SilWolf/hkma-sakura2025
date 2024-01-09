@@ -68,6 +68,45 @@ export type Player = {
   name: string;
   nickname: string;
   designation: string;
+  statistic?: PlayerStatistic;
+};
+
+export type PlayerStatistic = {
+  matchCount: number;
+  roundCount: number;
+  point: number;
+  scoreMax: number;
+  scoreMin: number;
+  firstCount: number;
+  secondCount: number;
+  thirdCount: number;
+  fourthCount: number;
+  riichiCount: number;
+  revealCount: number;
+  waitingCount: number;
+  ronCount: number;
+  ronCountWhenEast: number;
+  ronCountWhenNonEast: number;
+  waitingWhenExhaustedCount: number;
+  ronPureScoreAvg: number;
+  ronPureScoreAvgWhenEast: number;
+  ronPureScoreAvgWhenNonEast: number;
+  ronHighYakuCount: number;
+  chuckCount: number;
+  chuckCountWhenEast: number;
+  chuckCountWhenNonEast: number;
+  chuckPureScoreAvg: number;
+  chuckPureScoreAvgWhenEast: number;
+  chuckPureScoreAvgWhenNonEast: number;
+  chuckHighYakuCount: number;
+  ronAfterRiichiCount: number;
+  ronAfterRiichiPureScoreAvg: number;
+  ronAfterRevealCount: number;
+  ronAfterRevealPureScoreAvg: number;
+  chuckAfterRiichiCount: number;
+  chuckAfterRiichiPureScoreAvg: number;
+  chuckAfterRevealCount: number;
+  chuckAfterRevealPureScoreAvg: number;
 };
 
 export type Team = {

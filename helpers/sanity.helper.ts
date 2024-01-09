@@ -9,9 +9,9 @@ import {
   TournamentTeam,
 } from "@/types/index.type";
 
-const PLAYER_PROJECTION = `{_id, name, nickname, designation, introduction}`;
+const PLAYER_PROJECTION = `_id, name, nickname, designation, introduction`;
 const TEAM_PROJECTION = `{_id, "slug": slug.current, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
-const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`;
+const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`;
 
 export const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID,
@@ -57,7 +57,7 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
 
   const players = await publicClient
     .fetch(
-      `*[_type == "teamPlayer" && team._ref == "${team._id}"] | order(player->name asc){ team->{_id}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, introduction}`
+      `*[_type == "teamPlayer" && team._ref == "${team._id}"] | order(player->name asc){ team->{_id}, player->{${PLAYER_PROJECTION}, "statistic": statistics[_key=="${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"][0]}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, introduction}`
     )
     .then((teamPlayers: TeamPlayer[]) =>
       teamPlayers.map((teamPlayer) => ({
@@ -67,6 +67,7 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
         designation:
           teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
         introduction: teamPlayer.introduction,
+        statistic: teamPlayer.player.statistic!,
       }))
     );
 
@@ -91,7 +92,7 @@ export const getPlayersGroupByTeams = cache(async () => {
   const teamPlayers = (await publicClient.fetch(
     `*[_type == "teamPlayer" && team._ref in ${JSON.stringify(
       teamIds
-    )}] | order(player->name asc) { team->{_id}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`
+    )}] | order(player->name asc) { team->{_id}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`
   )) as TeamPlayer[];
 
   const result: Record<string, (Player & { introduction: string })[]> = {};

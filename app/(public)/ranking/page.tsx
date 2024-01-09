@@ -1,5 +1,5 @@
 import { getTeams } from "@/helpers/sanity.helper";
-import { renderRanking } from "@/helpers/string.helper";
+import { renderPoint, renderRanking } from "@/helpers/string.helper";
 import { Metadata } from "next";
 
 export const revalidate = 900;
@@ -17,46 +17,46 @@ const statRows = [
     label: "半莊數",
     name: "matchCount",
   },
-  {
-    label: "一位率",
-    name: "firstP",
-  },
-  {
-    label: "二位率",
-    name: "secondP",
-  },
-  {
-    label: "三位率",
-    name: "thirdP",
-  },
-  {
-    label: "四位率",
-    name: "fourthP",
-  },
-  {
-    label: "平均得點",
-    name: "pointAvg",
-  },
-  {
-    label: "平均順位",
-    name: "rankingAvg",
-  },
-  {
-    label: "和了率",
-    name: "ronP",
-  },
-  {
-    label: "放銃率",
-    name: "chuckP",
-  },
-  {
-    label: "立直率",
-    name: "riichiP",
-  },
-  {
-    label: "副露率",
-    name: "revealP",
-  },
+  // {
+  //   label: "一位率",
+  //   name: "firstP",
+  // },
+  // {
+  //   label: "二位率",
+  //   name: "secondP",
+  // },
+  // {
+  //   label: "三位率",
+  //   name: "thirdP",
+  // },
+  // {
+  //   label: "四位率",
+  //   name: "fourthP",
+  // },
+  // {
+  //   label: "平均得點",
+  //   name: "pointAvg",
+  // },
+  // {
+  //   label: "平均順位",
+  //   name: "rankingAvg",
+  // },
+  // {
+  //   label: "和了率",
+  //   name: "ronP",
+  // },
+  // {
+  //   label: "放銃率",
+  //   name: "chuckP",
+  // },
+  // {
+  //   label: "立直率",
+  //   name: "riichiP",
+  // },
+  // {
+  //   label: "副露率",
+  //   name: "revealP",
+  // },
 ] as const;
 
 export const metadata: Metadata = {
@@ -174,21 +174,45 @@ export default async function RankingPage() {
                 </tr>
               </thead>
               <tbody className="[&_td]:py-1 text-center">
-                {statRows.map((statRow) => (
-                  <tr key={statRow.name}>
-                    <th scope="row">{statRow.label}</th>
-                    {tournamentTeams.map((team) => (
-                      <td
-                        key={team._key}
-                        style={{
-                          background: team.team.color + "80",
-                        }}
-                      >
-                        {team[statRow.name]?.toFixed(1)}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                <tr>
+                  <th scope="row">排名</th>
+                  {tournamentTeams.map((team) => (
+                    <td
+                      key={team._key}
+                      style={{
+                        background: team.team.color + "80",
+                      }}
+                    >
+                      {renderRanking(team.ranking)}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <th scope="row">積分</th>
+                  {tournamentTeams.map((team) => (
+                    <td
+                      key={team._key}
+                      style={{
+                        background: team.team.color + "80",
+                      }}
+                    >
+                      {renderPoint(team.point)}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <th scope="row">半莊數</th>
+                  {tournamentTeams.map((team) => (
+                    <td
+                      key={team._key}
+                      style={{
+                        background: team.team.color + "80",
+                      }}
+                    >
+                      {team.matchCount}/60
+                    </td>
+                  ))}
+                </tr>
               </tbody>
             </table>
           </div>

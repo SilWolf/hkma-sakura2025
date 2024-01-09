@@ -1,4 +1,10 @@
 import { getTeamDetailBySlug, getTeamSlugs } from "@/helpers/sanity.helper";
+import {
+  renderPercentage,
+  renderPoint,
+  renderRankingAvg,
+  renderScore,
+} from "@/helpers/string.helper";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -34,7 +40,7 @@ export default async function TeamDetail({
   }
 
   return (
-    <main className="relative">
+    <main className="relative pb-12">
       <section className="pt-16 md:pt-8 pb-4">
         <div className="container max-w-screen-md mx-auto px-2 space-x-2 text-sm">
           <Link className="opacity-80" href="/teams">
@@ -85,34 +91,126 @@ export default async function TeamDetail({
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-x-4 mt-4">
-              <div className="col-span-2">
-                <table className="w-full text-center">
-                  <thead>
-                    <tr className="bg-neutral-800 text-white">
-                      <th>對戰成續</th>
-                      <th>得分</th>
-                      <th>順位</th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-              <div>
-                <table className="w-full text-center">
-                  <thead>
-                    <tr className="bg-neutral-800 text-white">
-                      <th>平均打點</th>
-                      <th>平均順位</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>-</td>
-                      <td>-</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div className="flex gap-x-4 mt-4">
+              <table className="flex-[3] text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>半莊數</th>
+                    <th>總積分</th>
+                    <th>平均順位</th>
+                    <th>最大分數</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{player.statistic.matchCount}</td>
+                    <td>{renderPoint(player.statistic.point)}</td>
+                    <td>{renderRankingAvg(player.statistic)}</td>
+                    <td>{player.statistic.scoreMax}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="flex-[2] text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>連對率</th>
+                    <th>避四率</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {renderPercentage(
+                        (player.statistic.firstCount +
+                          player.statistic.secondCount) /
+                          player.statistic.matchCount
+                      )}
+                    </td>
+                    <td>
+                      {renderPercentage(
+                        1 -
+                          player.statistic.fourthCount /
+                            player.statistic.matchCount
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="flex-[2] text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>立直率</th>
+                    <th>副露率</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {renderPercentage(
+                        player.statistic.riichiCount /
+                          player.statistic.roundCount
+                      )}
+                    </td>
+                    <td>
+                      {renderPercentage(
+                        player.statistic.revealCount /
+                          player.statistic.roundCount
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="flex gap-x-4 mt-4">
+              <table className="flex-1 text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>和了率</th>
+                    <th>平均和了打點</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <p>
+                        {renderPercentage(
+                          player.statistic.ronCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                    </td>
+                    <td>
+                      <p>{player.statistic.ronPureScoreAvg.toFixed(2)}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table className="flex-1 text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>銃和率</th>
+                    <th>平均銃和打點</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <p>
+                        {renderPercentage(
+                          player.statistic.chuckCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                    </td>
+                    <td>
+                      <p>{player.statistic.chuckPureScoreAvg.toFixed(2)}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
