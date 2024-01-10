@@ -495,6 +495,7 @@ export const getMatchesGroupedByDate = cache(
 );
 
 export type TeamPlayerDTO = {
+  playerId: string;
   playerName: string;
   playerNickname: string;
   playerDesignation: string;
@@ -534,48 +535,89 @@ export const formatTeamPlayerDTO = (
   placeholderTeam: Team | null | undefined,
   teamPlayer?: TeamPlayer | null | undefined
 ): TeamPlayerDTO => {
-  const playerName =
-    teamPlayer?.overridedName || teamPlayer?.player?.name || "";
-  const playerNickname =
-    teamPlayer?.overridedNickname || teamPlayer?.player?.nickname || "";
-
-  return {
-    playerName,
-    playerNickname,
-    playerFullname: playerNickname
-      ? `${playerName} (${playerNickname})`
-      : playerName,
-    playerDesignation:
-      teamPlayer?.overridedDesignation || teamPlayer?.player?.designation || "",
+  const newTeamPlayerDTO: TeamPlayerDTO = {
+    playerId: "",
+    playerName: "",
+    playerNickname: "",
+    playerDesignation: "",
     playerPortraitImageUrl:
-      teamPlayer?.overridedPortraitImage ||
-      teamPlayer?.player?.portraitImage ||
       "https://hkleague2024.hkmahjong.org/images/empty.png",
-    playerIntroduction: teamPlayer?.introduction || "",
-    teamId: teamPlayer?.team?._id || (placeholderTeam?._id as string),
-    teamName: teamPlayer?.team?.name || placeholderTeam?.name || "",
-    teamSecondaryName:
-      teamPlayer?.team?.secondaryName || placeholderTeam?.secondaryName || "",
-    teamThirdName:
-      teamPlayer?.team?.thirdName || placeholderTeam?.thirdName || "",
-    teamFullname: [
-      teamPlayer?.team?.name || placeholderTeam?.name || "",
-      teamPlayer?.team?.secondaryName || placeholderTeam?.secondaryName || "",
-      teamPlayer?.team?.thirdName || placeholderTeam?.thirdName || "",
-    ]
-      .filter((item) => !!item)
-      .join(" "),
-    color:
-      teamPlayer?.overridedColor ||
-      teamPlayer?.team?.color ||
-      placeholderTeam?.color ||
-      "#000000",
-    teamLogoImageUrl:
-      teamPlayer?.team?.squareLogoImage ||
-      placeholderTeam?.squareLogoImage ||
-      "/images/empty.png",
-    teamSlug: placeholderTeam?.slug ?? teamPlayer?.team?.slug ?? "",
-    teamIntroduction:
-      placeholderTeam?.introduction ?? teamPlayer?.team?.introduction ?? "",
+    playerIntroduction: "",
+    playerFullname: "",
+    teamId: "",
+    teamName: "",
+    teamSecondaryName: "",
+    teamThirdName: "",
+    teamFullname: "",
+    color: "#000000",
+    teamLogoImageUrl: "https://hkleague2024.hkmahjong.org/images/empty.png",
+    teamSlug: "",
+    teamIntroduction: "",
   };
+
+  if (teamPlayer) {
+    if (teamPlayer.player) {
+      newTeamPlayerDTO.playerName = teamPlayer.player.name;
+      newTeamPlayerDTO.playerNickname = teamPlayer.player.nickname;
+      newTeamPlayerDTO.playerDesignation = teamPlayer.player.name;
+      newTeamPlayerDTO.playerPortraitImageUrl = teamPlayer.player.portraitImage;
+      newTeamPlayerDTO.playerIntroduction = teamPlayer.introduction;
+    }
+
+    if (teamPlayer.team) {
+      newTeamPlayerDTO.teamId = teamPlayer.team._id;
+      newTeamPlayerDTO.teamName = teamPlayer.team.name;
+      newTeamPlayerDTO.teamSecondaryName = teamPlayer.team.secondaryName;
+      newTeamPlayerDTO.teamThirdName = teamPlayer.team.thirdName;
+      newTeamPlayerDTO.color = teamPlayer.team.color;
+      if (teamPlayer.team.squareLogoImage) {
+        newTeamPlayerDTO.teamLogoImageUrl = teamPlayer.team.squareLogoImage;
+      }
+      newTeamPlayerDTO.teamSlug = teamPlayer.team.slug;
+      newTeamPlayerDTO.teamIntroduction = teamPlayer.team.introduction;
+    }
+
+    if (teamPlayer.overridedDesignation) {
+      newTeamPlayerDTO.playerDesignation = teamPlayer.overridedDesignation;
+    }
+    if (teamPlayer.overridedName) {
+      newTeamPlayerDTO.playerName = teamPlayer.overridedName;
+    }
+    if (teamPlayer.overridedNickname) {
+      newTeamPlayerDTO.playerNickname = teamPlayer.overridedNickname;
+    }
+    if (teamPlayer.overridedColor) {
+      newTeamPlayerDTO.color = teamPlayer.overridedColor;
+    }
+    if (teamPlayer.overridedPortraitImage) {
+      newTeamPlayerDTO.playerPortraitImageUrl =
+        teamPlayer.overridedPortraitImage;
+    }
+  } else if (placeholderTeam) {
+    newTeamPlayerDTO.teamId = placeholderTeam._id;
+    newTeamPlayerDTO.teamName = placeholderTeam.name;
+    newTeamPlayerDTO.teamSecondaryName = placeholderTeam.secondaryName;
+    newTeamPlayerDTO.teamThirdName = placeholderTeam.thirdName;
+    newTeamPlayerDTO.color = placeholderTeam.color;
+    if (placeholderTeam.squareLogoImage) {
+      newTeamPlayerDTO.teamLogoImageUrl = placeholderTeam.squareLogoImage;
+    }
+    newTeamPlayerDTO.teamSlug = placeholderTeam.slug;
+    newTeamPlayerDTO.teamIntroduction = placeholderTeam.introduction;
+  }
+
+  newTeamPlayerDTO.playerFullname =
+    newTeamPlayerDTO.playerName +
+    (newTeamPlayerDTO.playerNickname
+      ? ` (${newTeamPlayerDTO.playerNickname})`
+      : "");
+  newTeamPlayerDTO.teamFullname = [
+    newTeamPlayerDTO.teamName,
+    newTeamPlayerDTO.teamSecondaryName,
+    newTeamPlayerDTO.teamThirdName,
+  ]
+    .filter((item) => !!item)
+    .join(" ");
+
+  return newTeamPlayerDTO;
 };
