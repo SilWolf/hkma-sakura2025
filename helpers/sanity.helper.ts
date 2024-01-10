@@ -215,7 +215,7 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
   const teamProjection = TEAM_PROJECTION;
 
   const scheduledMatches = await publicClient.fetch<Match[]>(
-    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && defined(result.playerEast.score)] | order(startAt asc)[0...2] { _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
+    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && defined(result.playerEast.score)] | order(startAt desc)[0...2] { _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
   );
 
   const matchesGroupedByDate: Record<
@@ -289,7 +289,7 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
       ];
     }
 
-    matchesGroupedByDate[dateString].matches.push(newMatch);
+    matchesGroupedByDate[dateString].matches.unshift(newMatch);
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
