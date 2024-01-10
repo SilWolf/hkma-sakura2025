@@ -116,3 +116,6 @@ export const renderDate = (value: string) => {
 
   return date.toISOString().substring(0, 10);
 };
+
+export const renderDateToShortForm = (value: string) =>
+  `${value.substring(8, 10)}/${value.substring(5, 7)}`;

@@ -392,23 +392,18 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
 });
 
 export const getMatchesGroupedByDate = cache(
-  async (year: number, month: number) => {
-    const playerProjection =
-      '{team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
+  async (
+    startDate: string,
+    endDate: string,
+    options?: { withPlayerDetails?: boolean }
+  ) => {
+    const teamPlayerProjection = options?.withPlayerDetails
+      ? `..., team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}`
+      : 'team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}';
     const teamProjection = TEAM_PROJECTION;
 
-    const nextMonth = month === 12 ? 2 : month + 1;
-    const nextYear = month === 12 ? year + 1 : year;
-
-    const filterStartDate = `${year}-${month
-      .toString()
-      .padStart(2, "0")}-01T00:00:00Z`;
-    const filterEndDate = `${nextYear}-${nextMonth
-      .toString()
-      .padStart(2, "0")}-01T00:00:00Z`;
-
     const scheduledMatches = await publicClient.fetch<Match[]>(
-      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && startAt >= "${filterStartDate}" && startAt < "${filterEndDate}"] | order(startAt asc){ _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
+      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && startAt >= "${startDate}" && startAt < "${endDate}"] | order(startAt asc){ _id, name, playerEast->{${teamPlayerProjection}}, playerSouth->{${teamPlayerProjection}}, playerWest->{${teamPlayerProjection}}, playerNorth->{${teamPlayerProjection}}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
     );
 
     const matchesGroupedByDate: Record<
@@ -428,10 +423,7 @@ export const getMatchesGroupedByDate = cache(
         playerNorthTeam,
         ...matchRest
       } = match;
-      const dateString = `${matchRest.startAt.substring(
-        8,
-        10
-      )}/${matchRest.startAt.substring(5, 7)}`;
+      const dateString = matchRest.startAt.substring(0, 10);
 
       if (!matchesGroupedByDate[dateString]) {
         const date = new Date(matchRest.startAt);

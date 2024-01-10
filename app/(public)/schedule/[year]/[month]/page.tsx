@@ -1,5 +1,9 @@
 import { MatchDTO, getMatchesGroupedByDate } from "@/helpers/sanity.helper";
-import { renderPoint, renderWeekday } from "@/helpers/string.helper";
+import {
+  renderDateToShortForm,
+  renderPoint,
+  renderWeekday,
+} from "@/helpers/string.helper";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -60,12 +64,13 @@ export default async function SchedulePage({
     return notFound();
   }
 
-  const matchesGroupedByDate = await getMatchesGroupedByDate(
-    trueYear,
-    trueMonth
-  );
+  const nextMonth = trueMonth === 12 ? 2 : trueMonth + 1;
+  const nextYear = trueMonth === 12 ? trueYear + 1 : trueYear;
 
-  console.log(matchesGroupedByDate);
+  const matchesGroupedByDate = await getMatchesGroupedByDate(
+    `${trueYear}-${trueMonth.toString().padStart(2, "0")}-01T00:00:00+08:00`,
+    `${nextYear}-${nextMonth.toString().padStart(2, "0")}-01T00:00:00+08:00`
+  );
 
   return (
     <main>
@@ -175,7 +180,9 @@ export default async function SchedulePage({
               className="flex flex-col lg:flex-row gap-8 px-2 py-4 lg:px-8 lg:py-8 rounded-lg bg-[rgba(255,255,255,0.1)]"
             >
               <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
-                <p className="text-2xl font-semibold">{date}</p>
+                <p className="text-2xl font-semibold">
+                  {renderDateToShortForm(date)}
+                </p>
                 <p className="text-2xl font-semibold">
                   ({renderWeekday(weekday)})
                 </p>
