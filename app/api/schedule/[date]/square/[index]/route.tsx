@@ -211,6 +211,7 @@ const render = (match: MatchDTOForSocial) => (
               style={{
                 display: "flex",
                 fontSize: "0.75em",
+                height: "1em",
               }}
             >
               {match[key].teamSecondaryName || " "}

@@ -215,7 +215,7 @@ const render = (match: MatchDTOForSocial) => (
             style={{
               display: "flex",
               fontSize: "0.75em",
-              height: "2em",
+              height: "1.25em",
             }}
           >
             {match[key].teamSecondaryName || " "}
@@ -226,7 +226,7 @@ const render = (match: MatchDTOForSocial) => (
               flexDirection: "column",
               justifyContent: "center",
               fontSize: "0.5em",
-              marginTop: "0.5em",
+              height: "4.5em",
             }}
           >
             {match[key].playerFullnames.map((fullname) => (
