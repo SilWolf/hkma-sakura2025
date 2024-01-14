@@ -35,8 +35,6 @@ export default async function TeamDetail({
   params: { slug: string };
 }) {
   const team = await getTeamDetailBySlug(slug);
-  console.log(team?.players[1].statistic);
-
   if (!team) {
     return notFound();
   }

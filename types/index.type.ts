@@ -29,6 +29,7 @@ export type MatchRound = {
   playerSouth: MatchRoundPlayer;
   playerWest: MatchRoundPlayer;
   playerNorth: MatchRoundPlayer;
+  tenhouReplayUrl: string | null;
 };
 
 export type MatchResultPlayer = {
