@@ -1,6 +1,7 @@
 import { getTeamDetailBySlug, getTeamSlugs } from "@/helpers/sanity.helper";
 import {
   renderPercentage,
+  renderPercentageWithSign,
   renderPoint,
   renderRankingAvg,
   renderScore,
@@ -34,6 +35,7 @@ export default async function TeamDetail({
   params: { slug: string };
 }) {
   const team = await getTeamDetailBySlug(slug);
+  console.log(team?.players[1].statistic);
 
   if (!team) {
     return notFound();
@@ -101,8 +103,22 @@ export default async function TeamDetail({
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{player.statistic.matchCount}</td>
-                    <td>{renderPoint(player.statistic.point)}</td>
+                    <td>
+                      <p>{player.statistic.matchCount}</p>
+                      <p className="text-xs opacity-80">
+                        (局數: {player.statistic.roundCount})
+                      </p>
+                    </td>
+                    <td>
+                      <p>{renderPoint(player.statistic.point)}</p>
+                      <p className="text-xs opacity-80">
+                        (平均:{" "}
+                        {renderPoint(
+                          player.statistic.point / player.statistic.matchCount
+                        )}
+                        )
+                      </p>
+                    </td>
                     <td>{renderRankingAvg(player.statistic)}</td>
                     <td>{player.statistic.scoreMax}</td>
                   </tr>
@@ -146,16 +162,48 @@ export default async function TeamDetail({
                 <tbody>
                   <tr>
                     <td>
-                      {renderPercentage(
-                        player.statistic.riichiCount /
-                          player.statistic.roundCount
-                      )}
+                      <p>
+                        {renderPercentage(
+                          player.statistic.riichiCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (親:
+                        {renderPercentageWithSign(
+                          player.statistic.riichiCountWhenEast /
+                            player.statistic.riichiCount
+                        )}
+                        <br />
+                        子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.riichiCountWhenNonEast /
+                            player.statistic.riichiCount
+                        )}
+                        )
+                      </p>
                     </td>
                     <td>
-                      {renderPercentage(
-                        player.statistic.revealCount /
-                          player.statistic.roundCount
-                      )}
+                      <p>
+                        {renderPercentage(
+                          player.statistic.revealCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.revealCountWhenEast /
+                            player.statistic.revealCount
+                        )}
+                        <br />
+                        子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.revealCountWhenNonEast /
+                            player.statistic.revealCount
+                        )}
+                        )
+                      </p>
                     </td>
                   </tr>
                 </tbody>
@@ -179,9 +227,49 @@ export default async function TeamDetail({
                             player.statistic.roundCount
                         )}
                       </p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronCountWhenEast /
+                            player.statistic.ronCount
+                        )}
+                        , 子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronCountWhenNonEast /
+                            player.statistic.ronCount
+                        )}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronAfterRiichiCount /
+                            player.statistic.ronCount
+                        )}
+                        , 副露後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronAfterRevealCount /
+                            player.statistic.ronCount
+                        )}
+                        )
+                      </p>
                     </td>
                     <td>
                       <p>{player.statistic.ronPureScoreAvg.toFixed(2)}</p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {player.statistic.ronPureScoreAvgWhenEast.toFixed(2)},
+                        子:{" "}
+                        {player.statistic.ronPureScoreAvgWhenNonEast.toFixed(2)}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {player.statistic.ronAfterRiichiPureScoreAvg.toFixed(2)}
+                        , 副露後:{" "}
+                        {player.statistic.ronAfterRevealPureScoreAvg.toFixed(2)}
+                        )
+                      </p>
                     </td>
                   </tr>
                 </tbody>
@@ -202,9 +290,55 @@ export default async function TeamDetail({
                             player.statistic.roundCount
                         )}
                       </p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckCountWhenEast /
+                            player.statistic.chuckCount
+                        )}
+                        , 子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckCountWhenNonEast /
+                            player.statistic.chuckCount
+                        )}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckAfterRiichiCount /
+                            player.statistic.chuckCount
+                        )}
+                        , 副露後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckAfterRevealCount /
+                            player.statistic.chuckCount
+                        )}
+                        )
+                      </p>
                     </td>
                     <td>
                       <p>{player.statistic.chuckPureScoreAvg.toFixed(2)}</p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {player.statistic.chuckPureScoreAvgWhenEast.toFixed(2)},
+                        子:{" "}
+                        {player.statistic.chuckPureScoreAvgWhenNonEast.toFixed(
+                          2
+                        )}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {player.statistic.chuckAfterRiichiPureScoreAvg.toFixed(
+                          2
+                        )}
+                        , 副露後:{" "}
+                        {player.statistic.chuckAfterRevealPureScoreAvg.toFixed(
+                          2
+                        )}
+                        )
+                      </p>
                     </td>
                   </tr>
                 </tbody>

@@ -54,7 +54,7 @@ export const renderMatchResultType = (type: string) => {
 };
 
 export const renderPoint = (value: number | undefined | null) => {
-  if (typeof value === "undefined" || value === null) {
+  if (typeof value === "undefined" || value === null || isNaN(value)) {
     return "-";
   }
 
@@ -71,6 +71,14 @@ export const renderPercentage = (value: number | undefined | null) => {
   }
 
   return value.toFixed(2);
+};
+
+export const renderPercentageWithSign = (value: number | undefined | null) => {
+  if (typeof value === "undefined" || value === null || isNaN(value)) {
+    return "-";
+  }
+
+  return `${(value * 100).toFixed(1)}%`;
 };
 
 export const renderRankingAvg = ({

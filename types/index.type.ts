@@ -84,7 +84,11 @@ export type PlayerStatistic = {
   thirdCount: number;
   fourthCount: number;
   riichiCount: number;
+  riichiCountWhenEast: number;
+  riichiCountWhenNonEast: number;
   revealCount: number;
+  revealCountWhenEast: number;
+  revealCountWhenNonEast: number;
   waitingCount: number;
   ronCount: number;
   ronCountWhenEast: number;
