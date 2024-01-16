@@ -297,7 +297,7 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
     ...value,
   }));
 
-  return [result[result.length - 1]];
+  return [result[0]];
 });
 
 export const getLatestComingMatchesGroupedByDate = cache(async () => {
