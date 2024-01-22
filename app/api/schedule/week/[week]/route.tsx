@@ -1,12 +1,16 @@
-import { MatchDTO, getMatch } from "@/helpers/sanity.helper";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import React from "react";
-import { MatchDTOForSocial, getMatchByDateAndIndex } from "../../..";
+import {
+  MatchDTOForSocial,
+  getMatchByDateAndIndex,
+  getMatchByWeek,
+} from "../..";
+import { renderPoint, renderWeekday } from "@/helpers/string.helper";
 
 export const dynamic = "force-dynamic";
 
-const render = (match: MatchDTOForSocial) => (
+const render = (matchGroups: Awaited<ReturnType<typeof getMatchByWeek>>) => (
   <div
     style={{
       position: "absolute",
@@ -24,7 +28,8 @@ const render = (match: MatchDTOForSocial) => (
       fontWeight: 400,
       color: "#FFFFFF",
       fontSize: "16px",
-      padding: "2em",
+      lineHeight: "1em",
+      padding: "2em 4em 0 4em",
     }}
   >
     <div
@@ -53,7 +58,6 @@ const render = (match: MatchDTOForSocial) => (
               display: "flex",
               fontFamily: "Noto Serif",
               fontSize: "4em",
-              lineHeight: ".8em",
               marginLeft: "0.125em",
             }}
           >
@@ -94,7 +98,13 @@ const render = (match: MatchDTOForSocial) => (
             gap: "1em",
           }}
         >
-          <div style={{ display: "flex" }}>主辦機構</div>
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            主辦機構
+          </div>
           <div
             style={{
               display: "flex",
@@ -115,7 +125,13 @@ const render = (match: MatchDTOForSocial) => (
             gap: "1em",
           }}
         >
-          <div style={{ display: "flex" }}>場地提供</div>
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            場地提供
+          </div>
           <div
             style={{
               display: "flex",
@@ -134,116 +150,125 @@ const render = (match: MatchDTOForSocial) => (
 
     <div
       style={{
+        flexGrow: 1,
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         width: "100%",
-        fontSize: "3em",
+        fontSize: "2em",
         fontWeight: 600,
+        textAlign: "center",
+        gap: ".5em",
       }}
     >
-      <div style={{ display: "flex", marginTop: "0.5em" }}>
-        {match.name} 出戰隊伍
-      </div>
-    </div>
-
-    {(
-      [
-        ["playerEast", "playerSouth"],
-        ["playerWest", "playerNorth"],
-      ] as const
-    ).map((group, groupI) => (
-      <div
-        key={groupI}
-        style={{
-          flexGrow: 1,
-          display: "flex",
-          justifyContent: "center",
-          fontSize: "2em",
-          lineHeight: "1em",
-          fontWeight: 600,
-          textAlign: "center",
-          marginLeft: "4em",
-          marginRight: "4em",
-        }}
-      >
-        {group.map((key) => (
+      {matchGroups.map(({ date, weekday, matches }) => (
+        <div
+          key={date}
+          style={{
+            display: "flex",
+            background: "rgba(255, 255, 255, 0.1)",
+            borderRadius: ".5em",
+            gap: ".5em",
+            overflow: "hidden",
+          }}
+        >
           <div
-            key={key}
             style={{
               display: "flex",
+              flexShrink: 0,
+              whiteSpace: "nowrap",
               flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              position: "relative",
-              flex: 1,
-              padding: "0.75em 2em 0 2em",
+              justifyContent: "center",
+              marginLeft: ".5em",
+              minWidth: "4.5em",
             }}
           >
             <div
               style={{
                 display: "flex",
-                position: "absolute",
-                background: `linear-gradient(to bottom, transparent, ${match[key].color})`,
-                opacity: 0.5,
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-              }}
-            ></div>
-
-            <div
-              style={{
-                display: "flex",
-                position: "relative",
+                fontSize: "1.5em",
+                fontWeight: 600,
               }}
             >
-              <img
-                style={{
-                  width: "100%",
-                }}
-                src={`${match[key].teamLogoImageUrl + "?w=800&h=800&fm=png"}`}
-                alt=""
-              />
-            </div>
-            <div style={{ display: "flex" }}>{match[key].teamName}</div>
-            <div
-              style={{
-                display: "flex",
-                fontSize: "0.75em",
-                height: "1em",
-              }}
-            >
-              {match[key].teamSecondaryName || " "}
+              {date.substring(8, 10)}/{date.substring(5, 7)}
             </div>
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                fontSize: "0.5em",
-                height: "4.5em",
+                fontSize: "1em",
+                fontWeight: 600,
               }}
             >
-              {match[key].playerFullnames.map((fullname) => (
-                <div key={fullname} style={{ display: "flex" }}>
-                  {fullname}
-                </div>
-              ))}
+              ({renderWeekday(weekday)})
             </div>
           </div>
-        ))}
-      </div>
-    ))}
+          <div
+            style={{
+              display: "flex",
+              flex: 1,
+            }}
+          >
+            {matches[0]._order.map((playerIndex) => (
+              <div
+                key={playerIndex}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  flex: 1,
+                  alignItems: "center",
+                  background: `linear-gradient(to bottom, transparent, ${matches[0][playerIndex].color}80)`,
+                  filter:
+                    matches[0].result &&
+                    matches[0].result?.[playerIndex]?.ranking !== "1"
+                      ? "grayscale(100%)"
+                      : "",
+                }}
+              >
+                <img
+                  width={150}
+                  height={150}
+                  src={
+                    matches[0][playerIndex].teamLogoImageUrl +
+                    "?w=512&auto=format"
+                  }
+                  alt={matches[0][playerIndex].teamName}
+                  style={{
+                    opacity:
+                      matches[0].result &&
+                      matches[0].result?.[playerIndex]?.ranking !== "1"
+                        ? 0.4
+                        : 1,
+                  }}
+                />
+                {matches[0].result && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      fontSize: ".75em",
+                      marginTop: "-1em",
+                    }}
+                  >
+                    {renderPoint(matches[0].result?.[playerIndex]?.point)}pt
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
 );
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { date: string; index: string } }
+  { params }: { params: { week: string } }
 ) => {
   try {
-    const match = await getMatchByDateAndIndex(params.date, params.index);
+    const matchGroups = await getMatchByWeek(parseInt(params.week));
+
+    console.log(matchGroups);
 
     const [
       NotoSansRegular,
@@ -265,9 +290,9 @@ export const GET = async (
       ).then((res) => res.arrayBuffer()),
     ]);
 
-    return new ImageResponse(render(match), {
-      width: 1080,
-      height: 1080,
+    return new ImageResponse(render(matchGroups), {
+      width: 1280,
+      height: 720,
       fonts: [
         {
           name: "Noto Sans",

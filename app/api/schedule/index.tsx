@@ -164,3 +164,23 @@ export const getMatchByDateAndIndex = async (date: string, index: string) => {
 
   return match;
 };
+
+export const getMatchByWeek = async (week: number) => {
+  const startDate = new Date("2024-01-09T00:00:00+08:00");
+  startDate.setDate(startDate.getDate() + (week - 1) * 7);
+
+  const endDate = new Date("2024-01-12T23:59:59+08:00");
+  endDate.setDate(endDate.getDate() + (week - 1) * 7);
+
+  const result = await getMatchesGroupedByDate(
+    startDate.toISOString(),
+    endDate.toISOString(),
+    { withPlayerDetails: true }
+  );
+
+  if (!result) {
+    throw new Error(`there is no match between ${startDate} and ${endDate}`);
+  }
+
+  return result;
+};

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import React from "react";
-import { MatchDTOForSocial, getMatchByDateAndIndex } from "../..";
+import { MatchDTOForSocial, getMatchByDateAndIndex } from "../../..";
 
 export const dynamic = "force-dynamic";
 
