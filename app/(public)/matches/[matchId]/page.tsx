@@ -130,7 +130,7 @@ const MatchScoreChangeTd = ({
       </p>
       {(round.type === "tsumo" || round.type === "ron") &&
         round[playerKey].type === "win" && (
-          <p className="text-xs opacity-60">{round.playerSouth.yaku}</p>
+          <p className="text-xs opacity-60">{round[playerKey].yaku}</p>
         )}
     </td>
   );

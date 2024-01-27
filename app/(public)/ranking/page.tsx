@@ -1,5 +1,5 @@
 import { getTeams } from "@/helpers/sanity.helper";
-import { renderRanking } from "@/helpers/string.helper";
+import { renderPoint, renderRanking } from "@/helpers/string.helper";
 import { Metadata } from "next";
 
 export const revalidate = 900;
@@ -17,46 +17,46 @@ const statRows = [
     label: "半莊數",
     name: "matchCount",
   },
-  {
-    label: "一位率",
-    name: "firstP",
-  },
-  {
-    label: "二位率",
-    name: "secondP",
-  },
-  {
-    label: "三位率",
-    name: "thirdP",
-  },
-  {
-    label: "四位率",
-    name: "fourthP",
-  },
-  {
-    label: "平均得點",
-    name: "pointAvg",
-  },
-  {
-    label: "平均順位",
-    name: "rankingAvg",
-  },
-  {
-    label: "和了率",
-    name: "ronP",
-  },
-  {
-    label: "放銃率",
-    name: "chuckP",
-  },
-  {
-    label: "立直率",
-    name: "riichiP",
-  },
-  {
-    label: "副露率",
-    name: "revealP",
-  },
+  // {
+  //   label: "一位率",
+  //   name: "firstP",
+  // },
+  // {
+  //   label: "二位率",
+  //   name: "secondP",
+  // },
+  // {
+  //   label: "三位率",
+  //   name: "thirdP",
+  // },
+  // {
+  //   label: "四位率",
+  //   name: "fourthP",
+  // },
+  // {
+  //   label: "平均得點",
+  //   name: "pointAvg",
+  // },
+  // {
+  //   label: "平均順位",
+  //   name: "rankingAvg",
+  // },
+  // {
+  //   label: "和了率",
+  //   name: "ronP",
+  // },
+  // {
+  //   label: "放銃率",
+  //   name: "chuckP",
+  // },
+  // {
+  //   label: "立直率",
+  //   name: "riichiP",
+  // },
+  // {
+  //   label: "副露率",
+  //   name: "revealP",
+  // },
 ] as const;
 
 export const metadata: Metadata = {
@@ -99,7 +99,7 @@ export default async function RankingPage() {
               {tournamentTeamsOrderedByRanking.map(
                 ({ team, ranking, point, matchCount }, i) => (
                   <tr
-                    key={team._id}
+                    key={team.teamId}
                     style={{
                       background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
                     }}
@@ -112,13 +112,15 @@ export default async function RankingPage() {
                     </td>
                     <td className="w-9">
                       <img
-                        src={team.squareLogoImage + "?w=128&auto=format"}
-                        alt={team.name}
+                        src={team.teamLogoImageUrl + "?w=128&auto=format"}
+                        alt={team.teamSlug}
                         className="h-4 w-4"
                       />
                     </td>
                     <td>
-                      <span className="text-sm sm:text-xl">{team.name}</span>
+                      <span className="text-sm sm:text-xl">
+                        {team.teamFullname}
+                      </span>
                     </td>
                     <td>
                       <span className="text-xs sm:text-base">
@@ -166,29 +168,53 @@ export default async function RankingPage() {
                       }}
                     >
                       <img
-                        src={team.team.squareLogoImage + "?w=64&auto=format"}
-                        alt={team.team.name}
+                        src={team.team.teamLogoImageUrl + "?w=64&auto=format"}
+                        alt={team.team.teamSlug}
                       />
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody className="[&_td]:py-1 text-center">
-                {statRows.map((statRow) => (
-                  <tr key={statRow.name}>
-                    <th scope="row">{statRow.label}</th>
-                    {tournamentTeams.map((team) => (
-                      <td
-                        key={team._key}
-                        style={{
-                          background: team.team.color + "80",
-                        }}
-                      >
-                        {team[statRow.name]?.toFixed(1)}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                <tr>
+                  <th scope="row">排名</th>
+                  {tournamentTeams.map((team) => (
+                    <td
+                      key={team._key}
+                      style={{
+                        background: team.team.color + "80",
+                      }}
+                    >
+                      {renderRanking(team.ranking)}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <th scope="row">積分</th>
+                  {tournamentTeams.map((team) => (
+                    <td
+                      key={team._key}
+                      style={{
+                        background: team.team.color + "80",
+                      }}
+                    >
+                      {renderPoint(team.point)}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <th scope="row">半莊數</th>
+                  {tournamentTeams.map((team) => (
+                    <td
+                      key={team._key}
+                      style={{
+                        background: team.team.color + "80",
+                      }}
+                    >
+                      {team.matchCount}/60
+                    </td>
+                  ))}
+                </tr>
               </tbody>
             </table>
           </div>

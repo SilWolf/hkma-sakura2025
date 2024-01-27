@@ -54,7 +54,7 @@ export const renderMatchResultType = (type: string) => {
 };
 
 export const renderPoint = (value: number | undefined | null) => {
-  if (typeof value === "undefined" || value === null) {
+  if (typeof value === "undefined" || value === null || isNaN(value)) {
     return "-";
   }
 
@@ -64,6 +64,42 @@ export const renderPoint = (value: number | undefined | null) => {
 
   return `▲${Math.abs(value).toFixed(1)}`;
 };
+
+export const renderPercentage = (value: number | undefined | null) => {
+  if (typeof value === "undefined" || value === null || isNaN(value)) {
+    return "-";
+  }
+
+  return value.toFixed(2);
+};
+
+export const renderPercentageWithSign = (value: number | undefined | null) => {
+  if (typeof value === "undefined" || value === null || isNaN(value)) {
+    return "-";
+  }
+
+  return `${(value * 100).toFixed(1)}%`;
+};
+
+export const renderRankingAvg = ({
+  firstCount,
+  secondCount,
+  thirdCount,
+  fourthCount,
+  matchCount,
+}: {
+  firstCount: number;
+  secondCount: number;
+  thirdCount: number;
+  fourthCount: number;
+  matchCount: number;
+}) =>
+  matchCount > 0
+    ? (
+        (firstCount + 2 * secondCount + 3 * thirdCount + 4 * fourthCount) /
+        matchCount
+      ).toFixed(1)
+    : "-";
 
 export const renderScore = (value: number | undefined | null) => {
   if (typeof value === "undefined" || value === null) {
@@ -88,3 +124,6 @@ export const renderDate = (value: string) => {
 
   return date.toISOString().substring(0, 10);
 };
+
+export const renderDateToShortForm = (value: string) =>
+  `${value.substring(8, 10)}/${value.substring(5, 7)}`;

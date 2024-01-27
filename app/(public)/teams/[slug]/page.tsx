@@ -1,4 +1,11 @@
 import { getTeamDetailBySlug, getTeamSlugs } from "@/helpers/sanity.helper";
+import {
+  renderPercentage,
+  renderPercentageWithSign,
+  renderPoint,
+  renderRankingAvg,
+  renderScore,
+} from "@/helpers/string.helper";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -17,8 +24,8 @@ export async function generateMetadata({
   const team = await getTeamDetailBySlug(slug);
 
   return {
-    title: team ? team.name : "隊伍介紹",
-    description: team?.introduction,
+    title: team?.teamFullname || "隊伍介紹",
+    description: team?.teamIntroduction,
   };
 }
 
@@ -28,20 +35,19 @@ export default async function TeamDetail({
   params: { slug: string };
 }) {
   const team = await getTeamDetailBySlug(slug);
-
   if (!team) {
     return notFound();
   }
 
   return (
-    <main className="relative">
+    <main className="relative pb-12">
       <section className="pt-16 md:pt-8 pb-4">
         <div className="container max-w-screen-md mx-auto px-2 space-x-2 text-sm">
           <Link className="opacity-80" href="/teams">
             聯賽隊伍
           </Link>
           <span>&gt;</span>
-          <span>{team.name}</span>
+          <span>{team.teamFullname}</span>
         </div>
       </section>
 
@@ -53,7 +59,7 @@ export default async function TeamDetail({
       >
         <div className="container mx-auto max-w-screen-md px-2">
           <img
-            src={team.squareLogoImage ?? "/images/empty.png"}
+            src={team.teamLogoImageUrl}
             className="w-64 h-64 mx-auto"
             alt=""
           />
@@ -64,55 +70,277 @@ export default async function TeamDetail({
               backgroundColor: `${team.color}2D`,
             }}
           >
-            {team.name}
+            {team.teamFullname}
           </h2>
           <p className="text-center text-2xl leading-10 mt-12 md:px-8 whitespace-pre-wrap">
-            {team.introduction}
+            {team.teamIntroduction}
           </p>
         </div>
       </section>
 
       {team.players.map((player) => (
-        <section key={player._id} className="py-12">
+        <section key={player.playerName} className="py-12">
           <div className="container mx-auto max-w-screen-md px-2">
             <div className="flex gap-2 md:gap-12 items-center">
               <div className="flex-1">
-                <h3 className="font-bold text-xl">
-                  {player.name} ({player.nickname})
-                </h3>
+                <h3 className="font-bold text-xl">{player.playerFullname}</h3>
                 <p className="mt-2 whitespace-pre-wrap">
-                  {player.introduction}
+                  {player.playerIntroduction}
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-x-4 mt-4">
-              <div className="col-span-2">
-                <table className="w-full text-center">
-                  <thead>
-                    <tr className="bg-neutral-800 text-white">
-                      <th>對戰成續</th>
-                      <th>得分</th>
-                      <th>順位</th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-              <div>
-                <table className="w-full text-center">
-                  <thead>
-                    <tr className="bg-neutral-800 text-white">
-                      <th>平均打點</th>
-                      <th>平均順位</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>-</td>
-                      <td>-</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div className="flex gap-x-4 mt-4">
+              <table className="flex-[3] text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>半莊數</th>
+                    <th>總積分</th>
+                    <th>平均順位</th>
+                    <th>最大分數</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <p>{player.statistic.matchCount}</p>
+                      <p className="text-xs opacity-80">
+                        (局數: {player.statistic.roundCount})
+                      </p>
+                    </td>
+                    <td>
+                      <p>{renderPoint(player.statistic.point)}</p>
+                      <p className="text-xs opacity-80">
+                        (平均:{" "}
+                        {renderPoint(
+                          player.statistic.point / player.statistic.matchCount
+                        )}
+                        )
+                      </p>
+                    </td>
+                    <td>{renderRankingAvg(player.statistic)}</td>
+                    <td>{player.statistic.scoreMax}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="flex-[2] text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>連對率</th>
+                    <th>避四率</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {renderPercentage(
+                        (player.statistic.firstCount +
+                          player.statistic.secondCount) /
+                          player.statistic.matchCount
+                      )}
+                    </td>
+                    <td>
+                      {renderPercentage(
+                        1 -
+                          player.statistic.fourthCount /
+                            player.statistic.matchCount
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="flex-[2] text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>立直率</th>
+                    <th>副露率</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <p>
+                        {renderPercentage(
+                          player.statistic.riichiCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (親:
+                        {renderPercentageWithSign(
+                          player.statistic.riichiCountWhenEast /
+                            player.statistic.riichiCount
+                        )}
+                        <br />
+                        子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.riichiCountWhenNonEast /
+                            player.statistic.riichiCount
+                        )}
+                        )
+                      </p>
+                    </td>
+                    <td>
+                      <p>
+                        {renderPercentage(
+                          player.statistic.revealCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.revealCountWhenEast /
+                            player.statistic.revealCount
+                        )}
+                        <br />
+                        子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.revealCountWhenNonEast /
+                            player.statistic.revealCount
+                        )}
+                        )
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="flex gap-x-4 mt-4">
+              <table className="flex-1 text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>和了率</th>
+                    <th>平均和了打點</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <p>
+                        {renderPercentage(
+                          player.statistic.ronCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronCountWhenEast /
+                            player.statistic.ronCount
+                        )}
+                        , 子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronCountWhenNonEast /
+                            player.statistic.ronCount
+                        )}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronAfterRiichiCount /
+                            player.statistic.ronCount
+                        )}
+                        , 副露後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.ronAfterRevealCount /
+                            player.statistic.ronCount
+                        )}
+                        )
+                      </p>
+                    </td>
+                    <td>
+                      <p>{player.statistic.ronPureScoreAvg.toFixed(2)}</p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {player.statistic.ronPureScoreAvgWhenEast.toFixed(2)},
+                        子:{" "}
+                        {player.statistic.ronPureScoreAvgWhenNonEast.toFixed(2)}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {player.statistic.ronAfterRiichiPureScoreAvg.toFixed(2)}
+                        , 副露後:{" "}
+                        {player.statistic.ronAfterRevealPureScoreAvg.toFixed(2)}
+                        )
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table className="flex-1 text-center">
+                <thead>
+                  <tr className="bg-neutral-700 text-white">
+                    <th>銃和率</th>
+                    <th>平均銃和打點</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <p>
+                        {renderPercentage(
+                          player.statistic.chuckCount /
+                            player.statistic.roundCount
+                        )}
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckCountWhenEast /
+                            player.statistic.chuckCount
+                        )}
+                        , 子:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckCountWhenNonEast /
+                            player.statistic.chuckCount
+                        )}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckAfterRiichiCount /
+                            player.statistic.chuckCount
+                        )}
+                        , 副露後:{" "}
+                        {renderPercentageWithSign(
+                          player.statistic.chuckAfterRevealCount /
+                            player.statistic.chuckCount
+                        )}
+                        )
+                      </p>
+                    </td>
+                    <td>
+                      <p>{player.statistic.chuckPureScoreAvg.toFixed(2)}</p>
+                      <p className="text-xs opacity-80">
+                        (親:{" "}
+                        {player.statistic.chuckPureScoreAvgWhenEast.toFixed(2)},
+                        子:{" "}
+                        {player.statistic.chuckPureScoreAvgWhenNonEast.toFixed(
+                          2
+                        )}
+                        )
+                      </p>
+                      <p className="text-xs opacity-80">
+                        (立直後:{" "}
+                        {player.statistic.chuckAfterRiichiPureScoreAvg.toFixed(
+                          2
+                        )}
+                        , 副露後:{" "}
+                        {player.statistic.chuckAfterRevealPureScoreAvg.toFixed(
+                          2
+                        )}
+                        )
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>

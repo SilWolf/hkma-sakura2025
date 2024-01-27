@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@sanity/client": "^6.10.0",
@@ -14,6 +15,7 @@
     "ajv": "^8.12.0",
     "async": "^3.2.5",
     "next": "14.0.4",
+    "next-sitemap": "^4.2.3",
     "p-queue": "^8.0.1",
     "react": "^18",
     "react-dom": "^18"

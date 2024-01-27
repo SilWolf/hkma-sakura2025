@@ -29,6 +29,7 @@ export type MatchRound = {
   playerSouth: MatchRoundPlayer;
   playerWest: MatchRoundPlayer;
   playerNorth: MatchRoundPlayer;
+  tenhouReplayUrl: string | null;
 };
 
 export type MatchResultPlayer = {
@@ -61,6 +62,7 @@ export type TeamPlayer = {
   overridedName: string | null;
   overridedNickname: string | null;
   overridedColor: string | null;
+  overridedPortraitImage: string | null;
 };
 
 export type Player = {
@@ -68,12 +70,58 @@ export type Player = {
   name: string;
   nickname: string;
   designation: string;
+  statistic?: PlayerStatistic;
+  portraitImage: string;
+};
+
+export type PlayerStatistic = {
+  matchCount: number;
+  roundCount: number;
+  point: number;
+  scoreMax: number;
+  scoreMin: number;
+  firstCount: number;
+  secondCount: number;
+  thirdCount: number;
+  fourthCount: number;
+  riichiCount: number;
+  riichiCountWhenEast: number;
+  riichiCountWhenNonEast: number;
+  revealCount: number;
+  revealCountWhenEast: number;
+  revealCountWhenNonEast: number;
+  waitingCount: number;
+  ronCount: number;
+  ronCountWhenEast: number;
+  ronCountWhenNonEast: number;
+  waitingWhenExhaustedCount: number;
+  ronPureScoreAvg: number;
+  ronPureScoreAvgWhenEast: number;
+  ronPureScoreAvgWhenNonEast: number;
+  ronHighYakuCount: number;
+  chuckCount: number;
+  chuckCountWhenEast: number;
+  chuckCountWhenNonEast: number;
+  chuckPureScoreAvg: number;
+  chuckPureScoreAvgWhenEast: number;
+  chuckPureScoreAvgWhenNonEast: number;
+  chuckHighYakuCount: number;
+  ronAfterRiichiCount: number;
+  ronAfterRiichiPureScoreAvg: number;
+  ronAfterRevealCount: number;
+  ronAfterRevealPureScoreAvg: number;
+  chuckAfterRiichiCount: number;
+  chuckAfterRiichiPureScoreAvg: number;
+  chuckAfterRevealCount: number;
+  chuckAfterRevealPureScoreAvg: number;
 };
 
 export type Team = {
   _id: string;
   slug: string;
   name: string;
+  secondaryName: string;
+  thirdName: string;
   squareLogoImage: string | null;
   color: string;
   introduction: string;

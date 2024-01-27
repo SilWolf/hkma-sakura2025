@@ -26,15 +26,12 @@ export default async function Teams() {
         <div className="container mx-auto max-w-screen-lg bg-white bg-opacity-10 p-4 rounded-full shadow-xl">
           <nav className="grid grid-cols-4 lg:grid-cols-12 justify-center items-center">
             {tournamentTeams.map(({ team }) => (
-              <div key={team.slug} className="text-center">
-                <a className="inline-block" href={`#${team.slug}`}>
+              <div key={team.teamSlug} className="text-center">
+                <a className="inline-block" href={`#${team.teamSlug}`}>
                   <img
-                    src={
-                      (team.squareLogoImage ?? "/images/empty.png") +
-                      "?w=128&auto=format"
-                    }
+                    src={team.teamLogoImageUrl + "?w=128&auto=format"}
                     className="w-16 h-16"
-                    alt={team.name}
+                    alt={team.teamSlug}
                   />
                 </a>
               </div>
@@ -44,10 +41,10 @@ export default async function Teams() {
       </section>
 
       {tournamentTeams.map(({ team }) => (
-        <section className="pb-16 relative" key={team.slug}>
-          <div id={team.slug} className="absolute -top-32"></div>
+        <section className="pb-16 relative" key={team.teamSlug}>
+          <div id={team.teamSlug} className="absolute -top-32"></div>
           <div className="container px-2 mx-auto max-w-screen-lg">
-            <Link href={`/teams/${team.slug}`}>
+            <Link href={`/teams/${team.teamSlug}`}>
               <div
                 className="flex flex-col md:flex-row gap-6 border-y bg-opacity-20 px-2 md:px-8 py-8 relative overflow-hidden"
                 style={{
@@ -57,34 +54,28 @@ export default async function Teams() {
               >
                 <div className="absolute -top-32 -left-[16rem] opacity-[.05] grayscale">
                   <img
-                    src={
-                      (team.squareLogoImage ?? "/images/empty.png") +
-                      "?w=512&auto=format"
-                    }
+                    src={team.teamLogoImageUrl + "?w=512&auto=format"}
                     className="w-[512px] h-[512px] mx-auto"
-                    alt={team.name}
+                    alt={team.teamFullname}
                   />
                 </div>
                 <div className="shrink-0 z-10">
                   <img
-                    src={
-                      (team.squareLogoImage ?? "/images/empty.png") +
-                      "?w=512&auto=format"
-                    }
+                    src={team.teamLogoImageUrl + "?w=512&auto=format"}
                     className="w-[240px] h-[240px] mx-auto"
-                    alt={team.name}
+                    alt={team.teamFullname}
                   />
                 </div>
                 <div className="flex-1 z-10">
                   <h2 className="text-2xl lg:text-3xl font-semibold mb-4">
-                    {team.name}
+                    {team.teamFullname}
                   </h2>
                   <p className="text-base leading-8 text-justify lg:text-lg lg:leading-9 whitespace-pre-wrap">
-                    {team.introduction}
+                    {team.teamIntroduction}
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-8 mt-12">
-                    {playersInTeamIds[team._id]?.map((player) => (
+                    {playersInTeamIds[team.teamId]?.map((player) => (
                       <div
                         key={player._id}
                         className="flex gap-x-4 items-center"

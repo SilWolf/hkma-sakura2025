@@ -9,9 +9,9 @@ import {
   TournamentTeam,
 } from "@/types/index.type";
 
-const PLAYER_PROJECTION = `{_id, name, nickname, designation, introduction}`;
-const TEAM_PROJECTION = `{_id, "slug": slug.current, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
-const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`;
+const PLAYER_PROJECTION = `_id, name, nickname, designation, "portraitImage": portraitImage.asset->url, introduction`;
+const TEAM_PROJECTION = `{_id, "slug": slug.current, name, secondaryName, thirdName, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
+const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}`;
 
 export const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID,
@@ -21,16 +21,28 @@ export const client = createClient({
   token: process.env.SANITY_SECRET_TOKEN, // Only if you want to update content with the client
 });
 
+const publicClient = createClient({
+  projectId: process.env.SANITY_PROJECT_ID,
+  dataset: process.env.SANITY_DATASET_ID,
+  useCdn: true,
+  apiVersion: "2023-05-03",
+});
+
 export const getTeams = cache(() =>
-  client
+  publicClient
     .fetch(
       `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION} } }`
     )
-    .then((tournaments) => tournaments[0]?.teams as TournamentTeam[])
+    .then((tournaments) =>
+      (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
+        ...team,
+        team: formatTeamPlayerDTO(team.team, null),
+      }))
+    )
 );
 
 export const getTeamSlugs = cache(() =>
-  client
+  publicClient
     .fetch(
       `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "slug": team.slug.current } }`
     )
@@ -40,7 +52,7 @@ export const getTeamSlugs = cache(() =>
 );
 
 export const getTeamDetailBySlug = cache(async (slug: string) => {
-  const team = await client
+  const team = await publicClient
     .fetch(`*[_type == "team" && slug.current == "${slug}"]${TEAM_PROJECTION}`)
     .then((teams) => teams[0] as Team);
 
@@ -48,29 +60,25 @@ export const getTeamDetailBySlug = cache(async (slug: string) => {
     return null;
   }
 
-  const players = await client
+  const players = await publicClient
     .fetch(
-      `*[_type == "teamPlayer" && team._ref == "${team._id}"] | order(player->name asc){ team->{_id}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, introduction}`
+      `*[_type == "teamPlayer" && team._ref == "${team._id}"] | order(player->name asc){ team->{_id}, player->{${PLAYER_PROJECTION}, "statistic": statistics[_key=="${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"][0]}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, introduction}`
     )
     .then((teamPlayers: TeamPlayer[]) =>
       teamPlayers.map((teamPlayer) => ({
-        _id: teamPlayer.player._id,
-        name: teamPlayer.overridedName ?? teamPlayer.player.name,
-        nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
-        designation:
-          teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
-        introduction: teamPlayer.introduction,
+        ...formatTeamPlayerDTO(null, teamPlayer),
+        statistic: teamPlayer.player.statistic!,
       }))
     );
 
   return {
-    ...team,
+    ...formatTeamPlayerDTO(team),
     players,
   };
 });
 
 export const getPlayersGroupByTeams = cache(async () => {
-  const teamIds = await client
+  const teamIds = await publicClient
     .fetch(
       `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "teamId": team->_id } }`
     )
@@ -81,10 +89,10 @@ export const getPlayersGroupByTeams = cache(async () => {
         ) as string[]
     );
 
-  const teamPlayers = (await client.fetch(
+  const teamPlayers = (await publicClient.fetch(
     `*[_type == "teamPlayer" && team._ref in ${JSON.stringify(
       teamIds
-    )}] | order(player->name asc) { team->{_id}, player->${PLAYER_PROJECTION}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex}`
+    )}] | order(player->name asc) { team->{_id}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}`
   )) as TeamPlayer[];
 
   const result: Record<string, (Player & { introduction: string })[]> = {};
@@ -99,6 +107,8 @@ export const getPlayersGroupByTeams = cache(async () => {
       _id: teamPlayer.player._id,
       name: teamPlayer.overridedName ?? teamPlayer.player.name,
       nickname: teamPlayer.overridedNickname ?? teamPlayer.player.nickname,
+      portraitImage:
+        teamPlayer.overridedPortraitImage ?? teamPlayer.player.portraitImage,
       designation:
         teamPlayer.overridedDesignation ?? teamPlayer.player.designation,
       introduction: teamPlayer.introduction,
@@ -109,7 +119,7 @@ export const getPlayersGroupByTeams = cache(async () => {
 });
 
 export const getOldMatches = cache(() =>
-  client
+  publicClient
     .fetch(
       `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && status == "completed"] | order(startAt desc)[0...8]{ _id, name, playerEast->${TEAM_PLAYER_PROJECTION}, playerSouth->${TEAM_PLAYER_PROJECTION}, playerWest->${TEAM_PLAYER_PROJECTION}, playerNorth->${TEAM_PLAYER_PROJECTION}, playerEastTeam->${TEAM_PROJECTION}, playerSouthTeam->${TEAM_PROJECTION}, playerWestTeam->${TEAM_PROJECTION}, playerNorthTeam->${TEAM_PROJECTION}, startAt, youtubeUrl, bilibiliUrl, result}`
     )
@@ -139,7 +149,7 @@ export const getOldMatches = cache(() =>
 
 export const getMatch = cache(
   (matchId: string): Promise<MatchDTO> =>
-    client
+    publicClient
       .fetch(
         `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast->${TEAM_PLAYER_PROJECTION}, playerSouth->${TEAM_PLAYER_PROJECTION}, playerWest->${TEAM_PLAYER_PROJECTION}, playerNorth->${TEAM_PLAYER_PROJECTION}, playerEastTeam->${TEAM_PROJECTION}, playerSouthTeam->${TEAM_PROJECTION}, playerWestTeam->${TEAM_PROJECTION}, playerNorthTeam->${TEAM_PROJECTION}, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
       )
@@ -153,33 +163,59 @@ export const getMatch = cache(
           playerWestTeam,
           playerNorth,
           playerNorthTeam,
-          ...match
+          ...matchRest
         } = matches[0];
 
-        return {
-          ...match,
+        const newMatch: MatchDTO = {
+          ...matchRest,
           playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
           playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
           playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
           playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
+          _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
         };
+
+        if (
+          playerEast &&
+          playerEastTeam &&
+          playerSouth &&
+          playerSouthTeam &&
+          playerWest &&
+          playerWestTeam &&
+          playerNorth &&
+          playerNorthTeam
+        ) {
+          // assume both player and placeholder team exist
+
+          const playersMap: Record<
+            string,
+            "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
+          > = {
+            [playerEast.team._id]: "playerEast",
+            [playerSouth.team._id]: "playerSouth",
+            [playerWest.team._id]: "playerWest",
+            [playerNorth.team._id]: "playerNorth",
+          };
+
+          newMatch._order = [
+            playersMap[playerEastTeam._id],
+            playersMap[playerSouthTeam._id],
+            playersMap[playerWestTeam._id],
+            playersMap[playerNorthTeam._id],
+          ];
+        }
+
+        return newMatch;
       })
 );
 
-export const getLatestComingMatchesGroupedByDate = cache(async () => {
+export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
   const playerProjection =
-    '{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
+    '{team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
   const teamProjection = TEAM_PROJECTION;
 
-  const scheduledMatches = await client.fetch<Match[]>(
-    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${
-      process.env.SANITY_DEFAULT_TOURNAMENT_ID
-    }" && startAt >= "${new Date()
-      .toISOString()
-      .substring(
-        0,
-        10
-      )}T00:00:00+08:00"] | order(startAt asc)[0...6] { _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl}`
+  const scheduledMatches = await publicClient.fetch<Match[]>(
+    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && defined(result.playerEast.score)] | order(startAt desc)[0...2] { _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
   );
 
   const matchesGroupedByDate: Record<
@@ -214,13 +250,137 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
       };
     }
 
-    matchesGroupedByDate[dateString].matches.push({
+    const newMatch: MatchDTO = {
       ...matchRest,
       playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
       playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
       playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
       playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-    });
+      _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
+    };
+
+    if (
+      playerEast &&
+      playerEastTeam &&
+      playerSouth &&
+      playerSouthTeam &&
+      playerWest &&
+      playerWestTeam &&
+      playerNorth &&
+      playerNorthTeam
+    ) {
+      // assume both player and placeholder team exist
+
+      const playersMap: Record<
+        string,
+        "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
+      > = {
+        [playerEast.team._id]: "playerEast",
+        [playerSouth.team._id]: "playerSouth",
+        [playerWest.team._id]: "playerWest",
+        [playerNorth.team._id]: "playerNorth",
+      };
+
+      newMatch._order = [
+        playersMap[playerEastTeam._id],
+        playersMap[playerSouthTeam._id],
+        playersMap[playerWestTeam._id],
+        playersMap[playerNorthTeam._id],
+      ];
+    }
+
+    matchesGroupedByDate[dateString].matches.unshift(newMatch);
+  }
+
+  const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
+    date: key,
+    ...value,
+  }));
+
+  return [result[0]];
+});
+
+export const getLatestComingMatchesGroupedByDate = cache(async () => {
+  const playerProjection =
+    '{team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
+  const teamProjection = TEAM_PROJECTION;
+
+  const scheduledMatches = await publicClient.fetch<Match[]>(
+    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && !defined(result.playerEast.score)] | order(startAt asc)[0...4] { _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl}`
+  );
+
+  const matchesGroupedByDate: Record<
+    string,
+    { weekday: number; matches: MatchDTO[] }
+  > = {};
+
+  for (const match of scheduledMatches) {
+    const {
+      playerEast,
+      playerEastTeam,
+      playerSouth,
+      playerSouthTeam,
+      playerWest,
+      playerWestTeam,
+      playerNorth,
+      playerNorthTeam,
+      ...matchRest
+    } = match;
+    const dateString = `${matchRest.startAt.substring(
+      8,
+      10
+    )}/${matchRest.startAt.substring(5, 7)}`;
+
+    if (!matchesGroupedByDate[dateString]) {
+      const date = new Date(matchRest.startAt);
+      const weekday = date.getDay();
+
+      matchesGroupedByDate[dateString] = {
+        weekday,
+        matches: [],
+      };
+    }
+
+    const newMatch: MatchDTO = {
+      ...matchRest,
+      playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
+      playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
+      playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
+      playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
+      _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
+    };
+
+    if (
+      playerEast &&
+      playerEastTeam &&
+      playerSouth &&
+      playerSouthTeam &&
+      playerWest &&
+      playerWestTeam &&
+      playerNorth &&
+      playerNorthTeam
+    ) {
+      // assume both player and placeholder team exist
+
+      const playersMap: Record<
+        string,
+        "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
+      > = {
+        [playerEast.team._id]: "playerEast",
+        [playerSouth.team._id]: "playerSouth",
+        [playerWest.team._id]: "playerWest",
+        [playerNorth.team._id]: "playerNorth",
+      };
+
+      newMatch._order = [
+        playersMap[playerEastTeam._id],
+        playersMap[playerSouthTeam._id],
+        playersMap[playerWestTeam._id],
+        playersMap[playerNorthTeam._id],
+      ];
+    }
+
+    matchesGroupedByDate[dateString].matches.push(newMatch);
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -232,23 +392,18 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
 });
 
 export const getMatchesGroupedByDate = cache(
-  async (year: number, month: number) => {
-    const playerProjection =
-      '{team->{name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
+  async (
+    startDate: string,
+    endDate: string,
+    options?: { withPlayerDetails?: boolean }
+  ) => {
+    const teamPlayerProjection = options?.withPlayerDetails
+      ? `..., team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}`
+      : 'team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}';
     const teamProjection = TEAM_PROJECTION;
 
-    const nextMonth = month === 12 ? 2 : month + 1;
-    const nextYear = month === 12 ? year + 1 : year;
-
-    const filterStartDate = `${year}-${month
-      .toString()
-      .padStart(2, "0")}-01T00:00:00Z`;
-    const filterEndDate = `${nextYear}-${nextMonth
-      .toString()
-      .padStart(2, "0")}-01T00:00:00Z`;
-
-    const scheduledMatches = await client.fetch<Match[]>(
-      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && startAt >= "${filterStartDate}" && startAt < "${filterEndDate}"] | order(startAt asc){ _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
+    const scheduledMatches = await publicClient.fetch<Match[]>(
+      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && startAt >= "${startDate}" && startAt < "${endDate}"] | order(startAt asc){ _id, name, playerEast->{${teamPlayerProjection}}, playerSouth->{${teamPlayerProjection}}, playerWest->{${teamPlayerProjection}}, playerNorth->{${teamPlayerProjection}}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
     );
 
     const matchesGroupedByDate: Record<
@@ -268,10 +423,7 @@ export const getMatchesGroupedByDate = cache(
         playerNorthTeam,
         ...matchRest
       } = match;
-      const dateString = `${matchRest.startAt.substring(
-        8,
-        10
-      )}/${matchRest.startAt.substring(5, 7)}`;
+      const dateString = matchRest.startAt.substring(0, 10);
 
       if (!matchesGroupedByDate[dateString]) {
         const date = new Date(matchRest.startAt);
@@ -283,13 +435,46 @@ export const getMatchesGroupedByDate = cache(
         };
       }
 
-      matchesGroupedByDate[dateString].matches.push({
+      const newMatch: MatchDTO = {
         ...matchRest,
         playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
         playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
         playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
         playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-      });
+        _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
+      };
+
+      if (
+        playerEast &&
+        playerEastTeam &&
+        playerSouth &&
+        playerSouthTeam &&
+        playerWest &&
+        playerWestTeam &&
+        playerNorth &&
+        playerNorthTeam
+      ) {
+        // assume both player and placeholder team exist
+
+        const playersMap: Record<
+          string,
+          "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
+        > = {
+          [playerEast.team._id]: "playerEast",
+          [playerSouth.team._id]: "playerSouth",
+          [playerWest.team._id]: "playerWest",
+          [playerNorth.team._id]: "playerNorth",
+        };
+
+        newMatch._order = [
+          playersMap[playerEastTeam._id],
+          playersMap[playerSouthTeam._id],
+          playersMap[playerWestTeam._id],
+          playersMap[playerNorthTeam._id],
+        ];
+      }
+
+      matchesGroupedByDate[dateString].matches.push(newMatch);
     }
 
     const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -302,14 +487,22 @@ export const getMatchesGroupedByDate = cache(
 );
 
 export type TeamPlayerDTO = {
+  playerId: string;
   playerName: string;
   playerNickname: string;
   playerDesignation: string;
+  playerPortraitImageUrl: string;
+  playerIntroduction: string;
   playerFullname: string;
+  teamId: string;
   teamName: string;
+  teamSecondaryName: string;
+  teamThirdName: string;
+  teamFullname: string;
   color: string;
   teamLogoImageUrl: string;
   teamSlug: string;
+  teamIntroduction: string;
 };
 
 export type MatchDTO = Omit<
@@ -327,35 +520,96 @@ export type MatchDTO = Omit<
   playerSouth: TeamPlayerDTO;
   playerWest: TeamPlayerDTO;
   playerNorth: TeamPlayerDTO;
+  _order: ("playerEast" | "playerSouth" | "playerWest" | "playerNorth")[];
 };
 
 export const formatTeamPlayerDTO = (
-  team: Team | null | undefined,
+  placeholderTeam: Team | null | undefined,
   teamPlayer?: TeamPlayer | null | undefined
 ): TeamPlayerDTO => {
-  const playerName =
-    teamPlayer?.overridedName || teamPlayer?.player?.name || "";
-  const playerNickname =
-    teamPlayer?.overridedNickname || teamPlayer?.player?.nickname || "";
-
-  return {
-    playerName,
-    playerNickname,
-    playerFullname: playerNickname
-      ? `${playerName} (${playerNickname})`
-      : playerName,
-    playerDesignation:
-      teamPlayer?.overridedDesignation || teamPlayer?.player?.designation || "",
-    teamName: teamPlayer?.team?.name || team?.name || "",
-    color:
-      teamPlayer?.overridedColor ||
-      teamPlayer?.team?.color ||
-      team?.color ||
-      "#000000",
-    teamLogoImageUrl:
-      teamPlayer?.team?.squareLogoImage ||
-      team?.squareLogoImage ||
-      "/images/empty.png",
-    teamSlug: team?.slug ?? teamPlayer?.team?.slug ?? "",
+  const newTeamPlayerDTO: TeamPlayerDTO = {
+    playerId: "",
+    playerName: "",
+    playerNickname: "",
+    playerDesignation: "",
+    playerPortraitImageUrl:
+      "https://hkleague2024.hkmahjong.org/images/empty.png",
+    playerIntroduction: "",
+    playerFullname: "",
+    teamId: "",
+    teamName: "",
+    teamSecondaryName: "",
+    teamThirdName: "",
+    teamFullname: "",
+    color: "#000000",
+    teamLogoImageUrl: "https://hkleague2024.hkmahjong.org/images/empty.png",
+    teamSlug: "",
+    teamIntroduction: "",
   };
+
+  if (teamPlayer) {
+    if (teamPlayer.player) {
+      newTeamPlayerDTO.playerName = teamPlayer.player.name;
+      newTeamPlayerDTO.playerNickname = teamPlayer.player.nickname;
+      newTeamPlayerDTO.playerDesignation = teamPlayer.player.name;
+      newTeamPlayerDTO.playerPortraitImageUrl = teamPlayer.player.portraitImage;
+      newTeamPlayerDTO.playerIntroduction = teamPlayer.introduction;
+    }
+
+    if (teamPlayer.team) {
+      newTeamPlayerDTO.teamId = teamPlayer.team._id;
+      newTeamPlayerDTO.teamName = teamPlayer.team.name;
+      newTeamPlayerDTO.teamSecondaryName = teamPlayer.team.secondaryName;
+      newTeamPlayerDTO.teamThirdName = teamPlayer.team.thirdName;
+      newTeamPlayerDTO.color = teamPlayer.team.color;
+      if (teamPlayer.team.squareLogoImage) {
+        newTeamPlayerDTO.teamLogoImageUrl = teamPlayer.team.squareLogoImage;
+      }
+      newTeamPlayerDTO.teamSlug = teamPlayer.team.slug;
+      newTeamPlayerDTO.teamIntroduction = teamPlayer.team.introduction;
+    }
+
+    if (teamPlayer.overridedDesignation) {
+      newTeamPlayerDTO.playerDesignation = teamPlayer.overridedDesignation;
+    }
+    if (teamPlayer.overridedName) {
+      newTeamPlayerDTO.playerName = teamPlayer.overridedName;
+    }
+    if (teamPlayer.overridedNickname) {
+      newTeamPlayerDTO.playerNickname = teamPlayer.overridedNickname;
+    }
+    if (teamPlayer.overridedColor) {
+      newTeamPlayerDTO.color = teamPlayer.overridedColor;
+    }
+    if (teamPlayer.overridedPortraitImage) {
+      newTeamPlayerDTO.playerPortraitImageUrl =
+        teamPlayer.overridedPortraitImage;
+    }
+  } else if (placeholderTeam) {
+    newTeamPlayerDTO.teamId = placeholderTeam._id;
+    newTeamPlayerDTO.teamName = placeholderTeam.name;
+    newTeamPlayerDTO.teamSecondaryName = placeholderTeam.secondaryName;
+    newTeamPlayerDTO.teamThirdName = placeholderTeam.thirdName;
+    newTeamPlayerDTO.color = placeholderTeam.color;
+    if (placeholderTeam.squareLogoImage) {
+      newTeamPlayerDTO.teamLogoImageUrl = placeholderTeam.squareLogoImage;
+    }
+    newTeamPlayerDTO.teamSlug = placeholderTeam.slug;
+    newTeamPlayerDTO.teamIntroduction = placeholderTeam.introduction;
+  }
+
+  newTeamPlayerDTO.playerFullname =
+    newTeamPlayerDTO.playerName +
+    (newTeamPlayerDTO.playerNickname
+      ? ` (${newTeamPlayerDTO.playerNickname})`
+      : "");
+  newTeamPlayerDTO.teamFullname = [
+    newTeamPlayerDTO.teamName,
+    newTeamPlayerDTO.teamSecondaryName,
+    newTeamPlayerDTO.teamThirdName,
+  ]
+    .filter((item) => !!item)
+    .join(" ");
+
+  return newTeamPlayerDTO;
 };
