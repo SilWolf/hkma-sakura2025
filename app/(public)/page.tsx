@@ -12,6 +12,7 @@ import {
   renderWeekday,
 } from "@/helpers/string.helper";
 import Link from "next/link";
+import W3IssueCard from "./_components/W3IssueCard";
 
 export const revalidate = 900;
 
@@ -167,6 +168,12 @@ export default async function Home() {
           </div>
         </div>
       </section> */}
+
+      <section>
+        <div className="container max-w-screen-md px-2 mx-auto">
+          <W3IssueCard />
+        </div>
+      </section>
 
       <section className="py-24">
         <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">
