@@ -114,6 +114,22 @@ export type PlayerStatistic = {
   chuckAfterRiichiPureScoreAvg: number;
   chuckAfterRevealCount: number;
   chuckAfterRevealPureScoreAvg: number;
+
+  pointRanking: number;
+  nonFourthP: number;
+  nonFourthPRanking: number;
+  firstAndSecondP: number;
+  firstAndSecondPRanking: number;
+  riichiP: number;
+  riichiPRanking: number;
+  ronP: number;
+  ronPRanking: number;
+  chuckP: number;
+  chuckPRanking: number;
+  revealP: number;
+  revealPRanking: number;
+  ronPureScoreAvgRanking: number;
+  chuckPureScoreAvgRanking: number;
 };
 
 export type Team = {

@@ -79,7 +79,15 @@ export default async function TeamDetail({
       </section>
 
       {team.players.map((player) => (
-        <section key={player.playerName} className="py-12">
+        <section
+          key={player.playerName}
+          className="py-12 [&_th]:bg-[--teamColor]"
+          style={
+            {
+              "--teamColor": team.color + "80",
+            } as React.CSSProperties
+          }
+        >
           <div className="container mx-auto max-w-screen-md px-2">
             <div className="flex gap-2 md:gap-12 items-center">
               <div className="flex-1">
@@ -89,10 +97,10 @@ export default async function TeamDetail({
                 </p>
               </div>
             </div>
-            <div className="flex gap-x-4 mt-4">
+            <div className="flex flex-col md:flex-row gap-4 mt-4">
               <table className="flex-[3] text-center">
                 <thead>
-                  <tr className="bg-neutral-700 text-white">
+                  <tr className="text-white">
                     <th>半莊數</th>
                     <th>總積分</th>
                     <th>平均順位</th>
@@ -109,6 +117,9 @@ export default async function TeamDetail({
                     </td>
                     <td>
                       <p>{renderPoint(player.statistic.point)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.pointRanking ?? "-"}名
+                      </p>
                       <p className="text-xs opacity-80">
                         (平均:{" "}
                         {renderPoint(
@@ -118,7 +129,9 @@ export default async function TeamDetail({
                       </p>
                     </td>
                     <td>{renderRankingAvg(player.statistic)}</td>
-                    <td>{player.statistic.scoreMax}</td>
+                    <td>
+                      <p>{player.statistic.scoreMax}</p>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -133,18 +146,18 @@ export default async function TeamDetail({
                 <tbody>
                   <tr>
                     <td>
-                      {renderPercentage(
-                        (player.statistic.firstCount +
-                          player.statistic.secondCount) /
-                          player.statistic.matchCount
-                      )}
+                      <p>
+                        {renderPercentage(player.statistic.firstAndSecondP)}
+                      </p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.firstAndSecondPRanking ?? "-"}名
+                      </p>
                     </td>
                     <td>
-                      {renderPercentage(
-                        1 -
-                          player.statistic.fourthCount /
-                            player.statistic.matchCount
-                      )}
+                      <p>{renderPercentage(player.statistic.nonFourthP)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.nonFourthPRanking ?? "-"}名
+                      </p>
                     </td>
                   </tr>
                 </tbody>
@@ -160,20 +173,17 @@ export default async function TeamDetail({
                 <tbody>
                   <tr>
                     <td>
-                      <p>
-                        {renderPercentage(
-                          player.statistic.riichiCount /
-                            player.statistic.roundCount
-                        )}
+                      <p>{renderPercentage(player.statistic.riichiP)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.riichiPRanking ?? "-"}名
                       </p>
                       <p className="text-xs opacity-80">
-                        (親:
+                        (親:{" "}
                         {renderPercentageWithSign(
                           player.statistic.riichiCountWhenEast /
                             player.statistic.riichiCount
                         )}
-                        <br />
-                        子:{" "}
+                        , 子:{" "}
                         {renderPercentageWithSign(
                           player.statistic.riichiCountWhenNonEast /
                             player.statistic.riichiCount
@@ -182,11 +192,9 @@ export default async function TeamDetail({
                       </p>
                     </td>
                     <td>
-                      <p>
-                        {renderPercentage(
-                          player.statistic.revealCount /
-                            player.statistic.roundCount
-                        )}
+                      <p>{renderPercentage(player.statistic.revealP)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.revealPRanking ?? "-"}名
                       </p>
                       <p className="text-xs opacity-80">
                         (親:{" "}
@@ -194,8 +202,7 @@ export default async function TeamDetail({
                           player.statistic.revealCountWhenEast /
                             player.statistic.revealCount
                         )}
-                        <br />
-                        子:{" "}
+                        , 子:{" "}
                         {renderPercentageWithSign(
                           player.statistic.revealCountWhenNonEast /
                             player.statistic.revealCount
@@ -208,7 +215,7 @@ export default async function TeamDetail({
               </table>
             </div>
 
-            <div className="flex gap-x-4 mt-4">
+            <div className="flex flex-col md:flex-row gap-4 mt-4">
               <table className="flex-1 text-center">
                 <thead>
                   <tr className="bg-neutral-700 text-white">
@@ -219,11 +226,9 @@ export default async function TeamDetail({
                 <tbody>
                   <tr>
                     <td>
-                      <p>
-                        {renderPercentage(
-                          player.statistic.ronCount /
-                            player.statistic.roundCount
-                        )}
+                      <p>{renderPercentage(player.statistic.ronP)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.ronPRanking ?? "-"}名
                       </p>
                       <p className="text-xs opacity-80">
                         (親:{" "}
@@ -254,6 +259,9 @@ export default async function TeamDetail({
                     </td>
                     <td>
                       <p>{player.statistic.ronPureScoreAvg.toFixed(2)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.ronPureScoreAvgRanking ?? "-"}名
+                      </p>
                       <p className="text-xs opacity-80">
                         (親:{" "}
                         {player.statistic.ronPureScoreAvgWhenEast.toFixed(2)},
@@ -282,11 +290,9 @@ export default async function TeamDetail({
                 <tbody>
                   <tr>
                     <td>
-                      <p>
-                        {renderPercentage(
-                          player.statistic.chuckCount /
-                            player.statistic.roundCount
-                        )}
+                      <p>{renderPercentage(player.statistic.chuckP)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.chuckPRanking ?? "-"}名
                       </p>
                       <p className="text-xs opacity-80">
                         (親:{" "}
@@ -317,6 +323,9 @@ export default async function TeamDetail({
                     </td>
                     <td>
                       <p>{player.statistic.chuckPureScoreAvg.toFixed(2)}</p>
+                      <p className="text-xs text-cyan-400">
+                        {player.statistic.chuckPureScoreAvgRanking ?? "-"}名
+                      </p>
                       <p className="text-xs opacity-80">
                         (親:{" "}
                         {player.statistic.chuckPureScoreAvgWhenEast.toFixed(2)},
