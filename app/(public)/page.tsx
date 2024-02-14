@@ -169,11 +169,11 @@ export default async function Home() {
         </div>
       </section> */}
 
-      <section>
+      {/* <section>
         <div className="container max-w-screen-md px-2 mx-auto">
           <W3IssueCard />
         </div>
-      </section>
+      </section> */}
 
       <section className="py-24">
         <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">
