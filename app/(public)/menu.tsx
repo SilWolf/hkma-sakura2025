@@ -52,6 +52,14 @@ const Menu = () => {
             聯賽賽制及規則
           </Link>
         </li>
+        <li>
+          <Link
+            href="https://docs.google.com/spreadsheets/d/12wGSDpsiHSdZ7ljRYX8Mz71JAGyN4iwrnIV1en9lRqQ/edit"
+            target="_blank"
+          >
+            判罰記錄 <i className="text-xs bi bi-box-arrow-up-right"></i>
+          </Link>
+        </li>
         {/* <li>
           <Link onClick={handleCloseMenu} href="/#new-players">
             新手專區
