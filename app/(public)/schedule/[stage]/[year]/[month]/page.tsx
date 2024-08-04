@@ -38,21 +38,117 @@ const ScheduleTeam = ({
   );
 };
 
+const STAGES = [
+  {
+    name: "regulars",
+    label: "常規賽",
+    months: [
+      {
+        year: 2024,
+        month: 1,
+        label: "1月",
+      },
+      {
+        year: 2024,
+        month: 2,
+        label: "2月",
+      },
+      {
+        year: 2024,
+        month: 3,
+        label: "3月",
+      },
+      {
+        year: 2024,
+        month: 4,
+        label: "4月",
+      },
+      {
+        year: 2024,
+        month: 5,
+        label: "5月",
+      },
+      {
+        year: 2024,
+        month: 6,
+        label: "6月",
+      },
+      {
+        year: 2024,
+        month: 7,
+        label: "7月",
+      },
+      {
+        year: 2024,
+        month: 8,
+        label: "8月",
+      },
+    ],
+  },
+  {
+    name: "semifinals",
+    label: "準決賽",
+    months: [
+      {
+        year: 2024,
+        month: 8,
+        label: "8月",
+      },
+      {
+        year: 2024,
+        month: 9,
+        label: "9月",
+      },
+    ],
+  },
+  {
+    name: "finals",
+    label: "決賽",
+    months: [
+      {
+        year: 2024,
+        month: 10,
+        label: "10月",
+      },
+      {
+        year: 2024,
+        month: 11,
+        label: "11月",
+      },
+    ],
+  },
+];
+
 export async function generateMetadata({
-  params: { year, month },
+  params: { year, month, stage = "regulars" },
 }: {
-  params: { year: string; month: string };
+  params: {
+    year: string;
+    month: string;
+    stage: "regulars" | "semifinals" | "finals";
+  };
 }): Promise<Metadata> {
+  const activeStage = STAGES.find((stageItem) => stageItem.name === stage);
+
   return {
-    title: `賽程及對局紀錄 - ${year}年${month}月`,
+    title: `賽程及對局紀錄 - ${activeStage?.label} ${year}年${month}月`,
   };
 }
 
 export default async function SchedulePage({
-  params: { year, month },
+  params: { year, month, stage = "regulars" },
 }: {
-  params: { year: string; month: string };
+  params: {
+    year: string;
+    month: string;
+    stage: "regulars" | "semifinals" | "finals";
+  };
 }) {
+  const activeStage = STAGES.find((stageItem) => stageItem.name === stage);
+  if (!activeStage) {
+    return notFound();
+  }
+
   const trueYear = parseInt(year);
   const trueMonth = parseInt(month);
 
@@ -111,57 +207,38 @@ export default async function SchedulePage({
         </div>
       </section> */}
 
-      <section className="pb-4">
+      <section className="pb-8">
+        <div className="container mx-auto max-w-screen-lg mb-4">
+          <div className="flex-wrap flex justify-center gap-4 [&>a]:py-1 [&>a]:px-4 [&>a]:border-b-4 [&>a]:border-transparent data-[active=true]:[&>a]:border-cyan-500">
+            {STAGES.map((stageItem) => (
+              <Link
+                key={stageItem.name}
+                href={
+                  stage !== stageItem.name
+                    ? `/schedule/${stageItem.name}/${stageItem.months[0].year}/${stageItem.months[0].month}`
+                    : "#"
+                }
+                data-active={stage === stageItem.name}
+              >
+                {stageItem.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <div className="container mx-auto max-w-screen-lg">
           <div className="flex-wrap flex justify-center gap-4 [&>a]:py-1 [&>a]:px-4 [&>a]:border-b-4 [&>a]:border-transparent data-[active=true]:[&>a]:border-cyan-500">
-            <Link
-              href="/schedule/2024/1"
-              data-active={trueYear === 2024 && trueMonth === 1}
-            >
-              1月
-            </Link>
-            <Link
-              href="/schedule/2024/2"
-              data-active={trueYear === 2024 && trueMonth === 2}
-            >
-              2月
-            </Link>
-            <Link
-              href="/schedule/2024/3"
-              data-active={trueYear === 2024 && trueMonth === 3}
-            >
-              3月
-            </Link>
-            <Link
-              href="/schedule/2024/4"
-              data-active={trueYear === 2024 && trueMonth === 4}
-            >
-              4月
-            </Link>
-            <Link
-              href="/schedule/2024/5"
-              data-active={trueYear === 2024 && trueMonth === 5}
-            >
-              5月
-            </Link>
-            <Link
-              href="/schedule/2024/6"
-              data-active={trueYear === 2024 && trueMonth === 6}
-            >
-              6月
-            </Link>
-            <Link
-              href="/schedule/2024/7"
-              data-active={trueYear === 2024 && trueMonth === 7}
-            >
-              7月
-            </Link>
-            <Link
-              href="/schedule/2024/8"
-              data-active={trueYear === 2024 && trueMonth === 8}
-            >
-              8月
-            </Link>
+            {activeStage.months.map((monthItem) => (
+              <Link
+                key={monthItem.label}
+                href={`/schedule/${stage}/${monthItem.year}/${monthItem.month}`}
+                data-active={
+                  trueYear === monthItem.year && trueMonth === monthItem.month
+                }
+              >
+                {monthItem.label}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
