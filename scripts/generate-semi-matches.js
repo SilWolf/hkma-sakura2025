@@ -60,24 +60,6 @@ const createMatch = async (name, startAt, teams) => {
       _ref: teams[3],
       _type: "reference",
     },
-    result: {
-      playerEast: {
-        penalty: 0,
-        penaltyReason: "",
-      },
-      playerNorth: {
-        penalty: 0,
-        penaltyReason: "",
-      },
-      playerSouth: {
-        penalty: 0,
-        penaltyReason: "",
-      },
-      playerWest: {
-        penalty: 0,
-        penaltyReason: "",
-      },
-    },
     startAt: startAt,
     status: "initialized",
     tournament: {

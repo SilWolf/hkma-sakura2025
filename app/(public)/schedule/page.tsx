@@ -5,7 +5,7 @@ export const revalidate = 900;
 export default async function ScheduleDefaultPage() {
   const date = new Date();
   const params = {
-    stage: "regulars" as const,
+    stage: "semifinals" as const,
     year: date.getFullYear().toString(),
     month: (date.getMonth() + 1).toString(),
   };
