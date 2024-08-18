@@ -1,7 +1,7 @@
 import {
   MatchDTO,
   TeamPlayerDTO,
-  getMatchesGroupedByDate,
+  getMatchesGroupedByStageAndDate,
 } from "@/helpers/sanity.helper";
 
 export type MatchDTOForSocial = Pick<MatchDTO, "name"> & {
@@ -56,7 +56,8 @@ export const getMatchByDateAndIndex = async (date: string, index: string) => {
     throw new Error("date must be in YYYY-MM-DD format");
   }
 
-  const result = await getMatchesGroupedByDate(
+  const result = await getMatchesGroupedByStageAndDate(
+    "regulars",
     `${date}T00:00:00+08:00`,
     `${date}T23:59:59+08:00`,
     { withPlayerDetails: true }
@@ -172,7 +173,8 @@ export const getMatchByWeek = async (week: number) => {
   const endDate = new Date("2024-01-12T23:59:59+08:00");
   endDate.setDate(endDate.getDate() + (week - 1) * 7);
 
-  const result = await getMatchesGroupedByDate(
+  const result = await getMatchesGroupedByStageAndDate(
+    "regulars",
     startDate.toISOString(),
     endDate.toISOString(),
     { withPlayerDetails: true }

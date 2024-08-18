@@ -53,8 +53,15 @@ export const renderMatchResultType = (type: string) => {
   return " ";
 };
 
-export const renderPoint = (value: number | undefined | null) => {
+export const renderPoint = (
+  value: number | undefined | null,
+  zeroAsUndefined = false
+) => {
   if (typeof value === "undefined" || value === null || isNaN(value)) {
+    return "-";
+  }
+
+  if (zeroAsUndefined && value === 0) {
     return "-";
   }
 
@@ -65,12 +72,15 @@ export const renderPoint = (value: number | undefined | null) => {
   return `▲${Math.abs(value).toFixed(1)}`;
 };
 
-export const renderPercentage = (value: number | undefined | null) => {
+export const renderPercentage = (
+  value: number | undefined | null,
+  dp: number = 2
+) => {
   if (typeof value === "undefined" || value === null || isNaN(value)) {
     return "-";
   }
 
-  return value.toFixed(2);
+  return value.toFixed(dp).substring(1);
 };
 
 export const renderPercentageWithSign = (value: number | undefined | null) => {
@@ -101,16 +111,24 @@ export const renderRankingAvg = ({
       ).toFixed(1)
     : "-";
 
-export const renderScore = (value: number | undefined | null) => {
+export const renderScore = (
+  value: number | undefined | null,
+  zeroAsUndefined = false,
+  dp: number = 0
+) => {
   if (typeof value === "undefined" || value === null) {
     return "-";
   }
 
-  if (value >= 0) {
-    return `+${value.toFixed(0)}`;
+  if (zeroAsUndefined && value === 0) {
+    return "";
   }
 
-  return `▲${Math.abs(value).toFixed(0)}`;
+  if (value >= 0) {
+    return `+${value.toFixed(dp)}`;
+  }
+
+  return `▲${Math.abs(value).toFixed(dp)}`;
 };
 
 export const renderWeekday = (value: number) =>

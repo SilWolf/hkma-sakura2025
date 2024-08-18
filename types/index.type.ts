@@ -36,6 +36,7 @@ export type MatchResultPlayer = {
   score: number;
   ranking: "1" | "2" | "3" | "4";
   point: number;
+  penalty?: number;
 };
 
 export type MatchRoundPlayer = {

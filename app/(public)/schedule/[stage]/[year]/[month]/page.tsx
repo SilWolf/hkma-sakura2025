@@ -1,4 +1,8 @@
-import { MatchDTO, getMatchesGroupedByDate } from "@/helpers/sanity.helper";
+import {
+  MatchDTO,
+  getMatchesGroupedByDate,
+  getMatchesGroupedByStageAndDate,
+} from "@/helpers/sanity.helper";
 import {
   renderDateToShortForm,
   renderPoint,
@@ -163,7 +167,8 @@ export default async function SchedulePage({
   const nextMonth = trueMonth === 12 ? 2 : trueMonth + 1;
   const nextYear = trueMonth === 12 ? trueYear + 1 : trueYear;
 
-  const matchesGroupedByDate = await getMatchesGroupedByDate(
+  const matchesGroupedByDate = await getMatchesGroupedByStageAndDate(
+    stage,
     `${trueYear}-${trueMonth.toString().padStart(2, "0")}-01T00:00:00+08:00`,
     `${nextYear}-${nextMonth.toString().padStart(2, "0")}-01T00:00:00+08:00`
   );

@@ -4,6 +4,7 @@ import {
   getLastDateFinishedMatchesGroupedByDate,
   getLatestComingMatchesGroupedByDate,
   getOldMatches,
+  getRegularTeams,
   getTeams,
 } from "@/helpers/sanity.helper";
 import {
@@ -59,11 +60,13 @@ const TeamLogoForIntro = ({ team }: { team: TeamPlayerDTO }) => {
 
 export default async function Home() {
   const [
+    regularTournamentTeams,
     tournamentTeams,
     lastMatchesGroupedByDate,
     comingMatchesGroupedByDate,
     oldMatches,
   ] = await Promise.all([
+    getRegularTeams(),
     getTeams(),
     getLastDateFinishedMatchesGroupedByDate(),
     getLatestComingMatchesGroupedByDate(),
@@ -83,7 +86,7 @@ export default async function Home() {
             src="https://www.youtube.com/embed/Kp_UppkAiCk?si=Va0LX5hMdsdeQXzO&controls=0&start=1878&autoplay=1&mute=1&playsinline=1"
           ></iframe> */}
           <div className="grid grid-cols-4 lg:grid-cols-6 items-center justify-center text-center max-w-screen-xl mx-auto">
-            {tournamentTeams.map(({ team }) => (
+            {regularTournamentTeams.map(({ team }) => (
               <div key={team.teamSlug}>
                 <img
                   src={team.teamLogoImageUrl + "?w=512&auto=format"}
@@ -278,7 +281,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="flex-1">
-            <h2 className="font-semibold text-4xl mb-4">排名</h2>
+            <h2 className="font-semibold text-4xl mb-4">準決賽排名</h2>
             <table className="w-full">
               <thead>
                 <tr className="[&>th]:text-xs sm:[&>th]:text-base sm:[&>th]:px-2">
@@ -339,19 +342,27 @@ export default async function Home() {
                         <span className="text-xs sm:text-base">
                           {matchCount}
                         </span>
-                        <span className="hidden sm:inline sm:text-sm">/60</span>
+                        <span className="hidden sm:inline sm:text-sm">/24</span>
                       </td>
                     </tr>
                   )
                 )}
               </tbody>
             </table>
-            <div className="mt-8">
+            <div className="mt-8 space-x-2">
               <Link
                 className="inline-block text-lg rounded-full py-4 px-12 hover:opacity-80 bg-[#1abced]"
                 href="/ranking"
               >
                 詳細數據
+              </Link>
+              <Link
+                className="inline-block text-lg rounded-full py-4 px-12 hover:opacity-80 bg-[#1abced]"
+                href="/files/hkleague2024-regulars-report.pdf"
+                target="_blank"
+              >
+                常規賽數據 (PDF){" "}
+                <i className="text-xs bi bi-box-arrow-up-right"></i>
               </Link>
             </div>
           </div>
@@ -363,16 +374,16 @@ export default async function Home() {
           <div className="flex-1 hidden lg:block">
             <div className="flex flex-col items-end">
               <div>
-                <TeamLogoForIntro team={tournamentTeams[0].team} />
-                <TeamLogoForIntro team={tournamentTeams[1].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[0].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[1].team} />
               </div>
               <div className="pr-[12%]">
-                <TeamLogoForIntro team={tournamentTeams[2].team} />
-                <TeamLogoForIntro team={tournamentTeams[3].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[2].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[3].team} />
               </div>
               <div>
-                <TeamLogoForIntro team={tournamentTeams[4].team} />
-                <TeamLogoForIntro team={tournamentTeams[5].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[4].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[5].team} />
               </div>
             </div>
           </div>
@@ -416,16 +427,16 @@ export default async function Home() {
           <div className="flex-1 hidden lg:block">
             <div className="flex flex-col items-start">
               <div>
-                <TeamLogoForIntro team={tournamentTeams[6].team} />
-                <TeamLogoForIntro team={tournamentTeams[7].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[6].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[7].team} />
               </div>
               <div className="pl-[12%]">
-                <TeamLogoForIntro team={tournamentTeams[8].team} />
-                <TeamLogoForIntro team={tournamentTeams[9].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[8].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[9].team} />
               </div>
               <div>
-                <TeamLogoForIntro team={tournamentTeams[10].team} />
-                <TeamLogoForIntro team={tournamentTeams[11].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[10].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[11].team} />
               </div>
             </div>
           </div>
@@ -433,31 +444,31 @@ export default async function Home() {
 
         <div className="mt-8 block relative overflow-hidden lg:hidden h-48 sm:h-64 [&>div]:absolute [&>div]:w-24 [&>div]:h-24 sm:[&>div]:w-32 sm:[&>div]:h-32 [&>div]:animate-carousel [&_img]:w-24 [&_img]:h-24 sm:[&_img]:w-32 sm:[&_img]:h-32">
           <div>
-            <TeamLogoForIntro team={tournamentTeams[0].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[0].team} />
           </div>
           <div style={{ animationDelay: "-5s" }}>
-            <TeamLogoForIntro team={tournamentTeams[1].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[1].team} />
           </div>
           <div style={{ animationDelay: "-10s" }}>
-            <TeamLogoForIntro team={tournamentTeams[2].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[2].team} />
           </div>
           <div style={{ animationDelay: "-15s" }}>
-            <TeamLogoForIntro team={tournamentTeams[3].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[3].team} />
           </div>
           <div style={{ animationDelay: "-20s" }}>
-            <TeamLogoForIntro team={tournamentTeams[4].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[4].team} />
           </div>
           <div style={{ animationDelay: "-25s" }}>
-            <TeamLogoForIntro team={tournamentTeams[5].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[5].team} />
           </div>
           <div className="bottom-0" style={{ animationDirection: "reverse" }}>
-            <TeamLogoForIntro team={tournamentTeams[6].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[6].team} />
           </div>
           <div
             className="bottom-0"
             style={{ animationDirection: "reverse", animationDelay: "-5s" }}
           >
-            <TeamLogoForIntro team={tournamentTeams[7].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[7].team} />
           </div>
           <div
             className="bottom-0"
@@ -466,7 +477,7 @@ export default async function Home() {
               animationDelay: "-10s",
             }}
           >
-            <TeamLogoForIntro team={tournamentTeams[8].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[8].team} />
           </div>
           <div
             className="bottom-0"
@@ -475,7 +486,7 @@ export default async function Home() {
               animationDelay: "-15s",
             }}
           >
-            <TeamLogoForIntro team={tournamentTeams[9].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[9].team} />
           </div>
           <div
             className="bottom-0"
@@ -484,7 +495,7 @@ export default async function Home() {
               animationDelay: "-20s",
             }}
           >
-            <TeamLogoForIntro team={tournamentTeams[10].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[10].team} />
           </div>
           <div
             className="bottom-0"
@@ -493,7 +504,7 @@ export default async function Home() {
               animationDelay: "-25s",
             }}
           >
-            <TeamLogoForIntro team={tournamentTeams[11].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[11].team} />
           </div>
         </div>
         <div className="container mx-auto text-center mt-8">

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Menu from "./menu";
+import "./public-layout.css";
 
 export default function PublicLayout({
   children,
