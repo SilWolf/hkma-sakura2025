@@ -1,4 +1,8 @@
-import { getPlayersGroupByTeams, getTeams } from "@/helpers/sanity.helper";
+import {
+  getPlayersGroupByTeams,
+  getRegularTeams,
+  getTeams,
+} from "@/helpers/sanity.helper";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -10,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function Teams() {
   const [tournamentTeams, playersInTeamIds] = await Promise.all([
-    getTeams(),
+    getRegularTeams(),
     getPlayersGroupByTeams(),
   ]);
 
