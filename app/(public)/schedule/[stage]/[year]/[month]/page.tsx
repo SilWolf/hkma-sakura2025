@@ -124,7 +124,7 @@ const STAGES = [
 ];
 
 export async function generateMetadata({
-  params: { year, month, stage = "regulars" },
+  params: { year, month, stage = "semifinals" },
 }: {
   params: {
     year: string;
@@ -140,7 +140,7 @@ export async function generateMetadata({
 }
 
 export default async function SchedulePage({
-  params: { year, month, stage = "regulars" },
+  params: { year, month, stage = "semifinals" },
 }: {
   params: {
     year: string;
