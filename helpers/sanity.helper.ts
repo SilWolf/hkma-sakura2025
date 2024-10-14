@@ -21,7 +21,7 @@ const STAGES = {
   },
 } as const;
 
-const CURRENT_STAGE_TOURNAMENT_ID = STAGES.semifinals.tournamentId;
+const CURRENT_STAGE_TOURNAMENT_ID = STAGES.finals.tournamentId;
 
 const PLAYER_PROJECTION = `_id, name, nickname, designation, "portraitImage": portraitImage.asset->url, introduction`;
 const TEAM_PROJECTION = `{_id, "slug": slug.current, name, secondaryName, thirdName, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
