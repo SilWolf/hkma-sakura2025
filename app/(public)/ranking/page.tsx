@@ -139,7 +139,7 @@ export default async function RankingPage() {
                     </td>
                     <td>
                       <span className="text-xs sm:text-base">{matchCount}</span>
-                      <span className="hidden sm:inline sm:text-sm">/24</span>
+                      <span className="hidden sm:inline sm:text-sm">/16</span>
                     </td>
                   </tr>
                 )
@@ -211,7 +211,7 @@ export default async function RankingPage() {
                         background: team.team.color + "80",
                       }}
                     >
-                      {team.matchCount}/24
+                      {team.matchCount}/16
                     </td>
                   ))}
                 </tr>

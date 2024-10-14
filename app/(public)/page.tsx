@@ -281,7 +281,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="flex-1">
-            <h2 className="font-semibold text-4xl mb-4">準決賽排名</h2>
+            <h2 className="font-semibold text-4xl mb-4">決賽排名</h2>
             <table className="w-full">
               <thead>
                 <tr className="[&>th]:text-xs sm:[&>th]:text-base sm:[&>th]:px-2">
@@ -342,7 +342,7 @@ export default async function Home() {
                         <span className="text-xs sm:text-base">
                           {matchCount}
                         </span>
-                        <span className="hidden sm:inline sm:text-sm">/24</span>
+                        <span className="hidden sm:inline sm:text-sm">/16</span>
                       </td>
                     </tr>
                   )
