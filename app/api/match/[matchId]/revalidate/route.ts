@@ -3,9 +3,9 @@ import { NextRequest } from "next/server";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { matchId: string } }
+  { params }: { params: Promise<{ matchId: string }> }
 ) {
-  const { matchId } = params;
+  const matchId = (await params).matchId;
 
   revalidatePath("/(public)/schedule/[year]/[month]", "page");
   revalidatePath(`/(public)/matches/${matchId}`, "page");

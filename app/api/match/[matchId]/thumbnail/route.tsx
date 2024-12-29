@@ -235,7 +235,7 @@ const render = (match: MatchDTO) => (
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { matchId: string } }
+  { params }: { params: Promise<{ matchId: string }> }
 ) => {
   const [
     NotoSansRegular,
@@ -256,7 +256,7 @@ export const GET = async (
     fetch(
       `https://hkleague2025.hkmahjong.org/fonts/KdamThmorPro-Regular.ttf`
     ).then((res) => res.arrayBuffer()),
-    getMatch(params.matchId),
+    getMatch((await params).matchId),
   ]);
 
   return new ImageResponse(render(match), {
