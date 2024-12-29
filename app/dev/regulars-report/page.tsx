@@ -594,7 +594,7 @@ const A4Page = ({
         {!hideHeaderAndFooter && (
           <>
             <div className="absolute top-[8mm] left-[10mm] origin-top-left scale-75">
-              HK-League 2024 香港麻雀協會香港立直麻雀團體聯賽2024 常規賽報告書
+              HK-League 2025 香港麻雀協會香港立直麻雀團體聯賽2025 常規賽報告書
             </div>
             <div className="absolute bottom-[8mm] right-[10mm] origin-bottom-right scale-75">
               頁 {page - 1}/207
@@ -619,8 +619,8 @@ export default async function DevRegularsReport() {
   const matchesPerDate = await (
     await getMatchesGroupedByStageAndDate(
       "regulars",
-      "2024-01-01",
-      "2024-08-31"
+      "2025-01-01",
+      "2025-08-31"
     )
   ).map((item) => ({
     ...item,
@@ -662,10 +662,10 @@ export default async function DevRegularsReport() {
           <img src="/images/logo.png" className="w-1/3" alt="" />
           <div className="text-center">
             <h1 className="text-[56px] leading-[1.3] font-serif font-semibold">
-              HK-League 2024
+              HK-League 2025
             </h1>
             <h2 className="text-[24px] leading-[1]">
-              香港麻雀協會香港立直麻雀團體聯賽2024
+              香港麻雀協會香港立直麻雀團體聯賽2025
             </h2>
           </div>
 
@@ -673,7 +673,7 @@ export default async function DevRegularsReport() {
             <h1 className="text-[56px] leading-[1.3] font-semibold">
               常規賽報告書
             </h1>
-            {/* <h2 className="text-[24px] leading-[1]">2024.08.17 版本</h2> */}
+            {/* <h2 className="text-[24px] leading-[1]">2025.08.17 版本</h2> */}
           </div>
 
           <div></div>

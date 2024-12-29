@@ -6,7 +6,7 @@ const W3IssueCard = () => {
         [不正當競爭行為] 一事
       </h4>
       <p>
-        　　於2024年1月25日（四）第一回戰 (常規賽 #23Pre09-1)
+        　　於2025年1月25日（四）第一回戰 (常規賽 #23Pre09-1)
         的東一局，隊伍［一發放銃］的隊員自摸役滿地和。
       </p>
       <p>
@@ -18,7 +18,7 @@ const W3IssueCard = () => {
       <p>
         　　
         <a
-          href="/news/2024-01-29-w3issue"
+          href="/news/2025-01-29-w3issue"
           target="_blank"
           className="underline"
         >

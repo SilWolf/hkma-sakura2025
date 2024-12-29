@@ -147,6 +147,14 @@ export type Team = {
 export type TournamentTeam = {
   _key: string;
   team: Team;
+
+  overridedName?: string;
+  overridedSecondaryName?: string;
+  overridedSlug?: string;
+  overridedColor?: string;
+  overridedSquareLogoImage?: string;
+  overridedIntroduction?: string;
+
   ranking: number;
   point: number;
   matchCount: number;

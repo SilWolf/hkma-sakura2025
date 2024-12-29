@@ -30,7 +30,7 @@ export default function RulingPage() {
       <section className="pb-12">
         <div className="container mx-auto px-2 max-w-screen-lg">
           <h6 className="text-lg">
-            <p>最後更新日期: 01/01/2024(一) 16:00 HKT</p>
+            <p>最後更新日期: 01/01/2025(一) 16:00 HKT</p>
             <p>內文的時間均是香港時區 (GMT+8)</p>
           </h6>
         </div>
@@ -86,20 +86,20 @@ export default function RulingPage() {
                 <tr>
                   <th>常規賽(12隊)</th>
                   <td>60場半莊（每隊）</td>
-                  <td>2024 年 01 月 09 日（二）</td>
-                  <td>2024 年 08 月 01 日（四）</td>
+                  <td>2025 年 01 月 09 日（二）</td>
+                  <td>2025 年 08 月 01 日（四）</td>
                 </tr>
                 <tr>
                   <th>準決賽(6隊)</th>
                   <td>24場半莊（每隊）</td>
-                  <td>2024 年 08 月 20 日（二）</td>
-                  <td>2024 年 09 月 26 日（四）</td>
+                  <td>2025 年 08 月 20 日（二）</td>
+                  <td>2025 年 09 月 26 日（四）</td>
                 </tr>
                 <tr>
                   <th>決賽(4隊)</th>
                   <td>16場半莊</td>
-                  <td>2024 年 10 月 15 日（二）</td>
-                  <td>2024 年 11 月 06 日（三）</td>
+                  <td>2025 年 10 月 15 日（二）</td>
+                  <td>2025 年 11 月 06 日（三）</td>
                 </tr>
               </tbody>
             </table>

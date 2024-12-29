@@ -42,7 +42,7 @@ const render = (match: MatchDTOForSocial) => (
         }}
       >
         <img
-          src="https://hkleague2024.hkmahjong.org/images/logo.png"
+          src="https://hkleague2025.hkmahjong.org/images/logo.png"
           width={128}
           height={128}
           alt=""
@@ -57,7 +57,7 @@ const render = (match: MatchDTOForSocial) => (
               marginLeft: "0.125em",
             }}
           >
-            HK-League 2024
+            HK-League 2025
           </div>
           <div
             style={{
@@ -77,7 +77,7 @@ const render = (match: MatchDTOForSocial) => (
               textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
             }}
           >
-            香港立直麻雀團體聯賽2024
+            香港立直麻雀團體聯賽2025
           </div>
         </div>
       </div>
@@ -101,7 +101,7 @@ const render = (match: MatchDTOForSocial) => (
             }}
           >
             <img
-              src="https://hkleague2024.hkmahjong.org/images/logo-hkma.png"
+              src="https://hkleague2025.hkmahjong.org/images/logo-hkma.png"
               width={212}
               height={64}
               alt=""
@@ -122,7 +122,7 @@ const render = (match: MatchDTOForSocial) => (
             }}
           >
             <img
-              src="https://hkleague2024.hkmahjong.org/images/logo-hkmjbs.png"
+              src="https://hkleague2025.hkmahjong.org/images/logo-hkmjbs.png"
               width={155}
               height={64}
               alt=""
@@ -252,16 +252,16 @@ export const GET = async (
       KdamThmorProRegular,
     ] = await Promise.all([
       fetch(
-        "https://hkleague2024.hkmahjong.org/fonts/NotoSansTC-Regular.ttf"
+        "https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-Regular.ttf"
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2024.hkmahjong.org/fonts/NotoSansTC-SemiBold.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-SemiBold.ttf`
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2024.hkmahjong.org/fonts/NotoSerif-SemiBold.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/NotoSerif-SemiBold.ttf`
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2024.hkmahjong.org/fonts/KdamThmorPro-Regular.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/KdamThmorPro-Regular.ttf`
       ).then((res) => res.arrayBuffer()),
     ]);
 

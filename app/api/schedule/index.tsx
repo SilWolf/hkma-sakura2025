@@ -57,7 +57,7 @@ export const getMatchByDateAndIndex = async (date: string, index: string) => {
   }
 
   const result = await getMatchesGroupedByStageAndDate(
-    "finals",
+    "regulars",
     `${date}T00:00:00+08:00`,
     `${date}T23:59:59+08:00`,
     { withPlayerDetails: true }
@@ -167,14 +167,14 @@ export const getMatchByDateAndIndex = async (date: string, index: string) => {
 };
 
 export const getMatchByWeek = async (week: number) => {
-  const startDate = new Date("2024-01-09T00:00:00+08:00");
+  const startDate = new Date("2025-01-09T00:00:00+08:00");
   startDate.setDate(startDate.getDate() + (week - 1) * 7);
 
-  const endDate = new Date("2024-01-12T23:59:59+08:00");
+  const endDate = new Date("2025-01-12T23:59:59+08:00");
   endDate.setDate(endDate.getDate() + (week - 1) * 7);
 
   const result = await getMatchesGroupedByStageAndDate(
-    "finals",
+    "regulars",
     startDate.toISOString(),
     endDate.toISOString(),
     { withPlayerDetails: true }

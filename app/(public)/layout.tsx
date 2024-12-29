@@ -167,7 +167,7 @@ export default function PublicLayout({
               <a href="mailto:info@hkmahjong.org">聯絡我們</a>
             </div>
             <p className="text-center md:text-right">
-              ©2024 by 香港麻雀協會 Hong Kong Mahjong Association.
+              ©2025 by 香港麻雀協會 Hong Kong Mahjong Association.
             </p>
           </div>
         </div>

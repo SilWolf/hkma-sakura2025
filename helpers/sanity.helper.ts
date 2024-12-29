@@ -21,7 +21,7 @@ const STAGES = {
   },
 } as const;
 
-const CURRENT_STAGE_TOURNAMENT_ID = STAGES.finals.tournamentId;
+const CURRENT_STAGE_TOURNAMENT_ID = STAGES.regulars.tournamentId;
 
 const PLAYER_PROJECTION = `_id, name, nickname, designation, "portraitImage": portraitImage.asset->url, introduction`;
 const TEAM_PROJECTION = `{_id, "slug": slug.current, name, secondaryName, thirdName, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
@@ -45,12 +45,24 @@ const publicClient = createClient({
 export const getRegularTeams = cache(() =>
   publicClient
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION} } }`
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION}, overridedName, overridedSecondaryName, overridedColor, "overridedSquareLogoImage": overridedSquareLogoImage.asset->url, "overridedColor": overridedColor.hex, overridedIntroduction } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
         ...team,
-        team: formatTeamPlayerDTO(team.team, null),
+        team: formatTeamPlayerDTO(
+          {
+            ...team.team,
+            name: team.overridedName || team.team.name,
+            secondaryName:
+              team.overridedSecondaryName || team.team.secondaryName,
+            color: team.overridedColor || team.team.color,
+            squareLogoImage:
+              team.overridedSquareLogoImage || team.team.squareLogoImage,
+            introduction: team.overridedIntroduction || team.team.introduction,
+          },
+          null
+        ),
       }))
     )
 );
@@ -58,12 +70,24 @@ export const getRegularTeams = cache(() =>
 export const getTeams = cache(() =>
   publicClient
     .fetch(
-      `*[_type == "matchTournament" && _id == "${CURRENT_STAGE_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION} } }`
+      `*[_type == "matchTournament" && _id == "${CURRENT_STAGE_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION}, overridedName, overridedSecondaryName, overridedColor, "overridedSquareLogoImage": overridedSquareLogoImage.asset->url, "overridedColor": overridedColor.hex, overridedIntroduction } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
         ...team,
-        team: formatTeamPlayerDTO(team.team, null),
+        team: formatTeamPlayerDTO(
+          {
+            ...team.team,
+            name: team.overridedName || team.team.name,
+            secondaryName:
+              team.overridedSecondaryName || team.team.secondaryName,
+            color: team.overridedColor || team.team.color,
+            squareLogoImage:
+              team.overridedSquareLogoImage || team.team.squareLogoImage,
+            introduction: team.overridedIntroduction || team.team.introduction,
+          },
+          null
+        ),
       }))
     )
 );
@@ -71,7 +95,7 @@ export const getTeams = cache(() =>
 export const getTeamSlugs = cache(() =>
   publicClient
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "slug": team.slug.current } }`
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "slug": team->slug.current } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as Team[]).map((team) => team.slug)
@@ -679,7 +703,7 @@ export const formatTeamPlayerDTO = (
     playerNickname: "",
     playerDesignation: "",
     playerPortraitImageUrl:
-      "https://hkleague2024.hkmahjong.org/images/empty.png",
+      "https://hkleague2025.hkmahjong.org/images/empty.png",
     playerIntroduction: "",
     playerFullname: "",
     teamId: "",
@@ -688,7 +712,7 @@ export const formatTeamPlayerDTO = (
     teamThirdName: "",
     teamFullname: "",
     color: "#000000",
-    teamLogoImageUrl: "https://hkleague2024.hkmahjong.org/images/empty.png",
+    teamLogoImageUrl: "https://hkleague2025.hkmahjong.org/images/empty.png",
     teamSlug: "",
     teamIntroduction: "",
   };

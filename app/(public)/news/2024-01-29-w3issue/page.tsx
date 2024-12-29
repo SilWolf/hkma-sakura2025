@@ -1,4 +1,4 @@
-const _20240129W3IssuePage = () => {
+const _20250129W3IssuePage = () => {
   return (
     <main>
       <section className="py-10">
@@ -7,7 +7,7 @@ const _20240129W3IssuePage = () => {
             對隊伍［一發放銃］觸犯「不正當競爭行為」
             <br /> 官方公告及後續安排
           </h2>
-          <h6 className="text-center text-xl">2024年1月29日 賽務組</h6>
+          <h6 className="text-center text-xl">2025年1月29日 賽務組</h6>
         </div>
       </section>
 
@@ -16,7 +16,7 @@ const _20240129W3IssuePage = () => {
           <div className="space-y-6">
             <h3>概述</h3>
             <p>
-              　　於2024年1月25日（四）第一回戰 (常規賽 #23Pre09-1)
+              　　於2025年1月25日（四）第一回戰 (常規賽 #23Pre09-1)
               的東一局，隊伍［一發放銃］的隊員［WONG, Ching Fung］自摸役滿地和。
               <br />
               　　裁判組於賽後重看錄影片段以及場地監控片段，發現該隊伍成員作出了違法行為——不正當競爭行為：即採取違規或不公正手段以謀取競爭利益。
@@ -340,7 +340,7 @@ const _20240129W3IssuePage = () => {
               HKLeague 裁判及賽務組
               <br />
               <br />
-              2024年1月29日
+              2025年1月29日
             </p>
           </div>
         </div>
@@ -349,4 +349,4 @@ const _20240129W3IssuePage = () => {
   );
 };
 
-export default _20240129W3IssuePage;
+export default _20250129W3IssuePage;

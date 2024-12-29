@@ -7,7 +7,7 @@ export default function NotFound() {
         <img
           src="/images/logo.png"
           className="w-48 mx-auto"
-          alt="HK-League 2024"
+          alt="HK-League 2025"
         />
         <h2 className="text-4xl">找不到頁面</h2>
         <p>

@@ -13,7 +13,7 @@ import { notFound } from "next/navigation";
 export const revalidate = 1800;
 
 export async function generateStaticParams() {
-  return getTeamSlugs();
+  return getTeamSlugs().then((slugs) => slugs.map((slug) => ({ slug })));
 }
 
 export async function generateMetadata({
@@ -30,10 +30,11 @@ export async function generateMetadata({
 }
 
 export default async function TeamDetail({
-  params: { slug },
+  params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const slug = (await params).slug;
   const team = await getTeamDetailBySlug(slug);
   if (!team) {
     return notFound();

@@ -33,7 +33,7 @@ const config: Config = {
         },
       },
       animation: {
-        carousel: "carousel 30s linear infinite",
+        carousel: "carousel 40s linear infinite",
         fadeInFromLeft: "fadeInFromLeft 0.8s ease-out 1",
         fadeInFromRight: "fadeInFromRight 0.8s ease-out 1",
       },

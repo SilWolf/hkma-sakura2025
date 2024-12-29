@@ -13,7 +13,6 @@ import {
   renderWeekday,
 } from "@/helpers/string.helper";
 import Link from "next/link";
-import W3IssueCard from "./_components/W3IssueCard";
 
 export const revalidate = 900;
 
@@ -85,7 +84,7 @@ export default async function Home() {
             className="w-full aspect-video"
             src="https://www.youtube.com/embed/Kp_UppkAiCk?si=Va0LX5hMdsdeQXzO&controls=0&start=1878&autoplay=1&mute=1&playsinline=1"
           ></iframe> */}
-          <div className="grid grid-cols-4 lg:grid-cols-6 items-center justify-center text-center max-w-screen-xl mx-auto">
+          <div className="grid grid-cols-4 lg:grid-cols-8 items-center justify-center text-center max-w-screen-xl mx-auto">
             {regularTournamentTeams.map(({ team }) => (
               <div key={team.teamSlug}>
                 <img
@@ -113,7 +112,7 @@ export default async function Home() {
                   textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
                 }}
               >
-                HK-League 2024
+                HK-League 2025
               </h1>
               <h2
                 className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-[1]"
@@ -123,7 +122,7 @@ export default async function Home() {
               >
                 香港麻雀協會
                 <br />
-                香港立直麻雀團體聯賽2024
+                香港立直麻雀團體聯賽2025
               </h2>
             </div>
           </div>
@@ -281,7 +280,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="flex-1">
-            <h2 className="font-semibold text-4xl mb-4">決賽排名</h2>
+            <h2 className="font-semibold text-4xl mb-4">排名</h2>
             <table className="w-full">
               <thead>
                 <tr className="[&>th]:text-xs sm:[&>th]:text-base sm:[&>th]:px-2">
@@ -356,14 +355,6 @@ export default async function Home() {
               >
                 詳細數據
               </Link>
-              <Link
-                className="inline-block text-lg rounded-full py-4 px-12 hover:opacity-80 bg-[#1abced]"
-                href="/files/hkleague2024-regulars-report.pdf"
-                target="_blank"
-              >
-                常規賽數據 (PDF){" "}
-                <i className="text-xs bi bi-box-arrow-up-right"></i>
-              </Link>
             </div>
           </div>
         </div>
@@ -385,19 +376,23 @@ export default async function Home() {
                 <TeamLogoForIntro team={regularTournamentTeams[4].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[5].team} />
               </div>
+              <div className="pr-[12%]">
+                <TeamLogoForIntro team={regularTournamentTeams[7].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[8].team} />
+              </div>
             </div>
           </div>
           <div className="shrink-[1] text-center space-y-12 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mb-2 sm:[&_h3]:text-2xl">
             <div>
-              <h3>至今為止最長賽程的香港日麻比賽</h3>
+              <h3>延續的隊際香港日麻比賽</h3>
               <p>
-                2024年1月-11月，共有十二隊隊伍角逐由
+                2025年1月-11月，共有十六隊隊伍角逐由
                 <br />
-                香港麻雀協會首次舉辦的立直麻雀團體聯賽冠軍
+                香港麻雀協會第二次舉辦的立直麻雀團體聯賽冠軍
               </p>
             </div>
             <div>
-              <h3>12支隊伍、48名選手</h3>
+              <h3>16支隊伍、64名選手</h3>
               <p>
                 選手們喜愛立直麻雀，更視之為一種專業
                 <br />
@@ -427,16 +422,20 @@ export default async function Home() {
           <div className="flex-1 hidden lg:block">
             <div className="flex flex-col items-start">
               <div>
-                <TeamLogoForIntro team={regularTournamentTeams[6].team} />
-                <TeamLogoForIntro team={regularTournamentTeams[7].team} />
-              </div>
-              <div className="pl-[12%]">
                 <TeamLogoForIntro team={regularTournamentTeams[8].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[9].team} />
               </div>
-              <div>
+              <div className="pl-[12%]">
                 <TeamLogoForIntro team={regularTournamentTeams[10].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[11].team} />
+              </div>
+              <div>
+                <TeamLogoForIntro team={regularTournamentTeams[12].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[13].team} />
+              </div>
+              <div className="pl-[12%]">
+                <TeamLogoForIntro team={regularTournamentTeams[14].team} />
+                <TeamLogoForIntro team={regularTournamentTeams[15].team} />
               </div>
             </div>
           </div>
@@ -461,14 +460,20 @@ export default async function Home() {
           <div style={{ animationDelay: "-25s" }}>
             <TeamLogoForIntro team={regularTournamentTeams[5].team} />
           </div>
-          <div className="bottom-0" style={{ animationDirection: "reverse" }}>
+          <div style={{ animationDelay: "-30s" }}>
             <TeamLogoForIntro team={regularTournamentTeams[6].team} />
+          </div>
+          <div style={{ animationDelay: "-35s" }}>
+            <TeamLogoForIntro team={regularTournamentTeams[7].team} />
+          </div>
+          <div className="bottom-0" style={{ animationDirection: "reverse" }}>
+            <TeamLogoForIntro team={regularTournamentTeams[8].team} />
           </div>
           <div
             className="bottom-0"
             style={{ animationDirection: "reverse", animationDelay: "-5s" }}
           >
-            <TeamLogoForIntro team={regularTournamentTeams[7].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[9].team} />
           </div>
           <div
             className="bottom-0"
@@ -477,7 +482,7 @@ export default async function Home() {
               animationDelay: "-10s",
             }}
           >
-            <TeamLogoForIntro team={regularTournamentTeams[8].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[10].team} />
           </div>
           <div
             className="bottom-0"
@@ -486,7 +491,7 @@ export default async function Home() {
               animationDelay: "-15s",
             }}
           >
-            <TeamLogoForIntro team={regularTournamentTeams[9].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[11].team} />
           </div>
           <div
             className="bottom-0"
@@ -495,7 +500,7 @@ export default async function Home() {
               animationDelay: "-20s",
             }}
           >
-            <TeamLogoForIntro team={regularTournamentTeams[10].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[12].team} />
           </div>
           <div
             className="bottom-0"
@@ -504,7 +509,25 @@ export default async function Home() {
               animationDelay: "-25s",
             }}
           >
-            <TeamLogoForIntro team={regularTournamentTeams[11].team} />
+            <TeamLogoForIntro team={regularTournamentTeams[13].team} />
+          </div>
+          <div
+            className="bottom-0"
+            style={{
+              animationDirection: "reverse",
+              animationDelay: "-30s",
+            }}
+          >
+            <TeamLogoForIntro team={regularTournamentTeams[14].team} />
+          </div>
+          <div
+            className="bottom-0"
+            style={{
+              animationDirection: "reverse",
+              animationDelay: "-35s",
+            }}
+          >
+            <TeamLogoForIntro team={regularTournamentTeams[15].team} />
           </div>
         </div>
         <div className="container mx-auto text-center mt-8">

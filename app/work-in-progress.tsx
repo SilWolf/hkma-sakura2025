@@ -7,7 +7,7 @@ export default function WorkInProgress() {
         <img
           src="/images/logo.png"
           className="w-48 mx-auto"
-          alt="HK-League 2024"
+          alt="HK-League 2025"
         />
         <h2 className="text-4xl">施工中……</h2>
         <p>

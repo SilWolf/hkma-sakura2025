@@ -48,42 +48,42 @@ const STAGES = [
     label: "常規賽",
     months: [
       {
-        year: 2024,
+        year: 2025,
         month: 1,
         label: "1月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 2,
         label: "2月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 3,
         label: "3月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 4,
         label: "4月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 5,
         label: "5月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 6,
         label: "6月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 7,
         label: "7月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 8,
         label: "8月",
       },
@@ -94,12 +94,12 @@ const STAGES = [
     label: "準決賽",
     months: [
       {
-        year: 2024,
+        year: 2025,
         month: 8,
         label: "8月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 9,
         label: "9月",
       },
@@ -110,12 +110,12 @@ const STAGES = [
     label: "決賽",
     months: [
       {
-        year: 2024,
+        year: 2025,
         month: 10,
         label: "10月",
       },
       {
-        year: 2024,
+        year: 2025,
         month: 11,
         label: "11月",
       },
@@ -156,7 +156,7 @@ export default async function SchedulePage({
   const trueYear = parseInt(year);
   const trueMonth = parseInt(month);
 
-  if (trueYear < 2023 || trueYear > 2024) {
+  if (trueYear < 2023 || trueYear > 2025) {
     return notFound();
   }
 
