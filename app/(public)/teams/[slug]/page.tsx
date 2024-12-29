@@ -17,10 +17,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const slug = (await params).slug;
   const team = await getTeamDetailBySlug(slug);
 
   return {

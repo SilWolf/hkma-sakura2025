@@ -158,10 +158,11 @@ const MatchFinalScoreTd = ({
 };
 
 export async function generateMetadata({
-  params: { matchId },
+  params,
 }: {
-  params: { matchId: string };
+  params: Promise<{ matchId: string }>;
 }): Promise<Metadata> {
+  const matchId = (await params).matchId;
   const match = await getMatch(matchId);
 
   if (!match || !match.result) {
@@ -190,10 +191,11 @@ export async function generateMetadata({
 }
 
 export default async function MatchDetailPage({
-  params: { matchId },
+  params,
 }: {
-  params: { matchId: string };
+  params: Promise<{ matchId: string }>;
 }) {
+  const matchId = (await params).matchId;
   const match = await getMatch(matchId);
 
   if (!match) {

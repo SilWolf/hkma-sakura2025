@@ -5,10 +5,11 @@ import MatchLogsSection from "./MatchLogsSection";
 import { useMemo, useState } from "react";
 
 const MatchDetailReplayPage = async ({
-  params: { matchId },
+  params,
 }: {
-  params: { matchId: string };
+  params: Promise<{ matchId: string }>;
 }) => {
+  const matchId = (await params).matchId;
   const match = await getMatch(matchId);
   if (!match) {
     return notFound();
