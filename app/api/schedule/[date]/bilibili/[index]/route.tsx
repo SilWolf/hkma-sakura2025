@@ -220,10 +220,11 @@ const render = (match: MatchDTOForSocial, index: string) => (
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { date: string; index: string } }
+  { params }: { params: Promise<{ date: string; index: string }> }
 ) => {
   try {
-    const match = await getMatchByDateAndIndex(params.date, "1");
+    const { date, index } = await params;
+    const match = await getMatchByDateAndIndex(date, "1");
 
     const [
       NotoSansRegular,
@@ -245,7 +246,7 @@ export const GET = async (
       ).then((res) => res.arrayBuffer()),
     ]);
 
-    return new ImageResponse(render(match, params.index), {
+    return new ImageResponse(render(match, index), {
       width: 1200,
       height: 900,
       fonts: [

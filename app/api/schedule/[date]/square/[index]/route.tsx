@@ -240,10 +240,11 @@ const render = (match: MatchDTOForSocial) => (
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { date: string; index: string } }
+  { params }: { params: Promise<{ date: string; index: string }> }
 ) => {
   try {
-    const match = await getMatchByDateAndIndex(params.date, params.index);
+    const { date, index } = await params;
+    const match = await getMatchByDateAndIndex(date, index);
 
     const [
       NotoSansRegular,

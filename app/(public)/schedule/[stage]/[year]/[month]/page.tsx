@@ -124,14 +124,15 @@ const STAGES = [
 ];
 
 export async function generateMetadata({
-  params: { year, month, stage = "finals" },
+  params,
 }: {
-  params: {
+  params: Promise<{
     year: string;
     month: string;
     stage: "regulars" | "semifinals" | "finals";
-  };
+  }>;
 }): Promise<Metadata> {
+  const { year, month, stage = "finals" } = await params;
   const activeStage = STAGES.find((stageItem) => stageItem.name === stage);
 
   return {
@@ -140,14 +141,15 @@ export async function generateMetadata({
 }
 
 export default async function SchedulePage({
-  params: { year, month, stage = "finals" },
+  params,
 }: {
-  params: {
+  params: Promise<{
     year: string;
     month: string;
     stage: "regulars" | "semifinals" | "finals";
-  };
+  }>;
 }) {
+  const { year, month, stage = "finals" } = await params;
   const activeStage = STAGES.find((stageItem) => stageItem.name === stage);
   if (!activeStage) {
     return notFound();

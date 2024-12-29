@@ -263,10 +263,11 @@ const render = (matchGroups: Awaited<ReturnType<typeof getMatchByWeek>>) => (
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { week: string } }
+  { params }: { params: Promise<{ week: string }> }
 ) => {
   try {
-    const matchGroups = await getMatchByWeek(parseInt(params.week));
+    const { week } = await params;
+    const matchGroups = await getMatchByWeek(parseInt(week));
 
     console.log(matchGroups);
 
