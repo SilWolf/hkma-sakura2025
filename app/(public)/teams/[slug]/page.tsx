@@ -80,7 +80,7 @@ export default async function TeamDetail({
         </div>
       </section>
 
-      {team.players.map((player) => (
+      {/* {team.players.map((player) => (
         <section
           key={player.playerName}
           className="py-12 [&_th]:bg-[--teamColor]"
@@ -355,7 +355,7 @@ export default async function TeamDetail({
             </div>
           </div>
         </section>
-      ))}
+      ))} */}
     </main>
   );
 }
