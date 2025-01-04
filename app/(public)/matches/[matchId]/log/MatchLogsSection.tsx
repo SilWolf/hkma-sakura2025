@@ -1,11 +1,10 @@
 "use client";
 
-import { MatchDTO } from "@/helpers/sanity.helper";
 import { renderMatchCode } from "@/helpers/string.helper";
 import { Match } from "@/types/index.type";
 import { useCallback, useMemo, useState } from "react";
 
-const MatchLogsSection = ({ match }: { match: MatchDTO }) => {
+const MatchLogsSection = ({ match }: { match: Match }) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const handleClickRound = useCallback((e: React.MouseEvent) => {
     const newIndex = e.currentTarget.getAttribute("data-index");

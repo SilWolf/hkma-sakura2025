@@ -5,13 +5,13 @@ export type Match = {
   youtubeUrl?: string | null;
   bilibiliUrl?: string | null;
   playerEastTeam?: Team;
-  playerEast?: TeamPlayer;
+  playerEast?: Player;
   playerSouthTeam?: Team;
-  playerSouth?: TeamPlayer;
+  playerSouth?: Player;
   playerWestTeam?: Team;
-  playerWest?: TeamPlayer;
+  playerWest?: Player;
   playerNorthTeam?: Team;
-  playerNorth?: TeamPlayer;
+  playerNorth?: Player;
   result?: {
     playerEast: MatchResultPlayer;
     playerSouth: MatchResultPlayer;
@@ -53,6 +53,20 @@ export type MatchRoundPlayer = {
   fu?: number;
   pureScore?: number;
   yaku?: string;
+};
+
+export type RawMatch = {
+  _id: string;
+  name: string;
+  startAt: string;
+  playerEastTeam?: { _ref: string };
+  playerEast?: { _ref: string };
+  playerSouthTeam?: { _ref: string };
+  playerSouth?: { _ref: string };
+  playerWestTeam?: { _ref: string };
+  playerWest?: { _ref: string };
+  playerNorthTeam?: { _ref: string };
+  playerNorth?: { _ref: string };
 };
 
 export type TeamPlayer = {
@@ -150,9 +164,10 @@ export type TournamentTeam = {
   ref: Team;
   overrided: Team;
   players: {
+    _key: string;
     ref: Player;
     overrided: Player;
-  };
+  }[];
 
   statistics?: {
     ranking: number;

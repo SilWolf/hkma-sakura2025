@@ -7,7 +7,14 @@ import {
   renderRanking,
   renderScore,
 } from "@/helpers/string.helper";
-import { MatchResultPlayer, MatchRound } from "@/types/index.type";
+import {
+  Match,
+  MatchResultPlayer,
+  MatchRound,
+  MatchRoundPlayer,
+  Player,
+  Team,
+} from "@/types/index.type";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,23 +22,23 @@ import { notFound } from "next/navigation";
 export const revalidate = 600;
 
 const MatchTeamDiv = ({
-  player,
+  team,
   result,
 }: {
-  player: TeamPlayerDTO;
+  team: Team;
   result: MatchResultPlayer;
 }) => {
-  const teamLogoUrl = player.teamLogoImageUrl + "?w=128&auto=format";
+  const teamLogoUrl = team.squareLogoImage + "?w=128&auto=format";
 
   return (
     <div
       className="flex p-1 items-center"
       style={{
-        background: player.color + "2D",
+        background: team.color + "2D",
       }}
     >
       <div className="shrink-0">
-        <img className="w-16 h-16" src={teamLogoUrl} alt={player.teamName} />
+        <img className="w-16 h-16" src={teamLogoUrl} alt={team.name} />
       </div>
       {/* <div className="shrink-0">
         <img
@@ -52,19 +59,23 @@ const MatchTeamDiv = ({
 
 const MatchPlayerDiv = ({
   player,
+  team,
   result,
 }: {
-  player: TeamPlayerDTO;
+  player: Player;
+  team: Team;
   result: MatchResultPlayer;
 }) => {
   return (
     <div
       className="text-center py-2"
       style={{
-        background: player.color + "2D",
+        background: team.color + "2D",
       }}
     >
-      <p className="text-center my-2 font-bold">{player.playerFullname}</p>
+      <p className="text-center my-2 font-bold">
+        {player.name} ({player.nickname})
+      </p>
     </div>
   );
 };
@@ -82,77 +93,71 @@ const NumberSpan = ({ value }: { value: number }) => {
 };
 
 const MatchScoreChangeTd = ({
-  match,
   round,
-  playerKey,
+  roundPlayer,
+  team,
 }: {
-  match: MatchDTO;
   round: MatchRound;
-  playerKey: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
+  roundPlayer: MatchRoundPlayer;
+  team: Team;
 }) => {
   return (
     <td
       className="text-center p-2 data-[win='1']:border"
       style={{
-        borderColor: match[playerKey].color,
+        borderColor: team.color,
       }}
       data-win={
         (round.type === "tsumo" || round.type === "ron") &&
-        round[playerKey].type === "win"
+        roundPlayer.type === "win"
           ? "1"
           : "0"
       }
     >
       <p>
-        <NumberSpan
-          value={round[playerKey].afterScore - round[playerKey].beforeScore}
-        />
+        <NumberSpan value={roundPlayer.afterScore - roundPlayer.beforeScore} />
       </p>
       <p className="text-xs opacity-60 space-x-1">
-        {round[playerKey].status === "isRiichied" && (
+        {roundPlayer.status === "isRiichied" && (
           <span className="inline-block">立直</span>
         )}
-        {round[playerKey].status === "isRevealed" && (
+        {roundPlayer.status === "isRevealed" && (
           <span className="inline-block">副露</span>
         )}
-        {round[playerKey].isWaited && (
-          <span className="inline-block">聽牌</span>
-        )}
-        {round.type === "ron" && round[playerKey].type === "win" && (
+        {roundPlayer.isWaited && <span className="inline-block">聽牌</span>}
+        {round.type === "ron" && roundPlayer.type === "win" && (
           <span className="inline-block">榮和</span>
         )}
-        {round.type === "ron" && round[playerKey].type === "lose" && (
+        {round.type === "ron" && roundPlayer.type === "lose" && (
           <span className="inline-block">出銃</span>
         )}
-        {round.type === "tsumo" && round[playerKey].type === "win" && (
+        {round.type === "tsumo" && roundPlayer.type === "win" && (
           <span className="inline-block">自摸</span>
         )}
       </p>
       {(round.type === "tsumo" || round.type === "ron") &&
-        round[playerKey].type === "win" && (
-          <p className="text-xs opacity-60">{round[playerKey].yaku}</p>
+        roundPlayer.type === "win" && (
+          <p className="text-xs opacity-60">{roundPlayer.yaku}</p>
         )}
     </td>
   );
 };
 
 const MatchFinalScoreTd = ({
-  match,
-  playerKey,
+  roundPlayer,
+  team,
 }: {
-  match: MatchDTO;
-  playerKey: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
+  roundPlayer: MatchRoundPlayer;
+  team: Team;
 }) => {
   return (
     <td
       className="py-4 text-center"
       style={{
-        background: match[playerKey].color + "2D",
+        background: team.color + "2D",
       }}
     >
-      <p className="text-xl font-bold">
-        {match.rounds[match.rounds.length - 1][playerKey].afterScore}
-      </p>
+      <p className="text-xl font-bold">{roundPlayer.afterScore}</p>
     </td>
   );
 };
@@ -176,7 +181,7 @@ export async function generateMetadata({
   )
     .map(
       (key) =>
-        `${match[key].playerFullname}：${renderRanking(
+        `${match[key]?.name}：${renderRanking(
           match.result?.[key].ranking
         )},${renderScore(match.result?.[key].score)}(${renderPoint(
           match.result?.[key].point
@@ -244,25 +249,25 @@ export default async function MatchDetailPage({
                 </td>
                 <td className="w-48">
                   <MatchTeamDiv
-                    player={match.playerEast}
+                    team={match.playerEastTeam!}
                     result={match.result!.playerEast}
                   />
                 </td>
                 <td className="w-48">
                   <MatchTeamDiv
-                    player={match.playerSouth}
+                    team={match.playerSouthTeam!}
                     result={match.result!.playerSouth}
                   />
                 </td>
                 <td className="w-48">
                   <MatchTeamDiv
-                    player={match.playerWest}
+                    team={match.playerWestTeam!}
                     result={match.result!.playerWest}
                   />
                 </td>
                 <td className="w-48">
                   <MatchTeamDiv
-                    player={match.playerNorth}
+                    team={match.playerNorthTeam!}
                     result={match.result!.playerNorth}
                   />
                 </td>
@@ -277,25 +282,29 @@ export default async function MatchDetailPage({
                 <td></td>
                 <td>
                   <MatchPlayerDiv
-                    player={match.playerEast}
+                    player={match.playerEast!}
+                    team={match.playerEastTeam!}
                     result={match.result!.playerEast}
                   />
                 </td>
                 <td>
                   <MatchPlayerDiv
-                    player={match.playerSouth}
+                    player={match.playerSouth!}
+                    team={match.playerSouthTeam!}
                     result={match.result!.playerSouth}
                   />
                 </td>
                 <td>
                   <MatchPlayerDiv
-                    player={match.playerWest}
+                    player={match.playerWest!}
+                    team={match.playerWestTeam!}
                     result={match.result!.playerWest}
                   />
                 </td>
                 <td>
                   <MatchPlayerDiv
-                    player={match.playerNorth}
+                    player={match.playerNorth!}
+                    team={match.playerNorthTeam!}
                     result={match.result!.playerNorth}
                   />
                 </td>
@@ -312,33 +321,49 @@ export default async function MatchDetailPage({
                     </p>
                   </td>
                   <MatchScoreChangeTd
-                    match={match}
                     round={round}
-                    playerKey="playerEast"
+                    roundPlayer={round.playerEast}
+                    team={match.playerEastTeam!}
                   />
                   <MatchScoreChangeTd
-                    match={match}
                     round={round}
-                    playerKey="playerSouth"
+                    roundPlayer={round.playerSouth}
+                    team={match.playerSouthTeam!}
                   />
                   <MatchScoreChangeTd
-                    match={match}
                     round={round}
-                    playerKey="playerWest"
+                    roundPlayer={round.playerWest}
+                    team={match.playerWestTeam!}
                   />
                   <MatchScoreChangeTd
-                    match={match}
                     round={round}
-                    playerKey="playerNorth"
+                    roundPlayer={round.playerNorth}
+                    team={match.playerNorthTeam!}
                   />
                 </tr>
               ))}
               <tr className="odd:bg-neutral-100 odd:bg-opacity-10">
                 <td colSpan={2}></td>
-                <MatchFinalScoreTd match={match} playerKey="playerEast" />
-                <MatchFinalScoreTd match={match} playerKey="playerSouth" />
-                <MatchFinalScoreTd match={match} playerKey="playerWest" />
-                <MatchFinalScoreTd match={match} playerKey="playerNorth" />
+                <MatchFinalScoreTd
+                  roundPlayer={match.rounds[match.rounds.length - 1].playerEast}
+                  team={match.playerEastTeam!}
+                />
+                <MatchFinalScoreTd
+                  roundPlayer={
+                    match.rounds[match.rounds.length - 1].playerSouth
+                  }
+                  team={match.playerSouthTeam!}
+                />
+                <MatchFinalScoreTd
+                  roundPlayer={match.rounds[match.rounds.length - 1].playerWest}
+                  team={match.playerWestTeam!}
+                />
+                <MatchFinalScoreTd
+                  roundPlayer={
+                    match.rounds[match.rounds.length - 1].playerNorth
+                  }
+                  team={match.playerNorthTeam!}
+                />
               </tr>
             </tbody>
           </table>

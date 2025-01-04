@@ -4,6 +4,7 @@ import { getYoutubeThumbnailByUrl } from "./youtube.helper";
 import {
   Match,
   Player,
+  RawMatch,
   Team,
   TeamPlayer,
   TournamentTeam,
@@ -74,10 +75,12 @@ export const getRegularTeams = cache(() =>
       )}} } }`
     )
     .then((tournaments) =>
-      (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
-        ...team,
-        team: mergeObject(team.ref, team.overrided),
-      }))
+      (tournaments[0]?.teams as TournamentTeam[]).map(
+        ({ ref, overrided, ...team }) => ({
+          ...team,
+          team: mergeObject(ref, overrided),
+        })
+      )
     )
 );
 
@@ -96,12 +99,10 @@ export const getRegularTeamsWithPlayers = cache(() =>
       )}}, "overrided": overrided{${[...PLAYER_META_FIELDS].join(", ")}} } } }`
     )
     .then((tournaments) => {
-      console.log(tournaments[0]?.teams[0]);
-
       return (tournaments[0]?.teams as TournamentTeamWithPlayers[]).map(
-        (team) => ({
+        ({ ref, overrided, ...team }) => ({
           ...team,
-          team: mergeObject(team.ref, team.overrided),
+          team: mergeObject(ref, overrided),
           players: team.players.map((player) =>
             mergeObject(player.ref, player.overrided)
           ),
@@ -226,89 +227,20 @@ export const getOldMatches = cache(() =>
       `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}" && status == "completed"] | order(startAt desc)[0...8]{ _id, name, playerEast->${TEAM_PLAYER_PROJECTION}, playerSouth->${TEAM_PLAYER_PROJECTION}, playerWest->${TEAM_PLAYER_PROJECTION}, playerNorth->${TEAM_PLAYER_PROJECTION}, playerEastTeam->${TEAM_PROJECTION}, playerSouthTeam->${TEAM_PROJECTION}, playerWestTeam->${TEAM_PROJECTION}, playerNorthTeam->${TEAM_PROJECTION}, startAt, youtubeUrl, bilibiliUrl, result}`
     )
     .then((matches: Match[]) =>
-      matches.map(
-        ({
-          playerEast,
-          playerEastTeam,
-          playerSouth,
-          playerSouthTeam,
-          playerWest,
-          playerWestTeam,
-          playerNorth,
-          playerNorthTeam,
-          ...match
-        }) => ({
-          ...match,
-          playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
-          playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
-          playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
-          playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-          youtubeThumbnailUrl: getYoutubeThumbnailByUrl(match.youtubeUrl),
-        })
-      )
+      matches.map(({ ...match }) => ({
+        ...match,
+        youtubeThumbnailUrl: getYoutubeThumbnailByUrl(match.youtubeUrl),
+      }))
     )
 );
 
 export const getMatch = cache(
-  (matchId: string): Promise<MatchDTO> =>
+  (matchId: string): Promise<Match> =>
     publicClient
       .fetch(
         `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast->${TEAM_PLAYER_PROJECTION}, playerSouth->${TEAM_PLAYER_PROJECTION}, playerWest->${TEAM_PLAYER_PROJECTION}, playerNorth->${TEAM_PLAYER_PROJECTION}, playerEastTeam->${TEAM_PROJECTION}, playerSouthTeam->${TEAM_PROJECTION}, playerWestTeam->${TEAM_PROJECTION}, playerNorthTeam->${TEAM_PROJECTION}, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
       )
-      .then((matches: Match[]) => {
-        const {
-          playerEast,
-          playerEastTeam,
-          playerSouth,
-          playerSouthTeam,
-          playerWest,
-          playerWestTeam,
-          playerNorth,
-          playerNorthTeam,
-          ...matchRest
-        } = matches[0];
-
-        const newMatch: MatchDTO = {
-          ...matchRest,
-          playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
-          playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
-          playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
-          playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-          _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
-        };
-
-        if (
-          playerEast &&
-          playerEastTeam &&
-          playerSouth &&
-          playerSouthTeam &&
-          playerWest &&
-          playerWestTeam &&
-          playerNorth &&
-          playerNorthTeam
-        ) {
-          // assume both player and placeholder team exist
-
-          const playersMap: Record<
-            string,
-            "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
-          > = {
-            [playerEast.team._id]: "playerEast",
-            [playerSouth.team._id]: "playerSouth",
-            [playerWest.team._id]: "playerWest",
-            [playerNorth.team._id]: "playerNorth",
-          };
-
-          newMatch._order = [
-            playersMap[playerEastTeam._id],
-            playersMap[playerSouthTeam._id],
-            playersMap[playerWestTeam._id],
-            playersMap[playerNorthTeam._id],
-          ];
-        }
-
-        return newMatch;
-      })
+      .then((matches: Match[]) => matches[0])
 );
 
 export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
@@ -322,28 +254,17 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
 
   const matchesGroupedByDate: Record<
     string,
-    { weekday: number; matches: MatchDTO[] }
+    { weekday: number; matches: Match[] }
   > = {};
 
   for (const match of scheduledMatches) {
-    const {
-      playerEast,
-      playerEastTeam,
-      playerSouth,
-      playerSouthTeam,
-      playerWest,
-      playerWestTeam,
-      playerNorth,
-      playerNorthTeam,
-      ...matchRest
-    } = match;
-    const dateString = `${matchRest.startAt.substring(
+    const dateString = `${match.startAt.substring(
       8,
       10
-    )}/${matchRest.startAt.substring(5, 7)}`;
+    )}/${match.startAt.substring(5, 7)}`;
 
     if (!matchesGroupedByDate[dateString]) {
-      const date = new Date(matchRest.startAt);
+      const date = new Date(match.startAt);
       const weekday = date.getDay();
 
       matchesGroupedByDate[dateString] = {
@@ -352,46 +273,7 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
       };
     }
 
-    const newMatch: MatchDTO = {
-      ...matchRest,
-      playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
-      playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
-      playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
-      playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-      _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
-    };
-
-    if (
-      playerEast &&
-      playerEastTeam &&
-      playerSouth &&
-      playerSouthTeam &&
-      playerWest &&
-      playerWestTeam &&
-      playerNorth &&
-      playerNorthTeam
-    ) {
-      // assume both player and placeholder team exist
-
-      const playersMap: Record<
-        string,
-        "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
-      > = {
-        [playerEast.team._id]: "playerEast",
-        [playerSouth.team._id]: "playerSouth",
-        [playerWest.team._id]: "playerWest",
-        [playerNorth.team._id]: "playerNorth",
-      };
-
-      newMatch._order = [
-        playersMap[playerEastTeam._id],
-        playersMap[playerSouthTeam._id],
-        playersMap[playerWestTeam._id],
-        playersMap[playerNorthTeam._id],
-      ];
-    }
-
-    matchesGroupedByDate[dateString].matches.unshift(newMatch);
+    matchesGroupedByDate[dateString].matches.unshift(match);
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -417,28 +299,17 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
 
   const matchesGroupedByDate: Record<
     string,
-    { weekday: number; matches: MatchDTO[] }
+    { weekday: number; matches: Match[] }
   > = {};
 
   for (const match of scheduledMatches) {
-    const {
-      playerEast,
-      playerEastTeam,
-      playerSouth,
-      playerSouthTeam,
-      playerWest,
-      playerWestTeam,
-      playerNorth,
-      playerNorthTeam,
-      ...matchRest
-    } = match;
-    const dateString = `${matchRest.startAt.substring(
+    const dateString = `${match.startAt.substring(
       8,
       10
-    )}/${matchRest.startAt.substring(5, 7)}`;
+    )}/${match.startAt.substring(5, 7)}`;
 
     if (!matchesGroupedByDate[dateString]) {
-      const date = new Date(matchRest.startAt);
+      const date = new Date(match.startAt);
       const weekday = date.getDay();
 
       matchesGroupedByDate[dateString] = {
@@ -447,46 +318,7 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
       };
     }
 
-    const newMatch: MatchDTO = {
-      ...matchRest,
-      playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
-      playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
-      playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
-      playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-      _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
-    };
-
-    if (
-      playerEast &&
-      playerEastTeam &&
-      playerSouth &&
-      playerSouthTeam &&
-      playerWest &&
-      playerWestTeam &&
-      playerNorth &&
-      playerNorthTeam
-    ) {
-      // assume both player and placeholder team exist
-
-      const playersMap: Record<
-        string,
-        "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
-      > = {
-        [playerEast.team._id]: "playerEast",
-        [playerSouth.team._id]: "playerSouth",
-        [playerWest.team._id]: "playerWest",
-        [playerNorth.team._id]: "playerNorth",
-      };
-
-      newMatch._order = [
-        playersMap[playerEastTeam._id],
-        playersMap[playerSouthTeam._id],
-        playersMap[playerWestTeam._id],
-        playersMap[playerNorthTeam._id],
-      ];
-    }
-
-    matchesGroupedByDate[dateString].matches.push(newMatch);
+    matchesGroupedByDate[dateString].matches.push(match);
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -517,25 +349,14 @@ export const getMatchesGroupedByDate = cache(
 
     const matchesGroupedByDate: Record<
       string,
-      { weekday: number; matches: MatchDTO[] }
+      { weekday: number; matches: Match[] }
     > = {};
 
     for (const match of scheduledMatches) {
-      const {
-        playerEast,
-        playerEastTeam,
-        playerSouth,
-        playerSouthTeam,
-        playerWest,
-        playerWestTeam,
-        playerNorth,
-        playerNorthTeam,
-        ...matchRest
-      } = match;
-      const dateString = matchRest.startAt.substring(0, 10);
+      const dateString = match.startAt.substring(0, 10);
 
       if (!matchesGroupedByDate[dateString]) {
-        const date = new Date(matchRest.startAt);
+        const date = new Date(match.startAt);
         const weekday = date.getDay();
 
         matchesGroupedByDate[dateString] = {
@@ -544,46 +365,7 @@ export const getMatchesGroupedByDate = cache(
         };
       }
 
-      const newMatch: MatchDTO = {
-        ...matchRest,
-        playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
-        playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
-        playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
-        playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-        _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
-      };
-
-      if (
-        playerEast &&
-        playerEastTeam &&
-        playerSouth &&
-        playerSouthTeam &&
-        playerWest &&
-        playerWestTeam &&
-        playerNorth &&
-        playerNorthTeam
-      ) {
-        // assume both player and placeholder team exist
-
-        const playersMap: Record<
-          string,
-          "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
-        > = {
-          [playerEast.team._id]: "playerEast",
-          [playerSouth.team._id]: "playerSouth",
-          [playerWest.team._id]: "playerWest",
-          [playerNorth.team._id]: "playerNorth",
-        };
-
-        newMatch._order = [
-          playersMap[playerEastTeam._id],
-          playersMap[playerSouthTeam._id],
-          playersMap[playerWestTeam._id],
-          playersMap[playerNorthTeam._id],
-        ];
-      }
-
-      matchesGroupedByDate[dateString].matches.push(newMatch);
+      matchesGroupedByDate[dateString].matches.push(match);
     }
 
     const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -602,14 +384,11 @@ export const getMatchesGroupedByStageAndDate = cache(
     endDate: string,
     options?: { withPlayerDetails?: boolean }
   ) => {
-    const activeStage = STAGES[stage];
-    const teamPlayerProjection = options?.withPlayerDetails
-      ? `..., team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}`
-      : 'team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}';
-    const teamProjection = TEAM_PROJECTION;
+    const regularTeams = await getRegularTeamsWithPlayers();
 
-    const scheduledMatches = await publicClient.fetch<Match[]>(
-      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${activeStage.tournamentId}" && startAt >= "${startDate}" && startAt < "${endDate}"] | order(startAt asc){ _id, name, playerEast->{${teamPlayerProjection}}, playerSouth->{${teamPlayerProjection}}, playerWest->{${teamPlayerProjection}}, playerNorth->{${teamPlayerProjection}}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
+    const activeStage = STAGES[stage];
+    const scheduledMatches = await publicClient.fetch<RawMatch[]>(
+      `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${activeStage.tournamentId}" && startAt >= "${startDate}" && startAt < "${endDate}"] | order(startAt asc){ _id, name, playerEast, playerSouth, playerWest, playerNorth, playerEastTeam, playerSouthTeam, playerWestTeam, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl, result}`
     );
 
     const matchesGroupedByDate: Record<
@@ -617,11 +396,11 @@ export const getMatchesGroupedByStageAndDate = cache(
       { weekday: number; matches: Match[] }
     > = {};
 
-    for (const match of scheduledMatches) {
-      const dateString = match.startAt.substring(0, 10);
+    for (const rawMatch of scheduledMatches) {
+      const dateString = rawMatch.startAt.substring(0, 10);
 
       if (!matchesGroupedByDate[dateString]) {
-        const date = new Date(match.startAt);
+        const date = new Date(rawMatch.startAt);
         const weekday = date.getDay();
 
         matchesGroupedByDate[dateString] = {
@@ -629,6 +408,44 @@ export const getMatchesGroupedByStageAndDate = cache(
           matches: [],
         };
       }
+
+      const teamEast = regularTeams.find(
+        ({ team }) => rawMatch.playerEastTeam?._ref === team._id
+      );
+      const playerEast = teamEast?.players.find(
+        ({ _id }) => _id === rawMatch.playerEast?._ref
+      );
+      const teamSouth = regularTeams.find(
+        ({ team }) => rawMatch.playerSouthTeam?._ref === team._id
+      );
+      const playerSouth = teamSouth?.players.find(
+        ({ _id }) => _id === rawMatch.playerSouth?._ref
+      );
+      const teamWest = regularTeams.find(
+        ({ team }) => rawMatch.playerWestTeam?._ref === team._id
+      );
+      const playerWest = teamWest?.players.find(
+        ({ _id }) => _id === rawMatch.playerWest?._ref
+      );
+      const teamNorth = regularTeams.find(
+        ({ team }) => rawMatch.playerNorthTeam?._ref === team._id
+      );
+      const playerNorth = teamNorth?.players.find(
+        ({ _id }) => _id === rawMatch.playerNorth?._ref
+      );
+
+      const match: Match = {
+        ...rawMatch,
+        playerEast,
+        playerSouth,
+        playerWest,
+        playerNorth,
+        playerEastTeam: teamEast?.team,
+        playerSouthTeam: teamSouth?.team,
+        playerWestTeam: teamWest?.team,
+        playerNorthTeam: teamNorth?.team,
+        rounds: [],
+      };
 
       matchesGroupedByDate[dateString].matches.push(match);
     }
@@ -689,7 +506,7 @@ export const formatTeamPlayerDTO = (
     playerNickname: "",
     playerDesignation: "",
     playerPortraitImageUrl:
-      "https://hkleague2025.hkmahjong.org/images/empty.png",
+      "https://hkma-hkleague2025.vercel.app/images/empty.png",
     playerIntroduction: "",
     playerFullname: "",
     teamId: "",
@@ -698,7 +515,7 @@ export const formatTeamPlayerDTO = (
     teamThirdName: "",
     teamFullname: "",
     color: "#000000",
-    teamLogoImageUrl: "https://hkleague2025.hkmahjong.org/images/empty.png",
+    teamLogoImageUrl: "https://hkma-hkleague2025.vercel.app/images/empty.png",
     teamSlug: "",
     teamIntroduction: "",
   };

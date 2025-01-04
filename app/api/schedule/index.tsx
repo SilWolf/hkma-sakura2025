@@ -51,6 +51,19 @@ export type MatchDTOForSocial = Pick<MatchDTO, "name"> & {
   };
 };
 
+export const getMatchesByDate = async (date: string) => {
+  if (!date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    throw new Error("date must be in YYYY-MM-DD format");
+  }
+
+  return getMatchesGroupedByStageAndDate(
+    "regulars",
+    `${date}T00:00:00+08:00`,
+    `${date}T23:59:59+08:00`,
+    { withPlayerDetails: true }
+  ).then((value) => value[0].matches);
+};
+
 export const getMatchByDateAndIndex = async (date: string, index = 1) => {
   if (!date.match(/^\d{4}-\d{2}-\d{2}$/)) {
     throw new Error("date must be in YYYY-MM-DD format");

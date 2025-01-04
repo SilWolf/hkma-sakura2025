@@ -18,29 +18,29 @@ import Link from "next/link";
 export const revalidate = 900;
 
 const ScheduleTeam = ({
-  match,
-  playerIndex,
+  team,
+  point,
+  isLoser,
 }: {
-  match: MatchDTO;
-  playerIndex: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
+  team: Team;
+  point?: number | null;
+  isLoser?: boolean;
 }) => {
-  const point = match.result?.[playerIndex]?.point;
-  const isLoser = match.result && match.result?.[playerIndex]?.ranking !== "1";
+  // const point = match.result?.[playerIndex]?.point;
+  // const isLoser = match.result && match.result?.[playerIndex]?.ranking !== "1";
 
   return (
     <div>
-      <a href={`/teams/${match[playerIndex].teamSlug}`} target="_blank">
-        <img
-          src={match[playerIndex].teamLogoImageUrl + "?w=512&auto=format"}
-          className="w-full"
-          alt={match[playerIndex].teamName}
-          style={{
-            opacity: isLoser ? 0.4 : 1,
-            filter: isLoser ? "grayscale(100%)" : "",
-          }}
-        />
-      </a>
-      {match.result && (
+      <img
+        src={team.squareLogoImage + "?w=512&auto=format"}
+        className="w-full"
+        alt={team.name}
+        style={{
+          opacity: isLoser ? 0.4 : 1,
+          filter: isLoser ? "grayscale(100%)" : "",
+        }}
+      />
+      {typeof point !== "undefined" && (
         <p className="text-center text-sm">{renderPoint(point)}pt</p>
       )}
     </div>
@@ -69,6 +69,17 @@ export default async function Home() {
     getLatestComingMatchesGroupedByDate(),
     getOldMatches(),
   ]);
+
+  const teamSorter = (a: Team, b: Team) => {
+    const indexOfA = regularTournamentTeams.findIndex(
+      (item) => item.team._id === a._id
+    );
+    const indexOfB = regularTournamentTeams.findIndex(
+      (item) => item.team._id === b._id
+    );
+
+    return indexOfB - indexOfA;
+  };
 
   const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
     (a, b) => (a.statistics?.ranking ?? 0) - (b.statistics?.ranking ?? 0)
@@ -229,13 +240,32 @@ export default async function Home() {
                           </div>
                         </div>
                         <div className="grid grid-cols-4 gap-2">
-                          {match._order.map((playerIndex) => (
-                            <ScheduleTeam
-                              key={playerIndex}
-                              match={match}
-                              playerIndex={playerIndex}
-                            />
-                          ))}
+                          {match.result &&
+                            [
+                              {
+                                team: match.playerEastTeam!,
+                                result: match.result.playerEast,
+                              },
+                              {
+                                team: match.playerSouthTeam!,
+                                result: match.result.playerSouth,
+                              },
+                              {
+                                team: match.playerWestTeam!,
+                                result: match.result.playerWest,
+                              },
+                              {
+                                team: match.playerNorthTeam!,
+                                result: match.result.playerNorth,
+                              },
+                            ].map(({ team, result }) => (
+                              <ScheduleTeam
+                                key={team._id}
+                                team={team}
+                                point={result.point}
+                                isLoser={result.ranking !== "1"}
+                              />
+                            ))}
                         </div>
                       </div>
                     ))}
@@ -261,13 +291,16 @@ export default async function Home() {
                   <div className="flex-1">
                     <div>
                       <div className="match-team-logos-grid grid grid-cols-4 gap-2">
-                        {matches[0]._order.map((playerIndex) => (
-                          <ScheduleTeam
-                            key={playerIndex}
-                            match={matches[0]}
-                            playerIndex={playerIndex}
-                          />
-                        ))}
+                        {[
+                          matches[0].playerEastTeam!,
+                          matches[0].playerSouthTeam!,
+                          matches[0].playerWestTeam!,
+                          matches[0].playerNorthTeam!,
+                        ]
+                          .sort(teamSorter)
+                          .map((team) => (
+                            <ScheduleTeam key={team._id} team={team} />
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -619,14 +652,7 @@ export default async function Home() {
                   <div className="grid grid-cols-2">
                     <img
                       src={
-                        match.playerEast.teamLogoImageUrl + "?w=128&auto=format"
-                      }
-                      className="inline w-10 h-10"
-                      alt=""
-                    />
-                    <img
-                      src={
-                        match.playerSouth.teamLogoImageUrl +
+                        match.playerEastTeam?.squareLogoImage +
                         "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
@@ -634,14 +660,23 @@ export default async function Home() {
                     />
                     <img
                       src={
-                        match.playerWest.teamLogoImageUrl + "?w=128&auto=format"
+                        match.playerSouthTeam?.squareLogoImage +
+                        "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
                       alt=""
                     />
                     <img
                       src={
-                        match.playerNorth.teamLogoImageUrl +
+                        match.playerWestTeam?.squareLogoImage +
+                        "?w=128&auto=format"
+                      }
+                      className="inline w-10 h-10"
+                      alt=""
+                    />
+                    <img
+                      src={
+                        match.playerNorthTeam?.squareLogoImage +
                         "?w=128&auto=format"
                       }
                       className="inline w-10 h-10"
