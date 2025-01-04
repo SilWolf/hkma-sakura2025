@@ -7,7 +7,9 @@ import {
   Team,
   TeamPlayer,
   TournamentTeam,
+  TournamentTeamWithPlayers,
 } from "@/types/index.type";
+import { mergeObject } from "@/utils/object.util";
 
 const STAGES = {
   regulars: {
@@ -24,7 +26,24 @@ const STAGES = {
 const CURRENT_STAGE_TOURNAMENT_ID = STAGES.regulars.tournamentId;
 
 const PLAYER_PROJECTION = `_id, name, nickname, designation, "portraitImage": portraitImage.asset->url, introduction`;
+const PLAYER_META_FIELDS = [
+  "name",
+  "nickname",
+  '"portraitImage": portraitImage.asset->url',
+  "designation",
+  "introduction",
+];
+
 const TEAM_PROJECTION = `{_id, "slug": slug.current, name, secondaryName, thirdName, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex, introduction}`;
+const TEAM_META_FIELDS = [
+  '"slug": slug.current',
+  "name",
+  "secondaryName",
+  "thirdName",
+  '"squareLogoImage": squareLogoImage.asset->url',
+  '"color": color.hex',
+  "introduction",
+];
 const TEAM_PLAYER_PROJECTION = `{team->${TEAM_PROJECTION}, player->{${PLAYER_PROJECTION}}, overridedDesignation, overridedName, overridedNickname, "overridedColor": overridedColor.hex, "overridedPortraitImage": overridedPortraitImage.asset->url}`;
 
 export const client = createClient({
@@ -45,45 +64,66 @@ const publicClient = createClient({
 export const getRegularTeams = cache(() =>
   publicClient
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION}, overridedName, overridedSecondaryName, overridedColor, "overridedSquareLogoImage": overridedSquareLogoImage.asset->url, "overridedColor": overridedColor.hex, overridedIntroduction } }`
+      `*[_type == "matchTournament" && _id == "${
+        process.env.SANITY_DEFAULT_TOURNAMENT_ID
+      }"]{ teams[]{ _id, ranking, point, matchCount, ref->{${[
+        "_id",
+        ...TEAM_META_FIELDS,
+      ].join(", ")}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(
+        ", "
+      )}} } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
         ...team,
-        team: {
-          ...team.team,
-          name: team.overridedName || team.team.name,
-          secondaryName: team.overridedSecondaryName || team.team.secondaryName,
-          color: team.overridedColor || team.team.color,
-          squareLogoImage:
-            team.overridedSquareLogoImage || team.team.squareLogoImage,
-          introduction: team.overridedIntroduction || team.team.introduction,
-        },
+        team: mergeObject(team.ref, team.overrided),
       }))
     )
+);
+
+export const getRegularTeamsWithPlayers = cache(() =>
+  publicClient
+    .fetch(
+      `*[_type == "matchTournament" && _id == "${
+        process.env.SANITY_DEFAULT_TOURNAMENT_ID
+      }"]{ teams[]{ _id, ranking, point, matchCount, ref->{${[
+        "_id",
+        ...TEAM_META_FIELDS,
+      ].join(", ")}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(
+        ", "
+      )}}, players[]{ref->{${["_id", ...PLAYER_META_FIELDS].join(
+        ", "
+      )}}, "overrided": overrided{${[...PLAYER_META_FIELDS].join(", ")}} } } }`
+    )
+    .then((tournaments) => {
+      console.log(tournaments[0]?.teams[0]);
+
+      return (tournaments[0]?.teams as TournamentTeamWithPlayers[]).map(
+        (team) => ({
+          ...team,
+          team: mergeObject(team.ref, team.overrided),
+          players: team.players.map((player) =>
+            mergeObject(player.ref, player.overrided)
+          ),
+        })
+      );
+    })
 );
 
 export const getTeams = cache(() =>
   publicClient
     .fetch(
-      `*[_type == "matchTournament" && _id == "${CURRENT_STAGE_TOURNAMENT_ID}"]{ teams[]{ _id, ranking, point, matchCount, team->${TEAM_PROJECTION}, overridedName, overridedSecondaryName, overridedColor, "overridedSquareLogoImage": overridedSquareLogoImage.asset->url, "overridedColor": overridedColor.hex, overridedIntroduction } }`
+      `*[_type == "matchTournament" && _id == "${CURRENT_STAGE_TOURNAMENT_ID}"]{ teams[]{ _key, ref->{${[
+        "_id",
+        ...TEAM_META_FIELDS,
+      ].join(", ")}}, "overrided": overrided{${[...PLAYER_META_FIELDS].join(
+        ", "
+      )}}, statistics } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
         ...team,
-        team: formatTeamPlayerDTO(
-          {
-            ...team.team,
-            name: team.overridedName || team.team.name,
-            secondaryName:
-              team.overridedSecondaryName || team.team.secondaryName,
-            color: team.overridedColor || team.team.color,
-            squareLogoImage:
-              team.overridedSquareLogoImage || team.team.squareLogoImage,
-            introduction: team.overridedIntroduction || team.team.introduction,
-          },
-          null
-        ),
+        team: mergeObject(team.ref, team.overrided),
       }))
     )
 );
@@ -91,7 +131,7 @@ export const getTeams = cache(() =>
 export const getTeamSlugs = cache(() =>
   publicClient
     .fetch(
-      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "slug": team->slug.current } }`
+      `*[_type == "matchTournament" && _id == "${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"]{ teams[]{ "slug": ref->slug.current } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as Team[]).map((team) => team.slug)

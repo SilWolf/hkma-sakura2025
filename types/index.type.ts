@@ -73,6 +73,7 @@ export type Player = {
   designation: string;
   statistic?: PlayerStatistic;
   portraitImage: string;
+  introduction: string;
 };
 
 export type PlayerStatistic = {
@@ -146,26 +147,33 @@ export type Team = {
 
 export type TournamentTeam = {
   _key: string;
-  team: Team;
+  ref: Team;
+  overrided: Team;
+  players: {
+    ref: Player;
+    overrided: Player;
+  };
 
-  overridedName?: string;
-  overridedSecondaryName?: string;
-  overridedSlug?: string;
-  overridedColor?: string;
-  overridedSquareLogoImage?: string;
-  overridedIntroduction?: string;
+  statistics?: {
+    ranking: number;
+    point: number;
+    matchCount: number;
+    firstP: number;
+    secondP: number;
+    thirdP: number;
+    fourthP: number;
+    rankingAvg: number;
+    pointAvg: number;
+    ronP: number;
+    chuckP: number;
+    riichiP: number;
+    revealP: number;
+  };
+};
 
-  ranking: number;
-  point: number;
-  matchCount: number;
-  firstP: number;
-  secondP: number;
-  thirdP: number;
-  fourthP: number;
-  rankingAvg: number;
-  pointAvg: number;
-  ronP: number;
-  chuckP: number;
-  riichiP: number;
-  revealP: number;
+export type TournamentTeamWithPlayers = TournamentTeam & {
+  players: {
+    ref: Player;
+    overrided: Player;
+  }[];
 };

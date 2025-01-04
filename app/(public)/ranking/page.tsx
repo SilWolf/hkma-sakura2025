@@ -67,7 +67,7 @@ export default async function RankingPage() {
   const tournamentTeams = await getTeams();
 
   const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
-    (a, b) => a.ranking - b.ranking
+    (a, b) => (a.statistics?.ranking ?? 0) - (b.statistics?.ranking ?? 0)
   );
 
   return (
@@ -97,49 +97,51 @@ export default async function RankingPage() {
             </thead>
             <tbody className="[&_img]:w-8 [&_img]:h-8 [&_td]:py-2 text-center">
               {tournamentTeamsOrderedByRanking.map(
-                ({ team, ranking, point, matchCount }, i) => (
+                ({ team, statistics }, i) => (
                   <tr
-                    key={team.teamId}
+                    key={team._id}
                     style={{
                       background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
                     }}
                   >
                     <td scope="row">
                       <span className="hidden sm:inline">
-                        {renderRanking(ranking)}
+                        {renderRanking(statistics?.ranking)}
                       </span>
-                      <span className="sm:hidden">{ranking}</span>
+                      <span className="sm:hidden">{statistics?.ranking}</span>
                     </td>
                     <td className="w-9">
                       <img
-                        src={team.teamLogoImageUrl + "?w=128&auto=format"}
-                        alt={team.teamSlug}
+                        src={team.squareLogoImage + "?w=128&auto=format"}
+                        alt={team.slug}
                         className="h-4 w-4"
                       />
                     </td>
                     <td>
                       <span className="text-sm sm:text-xl">
-                        {team.teamFullname}
+                        {team.name} {team.secondaryName}
                       </span>
                     </td>
                     <td>
                       <span className="text-xs sm:text-base">
-                        {point?.toFixed(1) ?? "-"}
+                        {renderPoint(statistics?.point)}
                       </span>
                     </td>
                     <td>
                       <span className="text-xs sm:text-base">
                         {tournamentTeamsOrderedByRanking[i - 1]
-                          ? (
-                              tournamentTeamsOrderedByRanking[i - 1].point -
-                              point
-                            ).toFixed(1)
+                          ? renderPoint(
+                              (tournamentTeamsOrderedByRanking[i - 1].statistics
+                                ?.point ?? 0) - (statistics?.point ?? 0)
+                            )
                           : "-"}
                       </span>
                     </td>
                     <td>
-                      <span className="text-xs sm:text-base">{matchCount}</span>
-                      <span className="hidden sm:inline sm:text-sm">/16</span>
+                      <span className="text-xs sm:text-base">
+                        {statistics?.matchCount ?? 0}
+                      </span>
+                      <span className="hidden sm:inline sm:text-sm">/60</span>
                     </td>
                   </tr>
                 )
@@ -168,8 +170,8 @@ export default async function RankingPage() {
                       }}
                     >
                       <img
-                        src={team.team.teamLogoImageUrl + "?w=64&auto=format"}
-                        alt={team.team.teamSlug}
+                        src={team.team.squareLogoImage + "?w=64&auto=format"}
+                        alt={team.team.slug}
                       />
                     </th>
                   ))}
@@ -185,7 +187,7 @@ export default async function RankingPage() {
                         background: team.team.color + "80",
                       }}
                     >
-                      {renderRanking(team.ranking)}
+                      {renderRanking(team.statistics?.ranking)}
                     </td>
                   ))}
                 </tr>
@@ -198,7 +200,7 @@ export default async function RankingPage() {
                         background: team.team.color + "80",
                       }}
                     >
-                      {renderPoint(team.point)}
+                      {renderPoint(team.statistics?.point)}
                     </td>
                   ))}
                 </tr>
@@ -211,7 +213,7 @@ export default async function RankingPage() {
                         background: team.team.color + "80",
                       }}
                     >
-                      {team.matchCount}/16
+                      {team.statistics?.matchCount}/60
                     </td>
                   ))}
                 </tr>

@@ -71,7 +71,13 @@ export default async function Home() {
   ]);
 
   const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
-    (a, b) => a.ranking - b.ranking
+    (a, b) => (a.statistics?.ranking ?? 0) - (b.statistics?.ranking ?? 0)
+  );
+
+  console.log(
+    tournamentTeams[0].team.slug,
+    tournamentTeams[0].team.squareLogoImage,
+    tournamentTeams[0].team.color
   );
 
   return (
@@ -296,50 +302,53 @@ export default async function Home() {
               </thead>
               <tbody className="[&_img]:w-10 [&_img]:h-10 [&_td]:py-3">
                 {tournamentTeamsOrderedByRanking.map(
-                  ({ team, ranking, point, matchCount }, i) => (
+                  ({ team, statistics }, i) => (
                     <tr
-                      key={team.teamId}
+                      key={team._id}
                       style={{
                         background: `linear-gradient(to right, ${team.color}B0, ${team.color}A0)`,
                       }}
                     >
                       <td scope="row">
                         <span className="hidden sm:inline">
-                          {renderRanking(ranking)}
+                          {renderRanking(statistics?.ranking)}
                         </span>
-                        <span className="sm:hidden">{ranking}</span>
+                        <span className="sm:hidden">
+                          {statistics?.ranking ?? "1"}
+                        </span>
                       </td>
                       <td className="w-10 !p-0">
                         <img
-                          src={team.teamLogoImageUrl + "?w=128&auto=format"}
-                          alt={team.teamFullname}
+                          src={team.squareLogoImage + "?w=128&auto=format"}
+                          alt={team.name}
                         />
                       </td>
                       <td>
                         <span className="text-sm sm:text-xl">
-                          {team.teamFullname}
+                          {team.name} {team.secondaryName}
                         </span>
                       </td>
                       <td>
                         <span className="text-xs sm:text-base">
-                          {point?.toFixed(1) ?? "-"}
+                          {renderPoint(statistics?.point)}
                         </span>
                       </td>
                       <td>
                         <span className="text-xs sm:text-base">
                           {tournamentTeamsOrderedByRanking[i - 1]
-                            ? (
-                                tournamentTeamsOrderedByRanking[i - 1].point -
-                                point
-                              ).toFixed(1)
+                            ? renderPoint(
+                                (tournamentTeamsOrderedByRanking[i - 1]
+                                  .statistics?.point ?? 0) -
+                                  (statistics?.point ?? 0)
+                              )
                             : "-"}
                         </span>
                       </td>
                       <td>
                         <span className="text-xs sm:text-base">
-                          {matchCount}
+                          {statistics?.matchCount ?? 0}
                         </span>
-                        <span className="hidden sm:inline sm:text-sm">/16</span>
+                        <span className="hidden sm:inline sm:text-sm">/60</span>
                       </td>
                     </tr>
                   )
@@ -370,11 +379,11 @@ export default async function Home() {
                 <TeamLogoForIntro team={regularTournamentTeams[2].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[3].team} />
               </div>
-              <div>
+              <div className="pr-[12%]">
                 <TeamLogoForIntro team={regularTournamentTeams[4].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[5].team} />
               </div>
-              <div className="pr-[12%]">
+              <div>
                 <TeamLogoForIntro team={regularTournamentTeams[7].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[8].team} />
               </div>
@@ -427,11 +436,11 @@ export default async function Home() {
                 <TeamLogoForIntro team={regularTournamentTeams[10].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[11].team} />
               </div>
-              <div>
+              <div className="pl-[12%]">
                 <TeamLogoForIntro team={regularTournamentTeams[12].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[13].team} />
               </div>
-              <div className="pl-[12%]">
+              <div>
                 <TeamLogoForIntro team={regularTournamentTeams[14].team} />
                 <TeamLogoForIntro team={regularTournamentTeams[15].team} />
               </div>

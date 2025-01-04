@@ -1,6 +1,7 @@
 import {
   getPlayersGroupByTeams,
   getRegularTeams,
+  getRegularTeamsWithPlayers,
   getTeams,
 } from "@/helpers/sanity.helper";
 import { Metadata } from "next";
@@ -13,10 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Teams() {
-  const [tournamentTeams, playersInTeamIds] = await Promise.all([
-    getRegularTeams(),
-    getPlayersGroupByTeams(),
-  ]);
+  const tournamentTeams = await getRegularTeamsWithPlayers();
 
   return (
     <main className="relative">
@@ -44,7 +42,7 @@ export default async function Teams() {
         </div>
       </section>
 
-      {tournamentTeams.map(({ team }) => (
+      {tournamentTeams.map(({ team, players }) => (
         <section className="pb-16 relative" key={team.slug}>
           <div id={team.slug} className="absolute -top-32"></div>
           <div className="container px-2 mx-auto max-w-screen-lg">
@@ -79,13 +77,15 @@ export default async function Teams() {
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-8 mt-12">
-                    {playersInTeamIds[team._id]?.map((player) => (
+                    {players.map((player) => (
                       <div
                         key={player._id}
                         className="flex gap-x-4 items-center"
                       >
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold">{player.name}</h3>
+                          <h3 className="text-xl font-bold">
+                            {player.name} ({player.nickname})
+                          </h3>
                         </div>
                       </div>
                     ))}
