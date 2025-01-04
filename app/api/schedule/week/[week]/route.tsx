@@ -1,16 +1,17 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import React from "react";
-import {
-  MatchDTOForSocial,
-  getMatchByDateAndIndex,
-  getMatchByWeek,
-} from "../..";
-import { renderPoint, renderWeekday } from "@/helpers/string.helper";
+import { getMatchByWeek } from "../..";
+import { renderWeekday } from "@/helpers/string.helper";
+import { getRegularTeams } from "@/helpers/sanity.helper";
+import { Team } from "@/types/index.type";
 
 export const dynamic = "force-dynamic";
 
-const render = (matchGroups: Awaited<ReturnType<typeof getMatchByWeek>>) => (
+const render = (
+  matchGroups: Awaited<ReturnType<typeof getMatchByWeek>>,
+  teamSorter: (a: Team, b: Team) => number
+) => (
   <div
     style={{
       position: "absolute",
@@ -208,52 +209,32 @@ const render = (matchGroups: Awaited<ReturnType<typeof getMatchByWeek>>) => (
               flex: 1,
             }}
           >
-            {matches[0]._order.map((playerIndex) => (
-              <div
-                key={playerIndex}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  flex: 1,
-                  alignItems: "center",
-                  background: `linear-gradient(to bottom, transparent, ${matches[0][playerIndex].color}80)`,
-                  filter:
-                    matches[0].result &&
-                    matches[0].result?.[playerIndex]?.ranking !== "1"
-                      ? "grayscale(100%)"
-                      : "",
-                }}
-              >
-                <img
-                  width={150}
-                  height={150}
-                  src={
-                    matches[0][playerIndex].teamLogoImageUrl +
-                    "?w=512&auto=format"
-                  }
-                  alt={matches[0][playerIndex].teamName}
+            {[
+              matches[0].playerEastTeam!,
+              matches[0].playerSouthTeam!,
+              matches[0].playerWestTeam!,
+              matches[0].playerNorthTeam!,
+            ]
+              .sort(teamSorter)
+              .map((team) => (
+                <div
+                  key={team._id}
                   style={{
-                    opacity:
-                      matches[0].result &&
-                      matches[0].result?.[playerIndex]?.ranking !== "1"
-                        ? 0.4
-                        : 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                    alignItems: "center",
+                    background: `linear-gradient(to bottom, transparent, ${team.color}80)`,
                   }}
-                />
-                {matches[0].result && (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      fontSize: ".75em",
-                      marginTop: "-1em",
-                    }}
-                  >
-                    {renderPoint(matches[0].result?.[playerIndex]?.point)}pt
-                  </div>
-                )}
-              </div>
-            ))}
+                >
+                  <img
+                    width={150}
+                    height={150}
+                    src={team.squareLogoImage + "?w=512&auto=format"}
+                    alt={team.name}
+                  />
+                </div>
+              ))}
           </div>
         </div>
       ))}
@@ -269,7 +250,14 @@ export const GET = async (
     const { week } = await params;
     const matchGroups = await getMatchByWeek(parseInt(week));
 
-    console.log(matchGroups);
+    const teamSorter = await getRegularTeams().then(
+      (teams) => (a: Team, b: Team) => {
+        const indexOfA = teams.findIndex((item) => item.team._id === a._id);
+        const indexOfB = teams.findIndex((item) => item.team._id === b._id);
+
+        return indexOfB - indexOfA;
+      }
+    );
 
     const [
       NotoSansRegular,
@@ -291,7 +279,7 @@ export const GET = async (
       ).then((res) => res.arrayBuffer()),
     ]);
 
-    return new ImageResponse(render(matchGroups), {
+    return new ImageResponse(render(matchGroups, teamSorter), {
       width: 1280,
       height: 720,
       fonts: [

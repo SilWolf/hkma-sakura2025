@@ -1,5 +1,6 @@
 import {
   MatchDTO,
+  getRegularTeams,
   getMatchesGroupedByDate,
   getMatchesGroupedByStageAndDate,
 } from "@/helpers/sanity.helper";
@@ -8,6 +9,7 @@ import {
   renderPoint,
   renderWeekday,
 } from "@/helpers/string.helper";
+import { Team } from "@/types/index.type";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,27 +17,29 @@ import { notFound } from "next/navigation";
 export const revalidate = 600;
 
 const ScheduleTeam = ({
-  match,
-  playerIndex,
+  team,
+  point,
+  isLoser,
 }: {
-  match: MatchDTO;
-  playerIndex: "playerEast" | "playerSouth" | "playerWest" | "playerNorth";
+  team: Team;
+  point?: number | null;
+  isLoser?: boolean;
 }) => {
-  const point = match.result?.[playerIndex]?.point;
-  const isLoser = match.result && match.result?.[playerIndex]?.ranking !== "1";
+  // const point = match.result?.[playerIndex]?.point;
+  // const isLoser = match.result && match.result?.[playerIndex]?.ranking !== "1";
 
   return (
     <div>
       <img
-        src={match[playerIndex].teamLogoImageUrl + "?w=512&auto=format"}
+        src={team.squareLogoImage + "?w=512&auto=format"}
         className="w-full"
-        alt={match[playerIndex].teamName}
+        alt={team.name}
         style={{
           opacity: isLoser ? 0.4 : 1,
           filter: isLoser ? "grayscale(100%)" : "",
         }}
       />
-      {match.result && (
+      {typeof point !== "undefined" && (
         <p className="text-center text-sm">{renderPoint(point)}pt</p>
       )}
     </div>
@@ -175,6 +179,15 @@ export default async function SchedulePage({
     `${nextYear}-${nextMonth.toString().padStart(2, "0")}-01T00:00:00+08:00`
   );
 
+  const teamSorter = await getRegularTeams().then(
+    (teams) => (a: Team, b: Team) => {
+      const indexOfA = teams.findIndex((item) => item.team._id === a._id);
+      const indexOfB = teams.findIndex((item) => item.team._id === b._id);
+
+      return indexOfB - indexOfA;
+    }
+  );
+
   return (
     <main>
       <section className="py-10">
@@ -302,13 +315,43 @@ export default async function SchedulePage({
                       </div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
-                      {match._order.map((playerIndex) => (
-                        <ScheduleTeam
-                          key={playerIndex}
-                          match={match}
-                          playerIndex={playerIndex}
-                        />
-                      ))}
+                      {!match.result &&
+                        [
+                          match.playerEastTeam!,
+                          match.playerSouthTeam!,
+                          match.playerWestTeam!,
+                          match.playerNorthTeam!,
+                        ]
+                          .sort(teamSorter)
+                          .map((team) => (
+                            <ScheduleTeam key={team._id} team={team} />
+                          ))}
+                      {match.result &&
+                        [
+                          {
+                            team: match.playerEastTeam!,
+                            result: match.result.playerEast,
+                          },
+                          {
+                            team: match.playerSouthTeam!,
+                            result: match.result.playerSouth,
+                          },
+                          {
+                            team: match.playerWestTeam!,
+                            result: match.result.playerWest,
+                          },
+                          {
+                            team: match.playerNorthTeam!,
+                            result: match.result.playerNorth,
+                          },
+                        ].map(({ team, result }) => (
+                          <ScheduleTeam
+                            key={team._id}
+                            team={team}
+                            point={result.point}
+                            isLoser={result.ranking !== "1"}
+                          />
+                        ))}
                     </div>
                   </div>
                 ))}

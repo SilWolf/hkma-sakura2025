@@ -1,11 +1,12 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import React from "react";
-import { MatchDTOForSocial, getMatchByDateAndIndex } from "../../..";
+import { getMatchByDateAndIndex } from "../../..";
+import { Match } from "@/types/index.type";
 
 export const dynamic = "force-dynamic";
 
-const render = (match: MatchDTOForSocial) => (
+const render = (match: Match) => (
   <div
     style={{
       position: "absolute",
@@ -171,10 +172,27 @@ const render = (match: MatchDTOForSocial) => (
       }}
     >
       {(
-        ["playerEast", "playerSouth", "playerWest", "playerNorth"] as const
-      ).map((key) => (
+        [
+          {
+            team: match.playerEastTeam!,
+            player: match.playerEast!,
+          },
+          {
+            team: match.playerSouthTeam!,
+            player: match.playerSouth!,
+          },
+          {
+            team: match.playerWestTeam!,
+            player: match.playerWest!,
+          },
+          {
+            team: match.playerNorthTeam!,
+            player: match.playerNorth!,
+          },
+        ] as const
+      ).map(({ team, player }) => (
         <div
-          key={key}
+          key={team._id}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -187,7 +205,7 @@ const render = (match: MatchDTOForSocial) => (
             style={{
               display: "flex",
               position: "absolute",
-              background: `linear-gradient(to bottom, transparent, ${match[key].color})`,
+              background: `linear-gradient(to bottom, transparent, ${team.color})`,
               justifyContent: "flex-start",
               opacity: 0.5,
               top: 0,
@@ -206,11 +224,11 @@ const render = (match: MatchDTOForSocial) => (
               style={{
                 width: "100%",
               }}
-              src={`${match[key].teamLogoImageUrl + "?w=800&h=800&fm=png"}`}
+              src={`${team.squareLogoImage + "?w=800&h=800&fm=png"}`}
               alt=""
             />
           </div>
-          <div style={{ display: "flex" }}>{match[key].teamName}</div>
+          <div style={{ display: "flex" }}>{team.name}</div>
           <div
             style={{
               display: "flex",
@@ -218,7 +236,7 @@ const render = (match: MatchDTOForSocial) => (
               height: "1.25em",
             }}
           >
-            {match[key].teamSecondaryName || " "}
+            {team.secondaryName || " "}
           </div>
           <div
             style={{
@@ -229,11 +247,10 @@ const render = (match: MatchDTOForSocial) => (
               height: "4.5em",
             }}
           >
-            {match[key].playerFullnames.map((fullname) => (
-              <div key={fullname} style={{ display: "flex" }}>
-                {fullname}
-              </div>
-            ))}
+            <div style={{ display: "flex" }}>
+              {player.player.name}
+              {player.player.nickname && ` (${player.player.nickname})`}
+            </div>
           </div>
         </div>
       ))}
@@ -247,7 +264,7 @@ export const GET = async (
 ) => {
   try {
     const { date, index } = await params;
-    const match = await getMatchByDateAndIndex(date, index);
+    const match = await getMatchByDateAndIndex(date, parseInt(index));
 
     const [
       NotoSansRegular,

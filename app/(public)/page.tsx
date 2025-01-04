@@ -12,6 +12,7 @@ import {
   renderRanking,
   renderWeekday,
 } from "@/helpers/string.helper";
+import { Team } from "@/types/index.type";
 import Link from "next/link";
 
 export const revalidate = 900;
@@ -46,13 +47,10 @@ const ScheduleTeam = ({
   );
 };
 
-const TeamLogoForIntro = ({ team }: { team: TeamPlayerDTO }) => {
+const TeamLogoForIntro = ({ team }: { team: Team }) => {
   return (
-    <a href={`/teams/${team.teamSlug}`} target="_blank">
-      <img
-        src={team.teamLogoImageUrl + "?w=320&auto=format"}
-        alt={team.teamFullname}
-      />
+    <a href={`/teams/${team.slug}`} target="_blank">
+      <img src={team.squareLogoImage + "?w=320&auto=format"} alt={team._id} />
     </a>
   );
 };
@@ -86,11 +84,11 @@ export default async function Home() {
           ></iframe> */}
           <div className="grid grid-cols-4 lg:grid-cols-8 items-center justify-center text-center max-w-screen-xl mx-auto">
             {regularTournamentTeams.map(({ team }) => (
-              <div key={team.teamSlug}>
+              <div key={team._id}>
                 <img
-                  src={team.teamLogoImageUrl + "?w=512&auto=format"}
+                  src={team.squareLogoImage + "?w=512&auto=format"}
                   className="w-48"
-                  alt={team.teamSlug}
+                  alt={team.slug}
                 />
               </div>
             ))}

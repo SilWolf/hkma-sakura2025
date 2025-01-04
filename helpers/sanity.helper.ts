@@ -50,19 +50,15 @@ export const getRegularTeams = cache(() =>
     .then((tournaments) =>
       (tournaments[0]?.teams as TournamentTeam[]).map((team) => ({
         ...team,
-        team: formatTeamPlayerDTO(
-          {
-            ...team.team,
-            name: team.overridedName || team.team.name,
-            secondaryName:
-              team.overridedSecondaryName || team.team.secondaryName,
-            color: team.overridedColor || team.team.color,
-            squareLogoImage:
-              team.overridedSquareLogoImage || team.team.squareLogoImage,
-            introduction: team.overridedIntroduction || team.team.introduction,
-          },
-          null
-        ),
+        team: {
+          ...team.team,
+          name: team.overridedName || team.team.name,
+          secondaryName: team.overridedSecondaryName || team.team.secondaryName,
+          color: team.overridedColor || team.team.color,
+          squareLogoImage:
+            team.overridedSquareLogoImage || team.team.squareLogoImage,
+          introduction: team.overridedIntroduction || team.team.introduction,
+        },
       }))
     )
 );
@@ -578,25 +574,14 @@ export const getMatchesGroupedByStageAndDate = cache(
 
     const matchesGroupedByDate: Record<
       string,
-      { weekday: number; matches: MatchDTO[] }
+      { weekday: number; matches: Match[] }
     > = {};
 
     for (const match of scheduledMatches) {
-      const {
-        playerEast,
-        playerEastTeam,
-        playerSouth,
-        playerSouthTeam,
-        playerWest,
-        playerWestTeam,
-        playerNorth,
-        playerNorthTeam,
-        ...matchRest
-      } = match;
-      const dateString = matchRest.startAt.substring(0, 10);
+      const dateString = match.startAt.substring(0, 10);
 
       if (!matchesGroupedByDate[dateString]) {
-        const date = new Date(matchRest.startAt);
+        const date = new Date(match.startAt);
         const weekday = date.getDay();
 
         matchesGroupedByDate[dateString] = {
@@ -605,46 +590,7 @@ export const getMatchesGroupedByStageAndDate = cache(
         };
       }
 
-      const newMatch: MatchDTO = {
-        ...matchRest,
-        playerEast: formatTeamPlayerDTO(playerEastTeam, playerEast),
-        playerSouth: formatTeamPlayerDTO(playerSouthTeam, playerSouth),
-        playerWest: formatTeamPlayerDTO(playerWestTeam, playerWest),
-        playerNorth: formatTeamPlayerDTO(playerNorthTeam, playerNorth),
-        _order: ["playerEast", "playerSouth", "playerWest", "playerNorth"],
-      };
-
-      if (
-        playerEast &&
-        playerEastTeam &&
-        playerSouth &&
-        playerSouthTeam &&
-        playerWest &&
-        playerWestTeam &&
-        playerNorth &&
-        playerNorthTeam
-      ) {
-        // assume both player and placeholder team exist
-
-        const playersMap: Record<
-          string,
-          "playerEast" | "playerSouth" | "playerWest" | "playerNorth"
-        > = {
-          [playerEast.team._id]: "playerEast",
-          [playerSouth.team._id]: "playerSouth",
-          [playerWest.team._id]: "playerWest",
-          [playerNorth.team._id]: "playerNorth",
-        };
-
-        newMatch._order = [
-          playersMap[playerEastTeam._id],
-          playersMap[playerSouthTeam._id],
-          playersMap[playerWestTeam._id],
-          playersMap[playerNorthTeam._id],
-        ];
-      }
-
-      matchesGroupedByDate[dateString].matches.push(newMatch);
+      matchesGroupedByDate[dateString].matches.push(match);
     }
 
     const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({

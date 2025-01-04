@@ -1,11 +1,12 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import React from "react";
-import { MatchDTOForSocial, getMatchByDateAndIndex } from "../../..";
+import { getMatchByDateAndIndex } from "../../..";
+import { Match } from "@/types/index.type";
 
 export const dynamic = "force-dynamic";
 
-const render = (match: MatchDTOForSocial, index: string) => (
+const render = (match: Match, index: string) => (
   <div
     style={{
       position: "absolute",
@@ -171,10 +172,27 @@ const render = (match: MatchDTOForSocial, index: string) => (
       }}
     >
       {(
-        ["playerEast", "playerSouth", "playerWest", "playerNorth"] as const
-      ).map((key) => (
+        [
+          {
+            team: match.playerEastTeam!,
+            player: match.playerEast!,
+          },
+          {
+            team: match.playerSouthTeam!,
+            player: match.playerSouth!,
+          },
+          {
+            team: match.playerWestTeam!,
+            player: match.playerWest!,
+          },
+          {
+            team: match.playerNorthTeam!,
+            player: match.playerNorth!,
+          },
+        ] as const
+      ).map(({ team, player }) => (
         <div
-          key={key}
+          key={team?._id}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -187,7 +205,7 @@ const render = (match: MatchDTOForSocial, index: string) => (
             style={{
               display: "flex",
               position: "absolute",
-              background: `linear-gradient(to bottom, transparent, ${match[key].color})`,
+              background: `linear-gradient(to bottom, transparent, ${team.color})`,
               justifyContent: "flex-start",
               opacity: 0.5,
               top: 0,
@@ -206,7 +224,7 @@ const render = (match: MatchDTOForSocial, index: string) => (
               style={{
                 width: "25vw",
               }}
-              src={`${match[key].teamLogoImageUrl + "?w=800&h=800&fm=png"}`}
+              src={`${team?.squareLogoImage + "?w=800&h=800&fm=png"}`}
               width={300}
               height={300}
               alt=""
@@ -224,7 +242,7 @@ export const GET = async (
 ) => {
   try {
     const { date, index } = await params;
-    const match = await getMatchByDateAndIndex(date, "1");
+    const match = await getMatchByDateAndIndex(date, 1);
 
     const [
       NotoSansRegular,
