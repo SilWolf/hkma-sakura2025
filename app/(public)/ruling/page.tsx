@@ -257,8 +257,8 @@ export default function RulingPage() {
                   聯賽不承認雙倍役滿。大四喜、四暗刻單騎等均為單倍役滿。
                 </li>
                 <li>
-                  <strong>複合役滿：</strong>
-                  一副手牌同時達成N個役滿牌形時會以N役滿的得點計算。
+                  <strong>無複合役滿：</strong>
+                  一副手牌同時達成複數役滿牌形時只以單倍役滿的得點計算。
                 </li>
                 <li>
                   <strong>無累計役滿：</strong>非役滿牌形的最高得點為三倍滿。
