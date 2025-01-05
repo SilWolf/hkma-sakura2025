@@ -25,14 +25,13 @@ export default async function Teams() {
       </section>
 
       <section className="hidden lg:block pb-12 sticky top-0 z-50 bg-gradient-to-b from-[rgb(var(--background-start-rgb))] to-transparent">
-        <div className="container mx-auto max-w-screen-lg bg-white bg-opacity-10 py-4 px-12 rounded-full shadow-xl">
-          <nav className="grid grid-cols-4 lg:grid-cols-8 justify-center items-center">
+        <div className="container mx-auto max-w-screen-lg bg-white bg-opacity-10 py-4 px-4 rounded-full shadow-xl">
+          <nav className="flex justify-center items-center">
             {tournamentTeams.map(({ team }) => (
-              <div key={team.slug} className="text-center">
+              <div key={team.slug} className="flex-1 text-center">
                 <a className="inline-block" href={`#${team.slug}`}>
                   <img
                     src={team.squareLogoImage + "?w=128&auto=format"}
-                    className="w-16 h-16"
                     alt={team.slug}
                   />
                 </a>
