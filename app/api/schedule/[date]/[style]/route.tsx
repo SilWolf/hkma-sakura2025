@@ -47,7 +47,7 @@ const thumbnailRender = (
         }}
       >
         <img
-          src="https://hkma-hkleague2025.vercel.app/images/logo.png"
+          src="https://hkleague2025.hkleague.org/images/logo.png"
           width={128}
           height={128}
           alt=""
@@ -111,7 +111,7 @@ const thumbnailRender = (
             }}
           >
             <img
-              src="https://hkma-hkleague2025.vercel.app/images/logo-hkma.png"
+              src="https://hkleague2025.hkleague.org/images/logo-hkma.png"
               width={212}
               height={64}
               alt=""
@@ -138,7 +138,7 @@ const thumbnailRender = (
             }}
           >
             <img
-              src="https://hkma-hkleague2025.vercel.app/images/logo-hkmjbs.png"
+              src="https://hkleague2025.hkleague.org/images/logo-hkmjbs.png"
               width={155}
               height={64}
               alt=""
@@ -284,7 +284,7 @@ const squareRender = (
         }}
       >
         <img
-          src="https://hkma-hkleague2025.vercel.app/images/logo.png"
+          src="https://hkleague2025.hkleague.org/images/logo.png"
           width={128}
           height={128}
           alt=""
@@ -343,7 +343,7 @@ const squareRender = (
             }}
           >
             <img
-              src="https://hkma-hkleague2025.vercel.app/images/logo-hkma.png"
+              src="https://hkleague2025.hkleague.org/images/logo-hkma.png"
               width={212}
               height={64}
               alt=""
@@ -364,7 +364,7 @@ const squareRender = (
             }}
           >
             <img
-              src="https://hkma-hkleague2025.vercel.app/images/logo-hkmjbs.png"
+              src="https://hkleague2025.hkleague.org/images/logo-hkmjbs.png"
               width={155}
               height={64}
               alt=""
@@ -604,16 +604,16 @@ export const GET = async (
       KdamThmorProRegular,
     ] = await Promise.all([
       fetch(
-        "https://hkma-hkleague2025.vercel.app/fonts/NotoSansTC-Regular.ttf"
+        "https://hkleague2025.hkleague.org/fonts/NotoSansTC-Regular.ttf"
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkma-hkleague2025.vercel.app/fonts/NotoSansTC-SemiBold.ttf`
+        `https://hkleague2025.hkleague.org/fonts/NotoSansTC-SemiBold.ttf`
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkma-hkleague2025.vercel.app/fonts/NotoSerif-SemiBold.ttf`
+        `https://hkleague2025.hkleague.org/fonts/NotoSerif-SemiBold.ttf`
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkma-hkleague2025.vercel.app/fonts/KdamThmorPro-Regular.ttf`
+        `https://hkleague2025.hkleague.org/fonts/KdamThmorPro-Regular.ttf`
       ).then((res) => res.arrayBuffer()),
     ]);
 

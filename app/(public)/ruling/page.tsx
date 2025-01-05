@@ -84,22 +84,22 @@ export default function RulingPage() {
               </thead>
               <tbody>
                 <tr>
-                  <th>常規賽(12隊)</th>
+                  <th>常規賽(16隊)</th>
                   <td>60場半莊（每隊）</td>
-                  <td>2025 年 01 月 09 日（二）</td>
-                  <td>2025 年 08 月 01 日（四）</td>
+                  <td>2025 年 01 月 06 日（一）</td>
+                  <td>2025 年 07 月 31 日（四）</td>
                 </tr>
                 <tr>
-                  <th>準決賽(6隊)</th>
+                  <th>準決賽(8隊)</th>
                   <td>24場半莊（每隊）</td>
-                  <td>2025 年 08 月 20 日（二）</td>
-                  <td>2025 年 09 月 26 日（四）</td>
+                  <td>TBA</td>
+                  <td>TBA</td>
                 </tr>
                 <tr>
                   <th>決賽(4隊)</th>
                   <td>16場半莊</td>
-                  <td>2025 年 10 月 15 日（二）</td>
-                  <td>2025 年 11 月 06 日（三）</td>
+                  <td>TBA</td>
+                  <td>TBA</td>
                 </tr>
               </tbody>
             </table>
