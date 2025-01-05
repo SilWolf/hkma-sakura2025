@@ -85,12 +85,6 @@ export default async function Home() {
     (a, b) => (a.statistics?.ranking ?? 0) - (b.statistics?.ranking ?? 0)
   );
 
-  console.log(
-    tournamentTeams[0].team.slug,
-    tournamentTeams[0].team.squareLogoImage,
-    tournamentTeams[0].team.color
-  );
-
   return (
     <main>
       <section className="w-full text-center relative overflow-hidden pt-12">

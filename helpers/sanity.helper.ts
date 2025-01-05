@@ -67,12 +67,9 @@ export const getRegularTeams = cache(() =>
     .fetch(
       `*[_type == "matchTournament" && _id == "${
         process.env.SANITY_DEFAULT_TOURNAMENT_ID
-      }"]{ teams[]{ _id, ranking, point, matchCount, ref->{${[
-        "_id",
-        ...TEAM_META_FIELDS,
-      ].join(", ")}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(
+      }"]{ teams[]{ _key, ref->{${["_id", ...TEAM_META_FIELDS].join(
         ", "
-      )}} } }`
+      )}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(", ")}} } }`
     )
     .then((tournaments) =>
       (tournaments[0]?.teams as TournamentTeam[]).map(
@@ -89,10 +86,9 @@ export const getRegularTeamsWithPlayers = cache(() =>
     .fetch(
       `*[_type == "matchTournament" && _id == "${
         process.env.SANITY_DEFAULT_TOURNAMENT_ID
-      }"]{ teams[]{ _id, ranking, point, matchCount, ref->{${[
-        "_id",
-        ...TEAM_META_FIELDS,
-      ].join(", ")}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(
+      }"]{ teams[]{ _key, ref->{${["_id", ...TEAM_META_FIELDS].join(
+        ", "
+      )}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(
         ", "
       )}}, players[]{ref->{${["_id", ...PLAYER_META_FIELDS].join(
         ", "
@@ -117,7 +113,7 @@ export const getTeams = cache(() =>
       `*[_type == "matchTournament" && _id == "${CURRENT_STAGE_TOURNAMENT_ID}"]{ teams[]{ _key, ref->{${[
         "_id",
         ...TEAM_META_FIELDS,
-      ].join(", ")}}, "overrided": overrided{${[...PLAYER_META_FIELDS].join(
+      ].join(", ")}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(
         ", "
       )}}, statistics } }`
     )
@@ -244,27 +240,30 @@ export const getMatch = cache(
 );
 
 export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
-  const playerProjection =
-    '{team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
-  const teamProjection = TEAM_PROJECTION;
-
-  const scheduledMatches = await publicClient.fetch<Match[]>(
-    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && defined(result.playerEast.score)] | order(startAt desc)[0...2] { _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl, result}`
+  const regularTeams = await getRegularTeams();
+  const scheduledRawMatches = await publicClient.fetch<RawMatch[]>(
+    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && defined(result.playerEast.score)] | order(startAt desc)[0...2] { _id, name, playerEastTeam, playerSouthTeam, playerWestTeam, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl, result}`
   );
 
   const matchesGroupedByDate: Record<
     string,
-    { weekday: number; matches: Match[] }
+    {
+      weekday: number;
+      matches: Omit<
+        Match,
+        "playerEast" | "playerSouth" | "playerWest" | "playerNorth" | "rounds"
+      >[];
+    }
   > = {};
 
-  for (const match of scheduledMatches) {
-    const dateString = `${match.startAt.substring(
+  for (const rawMatch of scheduledRawMatches) {
+    const dateString = `${rawMatch.startAt.substring(
       8,
       10
-    )}/${match.startAt.substring(5, 7)}`;
+    )}/${rawMatch.startAt.substring(5, 7)}`;
 
     if (!matchesGroupedByDate[dateString]) {
-      const date = new Date(match.startAt);
+      const date = new Date(rawMatch.startAt);
       const weekday = date.getDay();
 
       matchesGroupedByDate[dateString] = {
@@ -273,7 +272,21 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
       };
     }
 
-    matchesGroupedByDate[dateString].matches.unshift(match);
+    matchesGroupedByDate[dateString].matches.unshift({
+      ...rawMatch,
+      playerEastTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerEastTeam!._ref
+      )!.team,
+      playerSouthTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerSouthTeam!._ref
+      )!.team,
+      playerWestTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerWestTeam!._ref
+      )!.team,
+      playerNorthTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerNorthTeam!._ref
+      )!.team,
+    });
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
@@ -289,27 +302,30 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
 });
 
 export const getLatestComingMatchesGroupedByDate = cache(async () => {
-  const playerProjection =
-    '{team->{_id, name, "squareLogoImage": squareLogoImage.asset->url, "color": color.hex}}';
-  const teamProjection = TEAM_PROJECTION;
-
-  const scheduledMatches = await publicClient.fetch<Match[]>(
-    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && !defined(result.playerEast.score)] | order(startAt asc)[0...4] { _id, name, playerEast->${playerProjection}, playerSouth->${playerProjection}, playerWest->${playerProjection}, playerNorth->${playerProjection}, playerEastTeam->${teamProjection}, playerSouthTeam->${teamProjection}, playerWestTeam->${teamProjection}, playerNorthTeam->${teamProjection}, startAt, youtubeUrl, bilibiliUrl}`
+  const regularTeams = await getRegularTeams();
+  const scheduledMatches = await publicClient.fetch<RawMatch[]>(
+    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && !defined(result.playerEast.score)] | order(startAt asc)[0...4] { _id, name, playerEastTeam, playerSouthTeam, playerWestTeam, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl}`
   );
 
   const matchesGroupedByDate: Record<
     string,
-    { weekday: number; matches: Match[] }
+    {
+      weekday: number;
+      matches: Omit<
+        Match,
+        "playerEast" | "playerSouth" | "playerWest" | "playerNorth" | "rounds"
+      >[];
+    }
   > = {};
 
-  for (const match of scheduledMatches) {
-    const dateString = `${match.startAt.substring(
+  for (const rawMatch of scheduledMatches) {
+    const dateString = `${rawMatch.startAt.substring(
       8,
       10
-    )}/${match.startAt.substring(5, 7)}`;
+    )}/${rawMatch.startAt.substring(5, 7)}`;
 
     if (!matchesGroupedByDate[dateString]) {
-      const date = new Date(match.startAt);
+      const date = new Date(rawMatch.startAt);
       const weekday = date.getDay();
 
       matchesGroupedByDate[dateString] = {
@@ -318,7 +334,21 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
       };
     }
 
-    matchesGroupedByDate[dateString].matches.push(match);
+    matchesGroupedByDate[dateString].matches.push({
+      ...rawMatch,
+      playerEastTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerEastTeam!._ref
+      )!.team,
+      playerSouthTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerSouthTeam!._ref
+      )!.team,
+      playerWestTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerWestTeam!._ref
+      )!.team,
+      playerNorthTeam: regularTeams.find(
+        ({ _key }) => _key === rawMatch.playerNorthTeam!._ref
+      )!.team,
+    });
   }
 
   const result = Object.entries(matchesGroupedByDate).map(([key, value]) => ({
