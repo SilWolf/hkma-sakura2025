@@ -4,7 +4,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hkleague2025.hkleague.org"),
+  metadataBase: new URL("https://hkleague2025.hkmahjong.org"),
   title: {
     default: "HK-League 2025 香港麻雀協會 香港立直麻雀團體聯賽2025",
     template: "%s | HK-League 2025 香港麻雀協會 香港立直麻雀團體聯賽2025",

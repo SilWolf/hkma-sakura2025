@@ -48,7 +48,7 @@ const render = (
         }}
       >
         <img
-          src="https://hkleague2025.hkleague.org/images/logo.png"
+          src="https://hkleague2025.hkmahjong.org/images/logo.png"
           width={128}
           height={128}
           alt=""
@@ -112,7 +112,7 @@ const render = (
             }}
           >
             <img
-              src="https://hkleague2025.hkleague.org/images/logo-hkma.png"
+              src="https://hkleague2025.hkmahjong.org/images/logo-hkma.png"
               width={212}
               height={64}
               alt=""
@@ -139,7 +139,7 @@ const render = (
             }}
           >
             <img
-              src="https://hkleague2025.hkleague.org/images/logo-hkmjbs.png"
+              src="https://hkleague2025.hkmahjong.org/images/logo-hkmjbs.png"
               width={155}
               height={64}
               alt=""
@@ -266,16 +266,16 @@ export const GET = async (
       KdamThmorProRegular,
     ] = await Promise.all([
       fetch(
-        "https://hkleague2025.hkleague.org/fonts/NotoSansTC-Regular.ttf"
+        "https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-Regular.ttf"
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2025.hkleague.org/fonts/NotoSansTC-SemiBold.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-SemiBold.ttf`
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2025.hkleague.org/fonts/NotoSerif-SemiBold.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/NotoSerif-SemiBold.ttf`
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2025.hkleague.org/fonts/KdamThmorPro-Regular.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/KdamThmorPro-Regular.ttf`
       ).then((res) => res.arrayBuffer()),
     ]);
 

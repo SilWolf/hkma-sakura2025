@@ -506,7 +506,7 @@ export const formatTeamPlayerDTO = (
     playerNickname: "",
     playerDesignation: "",
     playerPortraitImageUrl:
-      "https://hkleague2025.hkleague.org/images/empty.png",
+      "https://hkleague2025.hkmahjong.org/images/empty.png",
     playerIntroduction: "",
     playerFullname: "",
     teamId: "",
@@ -515,7 +515,7 @@ export const formatTeamPlayerDTO = (
     teamThirdName: "",
     teamFullname: "",
     color: "#000000",
-    teamLogoImageUrl: "https://hkleague2025.hkleague.org/images/empty.png",
+    teamLogoImageUrl: "https://hkleague2025.hkmahjong.org/images/empty.png",
     teamSlug: "",
     teamIntroduction: "",
   };
