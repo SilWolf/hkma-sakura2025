@@ -160,7 +160,7 @@ const thumbnailRender = (
       <div
         style={{ display: "flex", marginTop: "0.85em", marginBottom: "0.35em" }}
       >
-        {match.name} 出戰隊伍
+        {match.name.substring(0, match.name.lastIndexOf("-"))} 出戰隊伍
       </div>
     </div>
 
@@ -384,7 +384,7 @@ const squareRender = (
       }}
     >
       <div style={{ display: "flex", marginTop: "0.5em" }}>
-        {match.name} 出戰隊伍
+        {match.name.substring(0, match.name.lastIndexOf("-"))} 出戰隊伍
       </div>
     </div>
 
