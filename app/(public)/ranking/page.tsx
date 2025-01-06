@@ -130,10 +130,10 @@ export default async function RankingPage() {
                     <td>
                       <span className="text-xs sm:text-base">
                         {tournamentTeamsOrderedByRanking[i - 1]
-                          ? renderPoint(
+                          ? (
                               (tournamentTeamsOrderedByRanking[i - 1].statistics
                                 ?.point ?? 0) - (statistics?.point ?? 0)
-                            )
+                            ).toFixed(1)
                           : "-"}
                       </span>
                     </td>
