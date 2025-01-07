@@ -219,6 +219,7 @@ const thumbnailRender = (
               display: "flex",
               fontSize: "0.75em",
               height: "1.25em",
+              whiteSpace: "nowrap",
             }}
           >
             {team.secondaryName || " "}
@@ -454,6 +455,7 @@ const squareRender = (
                 display: "flex",
                 fontSize: "0.75em",
                 height: "1em",
+                whiteSpace: "nowrap",
               }}
             >
               {team.secondaryName || " "}
