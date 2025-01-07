@@ -67,6 +67,17 @@ export type RawMatch = {
   playerWest?: { _ref: string };
   playerNorthTeam?: { _ref: string };
   playerNorth?: { _ref: string };
+  result?: {
+    playerEast: MatchResultPlayer;
+    playerSouth: MatchResultPlayer;
+    playerWest: MatchResultPlayer;
+    playerNorth: MatchResultPlayer;
+  };
+};
+
+export type RawMatchWithRounds = RawMatch & {
+  rounds: MatchRound[];
+  youtubeUrl?: string;
 };
 
 export type TeamPlayer = {

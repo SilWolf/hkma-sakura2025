@@ -5,6 +5,7 @@ import {
   Match,
   Player,
   RawMatch,
+  RawMatchWithRounds,
   Team,
   TeamPlayer,
   TournamentTeam,
@@ -230,14 +231,52 @@ export const getOldMatches = cache(() =>
     )
 );
 
-export const getMatch = cache(
-  (matchId: string): Promise<Match> =>
-    publicClient
-      .fetch(
-        `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast->${TEAM_PLAYER_PROJECTION}, playerSouth->${TEAM_PLAYER_PROJECTION}, playerWest->${TEAM_PLAYER_PROJECTION}, playerNorth->${TEAM_PLAYER_PROJECTION}, playerEastTeam->${TEAM_PROJECTION}, playerSouthTeam->${TEAM_PROJECTION}, playerWestTeam->${TEAM_PROJECTION}, playerNorthTeam->${TEAM_PROJECTION}, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
-      )
-      .then((matches: Match[]) => matches[0])
-);
+export const getMatch = cache(async (matchId: string) => {
+  const regularTeams = await getRegularTeamsWithPlayers();
+  const rawMatch = await publicClient
+    .fetch<RawMatchWithRounds[]>(
+      `*[_type == "match" && _id == "${matchId}"]{ _id, name, playerEast, playerSouth, playerWest, playerNorth, playerEastTeam, playerSouthTeam, playerWestTeam, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl, result, rounds}`
+    )
+    .then((rawMatches) => rawMatches[0]);
+
+  const playerEastTeam = regularTeams.find(
+    ({ team }) => team._id === rawMatch.playerEastTeam!._ref
+  )!;
+  const playerEast = playerEastTeam.players.find(
+    ({ _id }) => _id === rawMatch.playerEast!._ref
+  );
+
+  const playerSouthTeam = regularTeams.find(
+    ({ team }) => team._id === rawMatch.playerSouthTeam!._ref
+  )!;
+  const playerSouth = playerSouthTeam.players.find(
+    ({ _id }) => _id === rawMatch.playerSouth!._ref
+  );
+  const playerWestTeam = regularTeams.find(
+    ({ team }) => team._id === rawMatch.playerWestTeam!._ref
+  )!;
+  const playerWest = playerWestTeam.players.find(
+    ({ _id }) => _id === rawMatch.playerWest!._ref
+  );
+  const playerNorthTeam = regularTeams.find(
+    ({ team }) => team._id === rawMatch.playerNorthTeam!._ref
+  )!;
+  const playerNorth = playerNorthTeam.players.find(
+    ({ _id }) => _id === rawMatch.playerNorth!._ref
+  );
+
+  return {
+    ...rawMatch,
+    playerEastTeam: playerEastTeam.team,
+    playerSouthTeam: playerSouthTeam.team,
+    playerWestTeam: playerWestTeam.team,
+    playerNorthTeam: playerNorthTeam.team,
+    playerEast,
+    playerSouth,
+    playerWest,
+    playerNorth,
+  };
+});
 
 export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
   const regularTeams = await getRegularTeams();

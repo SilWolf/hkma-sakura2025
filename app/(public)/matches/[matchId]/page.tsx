@@ -1,4 +1,4 @@
-import { MatchDTO, TeamPlayerDTO, getMatch } from "@/helpers/sanity.helper";
+import { getMatch } from "@/helpers/sanity.helper";
 import {
   renderDate,
   renderMatchCode,
@@ -32,27 +32,32 @@ const MatchTeamDiv = ({
 
   return (
     <div
-      className="flex p-1 items-center"
       style={{
-        background: team.color + "2D",
+        background:
+          result.ranking === "1" ? team.color + "9D" : team.color + "2D",
       }}
     >
-      <div className="shrink-0">
-        <img className="w-16 h-16" src={teamLogoUrl} alt={team.name} />
-      </div>
-      {/* <div className="shrink-0">
+      <div className="flex p-1 items-center">
+        <div className="shrink-0">
+          <img className="w-16 h-16" src={teamLogoUrl} alt={team.name} />
+        </div>
+        {/* <div className="shrink-0">
         <img
           className="w-16 rounded-full"
           src={playerImageUrl}
           alt={player.player.name}
         />
       </div> */}
-      <div className="flex-1 pr-2">
-        <p className="text-right text-sm">
-          {renderRanking(parseInt(result.ranking))}
-        </p>
-        <p className="text-right text-2xl">{renderPoint(result.point)}</p>
+        <div className="flex-1 pr-2">
+          <p className="text-right text-sm">
+            {renderRanking(parseInt(result.ranking))}
+          </p>
+          <p className="text-right text-2xl">{renderPoint(result.point)}</p>
+        </div>
       </div>
+      <p className="pb-2 text-center my-2 font-bold whitespace-nowrap overflow-hidden">
+        {team.name} {team.secondaryName}
+      </p>
     </div>
   );
 };
@@ -68,13 +73,17 @@ const MatchPlayerDiv = ({
 }) => {
   return (
     <div
-      className="text-center py-2"
+      className="h-full text-center py-2"
       style={{
-        background: team.color + "2D",
+        background:
+          result.ranking === "1" ? team.color + "9D" : team.color + "2D",
       }}
     >
-      <p className="text-center my-2 font-bold">
-        {player.name} ({player.nickname})
+      <p className="text-center my-2 font-bold whitespace-nowrap overflow-hidden">
+        {player.name}
+      </p>
+      <p className="text-center my-2 font-bold whitespace-nowrap overflow-hidden">
+        ({player.nickname})
       </p>
     </div>
   );
@@ -146,15 +155,18 @@ const MatchScoreChangeTd = ({
 const MatchFinalScoreTd = ({
   roundPlayer,
   team,
+  result,
 }: {
   roundPlayer: MatchRoundPlayer;
   team: Team;
+  result: MatchResultPlayer;
 }) => {
   return (
     <td
       className="py-4 text-center"
       style={{
-        background: team.color + "2D",
+        background:
+          result.ranking === "1" ? team.color + "9D" : team.color + "2D",
       }}
     >
       <p className="text-xl font-bold">{roundPlayer.afterScore}</p>
@@ -236,6 +248,32 @@ export default async function MatchDetailPage({
                     {match.startAt?.substring(0, 10)}
                   </p>
                 </td>
+                <td className="w-[21%]">
+                  <MatchTeamDiv
+                    team={match.playerEastTeam!}
+                    result={match.result!.playerEast}
+                  />
+                </td>
+                <td className="w-[21%]">
+                  <MatchTeamDiv
+                    team={match.playerSouthTeam!}
+                    result={match.result!.playerSouth}
+                  />
+                </td>
+                <td className="w-[21%]">
+                  <MatchTeamDiv
+                    team={match.playerWestTeam!}
+                    result={match.result!.playerWest}
+                  />
+                </td>
+                <td className="w-[21%]">
+                  <MatchTeamDiv
+                    team={match.playerNorthTeam!}
+                    result={match.result!.playerNorth}
+                  />
+                </td>
+              </tr>
+              <tr>
                 <td className="p-2">
                   {match.youtubeUrl && (
                     <a
@@ -247,39 +285,6 @@ export default async function MatchDetailPage({
                     </a>
                   )}
                 </td>
-                <td className="w-48">
-                  <MatchTeamDiv
-                    team={match.playerEastTeam!}
-                    result={match.result!.playerEast}
-                  />
-                </td>
-                <td className="w-48">
-                  <MatchTeamDiv
-                    team={match.playerSouthTeam!}
-                    result={match.result!.playerSouth}
-                  />
-                </td>
-                <td className="w-48">
-                  <MatchTeamDiv
-                    team={match.playerWestTeam!}
-                    result={match.result!.playerWest}
-                  />
-                </td>
-                <td className="w-48">
-                  <MatchTeamDiv
-                    team={match.playerNorthTeam!}
-                    result={match.result!.playerNorth}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td className="p-2"></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
                 <td>
                   <MatchPlayerDiv
                     player={match.playerEast!}
@@ -314,7 +319,7 @@ export default async function MatchDetailPage({
                   key={round._key}
                   className="odd:bg-neutral-100 odd:bg-opacity-10"
                 >
-                  <td colSpan={2} className="text-center">
+                  <td className="text-center">
                     <p className="font-bold">{renderMatchCode(round.code)}</p>
                     <p className="text-xs opacity-60">
                       {renderMatchResultType(round.type)}
@@ -343,26 +348,30 @@ export default async function MatchDetailPage({
                 </tr>
               ))}
               <tr className="odd:bg-neutral-100 odd:bg-opacity-10">
-                <td colSpan={2}></td>
+                <td></td>
                 <MatchFinalScoreTd
                   roundPlayer={match.rounds[match.rounds.length - 1].playerEast}
                   team={match.playerEastTeam!}
+                  result={match.result!.playerEast}
                 />
                 <MatchFinalScoreTd
                   roundPlayer={
                     match.rounds[match.rounds.length - 1].playerSouth
                   }
                   team={match.playerSouthTeam!}
+                  result={match.result!.playerSouth}
                 />
                 <MatchFinalScoreTd
                   roundPlayer={match.rounds[match.rounds.length - 1].playerWest}
                   team={match.playerWestTeam!}
+                  result={match.result!.playerWest}
                 />
                 <MatchFinalScoreTd
                   roundPlayer={
                     match.rounds[match.rounds.length - 1].playerNorth
                   }
                   team={match.playerNorthTeam!}
+                  result={match.result!.playerNorth}
                 />
               </tr>
             </tbody>
