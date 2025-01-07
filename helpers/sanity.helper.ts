@@ -108,6 +108,36 @@ export const getRegularTeamsWithPlayers = cache(() =>
     })
 );
 
+export const getRegularTeamsWithPlayersWithStatistics = cache(() =>
+  publicClient
+    .fetch(
+      `*[_type == "matchTournament" && _id == "${
+        process.env.SANITY_DEFAULT_TOURNAMENT_ID
+      }"]{ teams[]{ _key, ref->{${["_id", ...TEAM_META_FIELDS].join(
+        ", "
+      )}}, "overrided": overrided{${[...TEAM_META_FIELDS].join(
+        ", "
+      )}}, players[]{ref->{${[
+        "_id",
+        ...PLAYER_META_FIELDS,
+        `"statistic": statistics[_key=="${process.env.SANITY_DEFAULT_TOURNAMENT_ID}"][0]`,
+      ].join(", ")}}, "overrided": overrided{${[...PLAYER_META_FIELDS].join(
+        ", "
+      )}} } } }`
+    )
+    .then((tournaments) => {
+      return (tournaments[0]?.teams as TournamentTeamWithPlayers[]).map(
+        ({ ref, overrided, ...team }) => ({
+          ...team,
+          team: mergeObject(ref, overrided),
+          players: team.players.map((player) =>
+            mergeObject(player.ref, player.overrided)
+          ),
+        })
+      );
+    })
+);
+
 export const getTeams = cache(() =>
   publicClient
     .fetch(
