@@ -14,6 +14,7 @@ import {
 } from "@/helpers/string.helper";
 import { Team } from "@/types/index.type";
 import Link from "next/link";
+import W3IssueCard from "./_components/W3IssueCard";
 
 export const revalidate = 900;
 
@@ -180,13 +181,13 @@ export default async function Home() {
         </div>
       </section> */}
 
-      {/* <section>
+      <section>
         <div className="container max-w-screen-md px-2 mx-auto">
           <W3IssueCard />
         </div>
-      </section> */}
+      </section>
 
-      <section className="py-24">
+      <section className="py-12">
         <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">
           <div className="flex-1">
             <h2 className="font-semibold text-4xl mb-10">最新賽果</h2>
