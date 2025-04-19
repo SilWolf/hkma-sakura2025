@@ -61,7 +61,7 @@ const thumbnailRender = (
               marginLeft: "0.125em",
             }}
           >
-            HK-League 2025
+            Sakura League 2025
           </div>
           <div
             style={{
@@ -81,7 +81,7 @@ const thumbnailRender = (
               textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
             }}
           >
-            香港立直麻雀團體聯賽2025
+            香港女子立直麻雀聯賽2025
           </div>
         </div>
       </div>
@@ -300,7 +300,7 @@ const squareRender = (
               marginLeft: "0.125em",
             }}
           >
-            HK-League 2025
+            Sakura League 2025
           </div>
           <div
             style={{
@@ -320,7 +320,7 @@ const squareRender = (
               textShadow: "#00000080 0 0 1em, #00000080 0 0 0.5em",
             }}
           >
-            香港立直麻雀團體聯賽2025
+            香港女子立直麻雀聯賽2025
           </div>
         </div>
       </div>

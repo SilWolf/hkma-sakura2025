@@ -89,7 +89,7 @@ export default async function Home() {
               <img
                 src="/images/logo-sakura-long.png"
                 className="block mx-auto h-36 xl:h-56"
-                alt="HK-League"
+                alt="Sakura League"
               />
               {/* <h1 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] font-serif">
                 Sakura 2025

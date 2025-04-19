@@ -10,22 +10,22 @@ const myFont = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hkleague2025.hkmahjong.org"),
+  metadataBase: new URL("https://sakura2025.hkmahjong.org"),
   title: {
-    default: "HK-League 2025 香港麻雀協會 香港立直麻雀團體聯賽2025",
-    template: "%s | HK-League 2025 香港麻雀協會 香港立直麻雀團體聯賽2025",
+    default: "Sakura League 2025 香港麻雀協會 香港女子立直麻雀聯賽2025",
+    template: "%s | Sakura League 2025 香港麻雀協會 香港女子立直麻雀聯賽2025",
   },
   description:
-    "《HK-League 2025 香港立直麻雀團體聯賽2025》是由香港麻雀協會在2025年籌備的，在香港內賽程最長的立直麻將隊際競技聯賽，預計將進行近300場半莊戰，從16隊隊伍中決定最佳隊伍。",
+    "《Sakura League 2025 香港女子立直麻雀聯賽2025》是由香港麻雀協會及麻雀理工共同籌備的日麻聯賽，共有16名女子參賽。",
   keywords: [
-    "HK-League",
-    "hkleague",
-    "hkleague2025",
+    "Sakura League",
+    "sakuraleague",
+    "sakuraleague2025",
     "2025",
     "麻雀",
     "mj",
     "mahjong",
-    "mahjong hkleague",
+    "mahjong sakuraleague",
     "日本麻雀",
     "日麻",
     "japan mahjong",
