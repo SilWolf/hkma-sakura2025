@@ -2,6 +2,12 @@ import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import localFont from "next/font/local";
+
+const myFont = localFont({
+  src: "./fonts/Iansui-Regular.ttf",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hkleague2025.hkmahjong.org"),
@@ -46,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-TW">
+    <html lang="zh-TW" className={myFont.className}>
       <head>
         <link
           rel="stylesheet"

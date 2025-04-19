@@ -22,7 +22,7 @@ const Menu = () => {
         </button>
       </div>
       <ul
-        className="bg-gray-900 fixed top-0 left-0 right-0 z-40 hidden pt-12 md:pt-0 md:block md:static md:bg-transparent md:[&>li]:inline-block [&>li>a]:block md:[&>li>a]:inline-block [&>li>a]:py-4 [&>li>a]:px-4"
+        className="bg-neutral-100 fixed top-0 left-0 right-0 z-40 hidden pt-12 md:pt-0 md:block md:static md:bg-transparent md:[&>li]:inline-block [&>li>a]:block md:[&>li>a]:inline-block [&>li>a]:py-4 [&>li>a]:px-4"
         style={{
           display: menuOpened ? "block" : undefined,
         }}
@@ -38,8 +38,8 @@ const Menu = () => {
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/teams">
-            聯賽隊伍
+          <Link onClick={handleCloseMenu} href="/players">
+            參賽選手
           </Link>
         </li>
         <li>
@@ -60,11 +60,6 @@ const Menu = () => {
             判罰記錄 <i className="text-xs bi bi-box-arrow-up-right"></i>
           </Link>
         </li> */}
-        <li>
-          <Link href="https://hkleague2024.hkmahjong.org" target="_blank">
-            HKL2024 <i className="text-xs bi bi-box-arrow-up-right"></i>
-          </Link>
-        </li>
       </ul>
     </div>
   );

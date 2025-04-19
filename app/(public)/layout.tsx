@@ -9,15 +9,17 @@ export default function PublicLayout({
 }) {
   return (
     <>
-      <div className="max-w-[1920px] mx-auto relative">
+      <div
+        className="mx-auto relative bg-repeat-x"
+        style={{
+          backgroundImage: 'url("./images/bg-sakura.png")',
+        }}
+      >
         <Menu />
 
         {children}
 
-        <section
-          className="bg-[url('/images/bg-2.jpg')] text-neutral-900 bg-cover bg-center py-6"
-          style={{ backgroundColor: "#3ae0a1" }}
-        >
+        <section className="text-neutral-900 bg-[#d0eed5] py-6">
           <div className="container px-2 mx-auto flex flex-col lg:flex-row items-center sm:items-stretch gap-y-4">
             <div className="flex-1">
               <p className="text-center sm:text-left text-xl mb-2">
@@ -105,7 +107,7 @@ export default function PublicLayout({
           </div>
         </section>
       </div>
-      <footer className="text-neutral-300 hover:[&_a]:text-neutral-100 text-sm pt-16 pb-12">
+      <footer className="text-neutral-800 hover:[&_a]:text-neutral-700 text-sm pt-16 pb-12">
         <div className="container px-2 mx-auto flex flex-col md:flex-row justify-between items-center md:items-end gap-4">
           <div className="space-y-4 text-left">
             <div className="space-x-4">
@@ -114,10 +116,17 @@ export default function PublicLayout({
                 <a href="https://www.hkmahjong.org/" target="_blank">
                   <img
                     className="h-12 sm:h-16 inline-block"
-                    src="/images/logo-hkma.webp"
+                    src="/images/logo-hkma-black.png"
                     alt="香港麻雀協會 Hong Kong Mahjong Association"
                   />
                 </a>
+              </span>
+              <span>
+                <img
+                  className="h-10 sm:h-12 inline-block"
+                  src="/images/logo-poly.webp"
+                  alt="香港麻雀理工"
+                />
               </span>
             </div>
             <div className="space-x-4">
