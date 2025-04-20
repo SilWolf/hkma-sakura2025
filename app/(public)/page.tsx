@@ -1,3 +1,4 @@
+import PLAYERS from "@/constants/PLAYERS";
 import {
   MatchDTO,
   TeamPlayerDTO,
@@ -42,12 +43,9 @@ const ScheduleTeam = ({
   );
 };
 
-const TeamLogoForIntro = ({ team }: { team: Team }) => {
-  return (
-    <a href={`/players/${team.slug}`} target="_blank">
-      <img src={team.squareLogoImage + "?w=320&auto=format"} alt={team._id} />
-    </a>
-  );
+const NEXT_MATCH = {
+  date: new Date().toISOString(),
+  players: [PLAYERS[0], PLAYERS[1], PLAYERS[2], PLAYERS[3]],
 };
 
 export default async function Home() {
@@ -94,12 +92,19 @@ export default async function Home() {
               {/* <h1 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] font-serif">
                 Sakura 2025
               </h1> */}
-              <h2 className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-[1]">
+              {/* <h2 className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-[1]">
                 香港麻雀協會 香港女子立直麻雀聯賽2025
-              </h2>
+              </h2> */}
             </div>
           </div>
           <div className="flex justify-center gap-x-4 mx-auto mt-8">
+            <a href="https://mahjong-poly.mystrikingly.com/" target="_blank">
+              <img
+                className="h-10"
+                src="/images/logo-poly.webp"
+                alt="香港麻雀理工"
+              />
+            </a>
             <a href="https://www.hkmahjong.org/" target="_blank">
               <img
                 className="h-12"
@@ -107,17 +112,25 @@ export default async function Home() {
                 alt="香港麻雀協會 Hong Kong Mahjong Association"
               />
             </a>
-            <span>
-              <img
-                className="h-10"
-                src="/images/logo-poly.webp"
-                alt="香港麻雀理工"
-              />
-            </span>
           </div>
-          <h2 className="text-[32px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[48px] leading-[1.2] sm:leading-[1] mt-12">
-            詳情即將公佈
-          </h2>
+        </div>
+      </section>
+      <section className="py-12">
+        abc
+        <div className="container mx-auto">
+          <div className="grid grid-cols-4 gap-x-4">
+            {NEXT_MATCH.players.map((player) => (
+              <div
+                key={player.name.display}
+                className="bg-white rounded-[24px]"
+              >
+                <img
+                  src={player.portrait.default.url}
+                  alt={player.name.display}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </main>
