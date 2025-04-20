@@ -86,7 +86,7 @@ export default async function Home() {
             <div className="text-center flex flex-col justify-between pb-[4px]">
               <img
                 src="/images/logo-sakura-long.png"
-                className="block mx-auto h-36 xl:h-56"
+                className="block mx-auto h-48 xl:h-64"
                 alt="Sakura League"
               />
               {/* <h1 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] font-serif">
@@ -113,10 +113,14 @@ export default async function Home() {
               />
             </a>
           </div>
+          <section className="py-8">
+            <h2 className="text-[36px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[44px] leading-[1.5] sm:leading-none">
+              詳情即將公佈
+            </h2>
+          </section>
         </div>
       </section>
-      <section className="py-12">
-        abc
+      {/* <section className="py-12">
         <div className="container mx-auto">
           <div className="grid grid-cols-4 gap-x-4">
             {NEXT_MATCH.players.map((player) => (
@@ -132,7 +136,7 @@ export default async function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

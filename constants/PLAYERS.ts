@@ -1,9 +1,9 @@
-export default [
+const PLAYERS = [
   {
     name: {
       display: "校花",
     },
-    playerType: "hklplayer",
+    playerType: "hklplayer" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/4.png",
@@ -19,7 +19,7 @@ export default [
     name: {
       display: "校園神犬",
     },
-    playerType: "hklplayer",
+    playerType: "hklplayer" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/6.png",
@@ -35,7 +35,7 @@ export default [
     name: {
       display: "Louis",
     },
-    playerType: "hklplayer",
+    playerType: "hklplayer" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/5.png",
@@ -51,7 +51,7 @@ export default [
     name: {
       display: "Kelly",
     },
-    playerType: "hklplayer",
+    playerType: "hklplayer" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/10.png",
@@ -67,7 +67,7 @@ export default [
     name: {
       display: "Cry桃",
     },
-    playerType: "hklplayer",
+    playerType: "hklplayer" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/1.png",
@@ -83,7 +83,7 @@ export default [
     name: {
       display: "Krystal",
     },
-    playerType: "hklplayer",
+    playerType: "hklplayer" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/2.png",
@@ -99,7 +99,7 @@ export default [
     name: {
       display: "Eris",
     },
-    playerType: "hklplayer",
+    playerType: "hklplayer" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/8.png",
@@ -115,7 +115,7 @@ export default [
     name: {
       display: "Evelyn",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/3.png",
@@ -131,7 +131,7 @@ export default [
     name: {
       display: "Momo",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/9.png",
@@ -147,7 +147,7 @@ export default [
     name: {
       display: "大炮喵喵",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/11.png",
@@ -163,7 +163,7 @@ export default [
     name: {
       display: "Hazel",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/13.png",
@@ -179,7 +179,7 @@ export default [
     name: {
       display: "芙蓮",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/12.png",
@@ -195,7 +195,7 @@ export default [
     name: {
       display: "Cabo",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/14.png",
@@ -211,7 +211,7 @@ export default [
     name: {
       display: "Hennessy",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/15.png",
@@ -228,7 +228,7 @@ export default [
     name: {
       display: "Ser-Ser",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/16.png",
@@ -244,7 +244,7 @@ export default [
     name: {
       display: "YOKI",
     },
-    playerType: "challenger",
+    playerType: "challenger" as const,
     portrait: {
       default: {
         url: "/images/players/portraits/7.png",
@@ -257,3 +257,7 @@ export default [
     },
   },
 ];
+
+export default PLAYERS;
+
+export type SakuraPlayer = (typeof PLAYERS)[number];

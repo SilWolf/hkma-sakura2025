@@ -13,6 +13,7 @@ export default function PublicLayout({
         className="mx-auto relative bg-repeat-x"
         style={{
           backgroundImage: 'url("./images/bg-sakura.png")',
+          minHeight: "calc(100vh - 160px)",
         }}
       >
         <div className="bg-white py-2">
