@@ -18,7 +18,7 @@ const MatchDetailReplayPage = async ({
   return (
     <main>
       <section className="pt-16 md:pt-8 pb-4">
-        <div className="container max-w-screen-lg mx-auto px-2 space-x-2 text-sm">
+        <div className="container max-w-(--breakpoint-lg) mx-auto px-2 space-x-2 text-sm">
           <Link
             className="opacity-80"
             href={`/schedule/${match.startAt.substring(
@@ -40,7 +40,7 @@ const MatchDetailReplayPage = async ({
       </section>
 
       <section className="py-8">
-        <div className="container px-2 max-w-screen-lg mx-auto">
+        <div className="container px-2 max-w-(--breakpoint-lg) mx-auto">
           <MatchLogsSection match={match} />
         </div>
       </section>

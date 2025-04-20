@@ -22,7 +22,7 @@ export default function PublicLayout({
         {children}
       </div>
 
-      <footer className="text-neutral-800 hover:[&_a]:text-neutral-700 text-sm pt-16 pb-12">
+      <footer className="text-neutral-800 [&_a]:hover:text-neutral-700 text-sm pt-16 pb-12">
         <div className="container px-2 mx-auto flex flex-col md:flex-row justify-between items-center md:items-end gap-4">
           <div className="space-y-4 text-left">
             <div className="space-x-4">

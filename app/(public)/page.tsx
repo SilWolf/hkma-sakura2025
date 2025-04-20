@@ -92,7 +92,7 @@ export default async function Home() {
               {/* <h1 className="text-[48px] sm:text-[56px] md:text-[72px] lg:text-[96px] font-serif">
                 Sakura 2025
               </h1> */}
-              {/* <h2 className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-[1]">
+              {/* <h2 className="text-[24px] whitespace-pre-wrap sm:whitespace-nowrap sm:text-[32px] leading-[1.2] sm:leading-none">
                 香港麻雀協會 香港女子立直麻雀聯賽2025
               </h2> */}
             </div>

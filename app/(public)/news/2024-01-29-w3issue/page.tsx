@@ -2,7 +2,7 @@ const _20250129W3IssuePage = () => {
   return (
     <main>
       <section className="py-10">
-        <div className="container mx-auto px-2 max-w-screen-lg space-y-6">
+        <div className="container mx-auto px-2 max-w-(--breakpoint-lg) space-y-6">
           <h2 className="text-center text-4xl lg:text-5xl font-semibold">
             對隊伍［一發放銃］觸犯「不正當競爭行為」
             <br /> 官方公告及後續安排
@@ -12,7 +12,7 @@ const _20250129W3IssuePage = () => {
       </section>
 
       <section id="document" className="pb-12 document-ruling">
-        <div className="container mx-auto px-2 max-w-screen-lg space-y-16">
+        <div className="container mx-auto px-2 max-w-(--breakpoint-lg) space-y-16">
           <div className="space-y-6">
             <h3>概述</h3>
             <p>
@@ -143,12 +143,12 @@ const _20250129W3IssuePage = () => {
         </div>
       </section>
 
-      <div className="container mx-auto px-2 max-w-screen-lg">
+      <div className="container mx-auto px-2 max-w-(--breakpoint-lg)">
         <hr />
       </div>
 
       <section className="py-10">
-        <div className="container mx-auto px-2 max-w-screen-lg space-y-6">
+        <div className="container mx-auto px-2 max-w-(--breakpoint-lg) space-y-6">
           <h2 className="text-center text-4xl lg:text-5xl font-semibold">
             後續處理及變更一覽
           </h2>
@@ -159,7 +159,7 @@ const _20250129W3IssuePage = () => {
       </section>
 
       <section id="document" className="pb-12 document-ruling">
-        <div className="container mx-auto px-2 max-w-screen-lg space-y-16">
+        <div className="container mx-auto px-2 max-w-(--breakpoint-lg) space-y-16">
           <div className="space-y-6">
             <h4>隊伍移除及替補隊伍</h4>
             <p>
@@ -308,12 +308,12 @@ const _20250129W3IssuePage = () => {
         </div>
       </section>
 
-      <div className="container mx-auto px-2 max-w-screen-lg">
+      <div className="container mx-auto px-2 max-w-(--breakpoint-lg)">
         <hr />
       </div>
 
       <section className="py-10">
-        <div className="container mx-auto px-2 max-w-screen-lg space-y-6">
+        <div className="container mx-auto px-2 max-w-(--breakpoint-lg) space-y-6">
           <h2 className="text-center text-4xl lg:text-5xl font-semibold">
             結尾
           </h2>
@@ -321,7 +321,7 @@ const _20250129W3IssuePage = () => {
       </section>
 
       <section id="document" className="pb-12 document-ruling">
-        <div className="container mx-auto px-2 max-w-screen-lg space-y-16">
+        <div className="container mx-auto px-2 max-w-(--breakpoint-lg) space-y-16">
           <div className="space-y-6">
             <p>
               　　總裁判及裁判組於確認事件後深表遺憾。並在此向所有受影響的參賽選手、參賽隊伍以及公眾致歉。裁判未有再三確保比賽用具運作正常的基礎上確認比賽公平進行，誤信工作人員，實為裁判組疏忽。
