@@ -54,7 +54,7 @@ export default async function TeamDetail({
   return (
     <main className="relative pb-12">
       <section className="pt-16 md:pt-8 pb-4">
-        <div className="container max-w-screen-md mx-auto px-2 space-x-2 text-sm">
+        <div className="container max-w-(--breakpoint-md) mx-auto px-2 space-x-2 text-sm">
           <Link className="opacity-80" href="/players">
             聯賽隊伍
           </Link>
@@ -69,7 +69,7 @@ export default async function TeamDetail({
           background: `linear-gradient(to bottom, ${team.color}2D, transparent)`,
         }}
       >
-        <div className="container mx-auto max-w-screen-md px-2">
+        <div className="container mx-auto max-w-(--breakpoint-md) px-2">
           <img
             src={team.squareLogoImage + "?w=512&auto=format"}
             className="w-64 h-64 mx-auto"
@@ -93,14 +93,14 @@ export default async function TeamDetail({
       {players.map((player) => (
         <section
           key={player._id}
-          className="py-12 [&_th]:bg-[--teamColor]"
+          className="py-12 [&_th]:bg-(--teamColor)"
           style={
             {
               "--teamColor": team.color + "80",
             } as React.CSSProperties
           }
         >
-          <div className="container mx-auto max-w-screen-md px-2">
+          <div className="container mx-auto max-w-(--breakpoint-md) px-2">
             <div className="flex gap-2 md:gap-12 items-center">
               <div className="flex-1">
                 <h3 className="font-bold text-xl">
@@ -115,7 +115,7 @@ export default async function TeamDetail({
             {player.statistic && (
               <>
                 <div className="flex flex-col md:flex-row gap-4 mt-4">
-                  <table className="flex-[3] text-center">
+                  <table className="flex-3 text-center">
                     <thead>
                       <tr className="text-white">
                         <th>半莊數</th>
@@ -154,7 +154,7 @@ export default async function TeamDetail({
                     </tbody>
                   </table>
 
-                  <table className="flex-[2] text-center">
+                  <table className="flex-2 text-center">
                     <thead>
                       <tr className="bg-neutral-700 text-white">
                         <th>連對率</th>
@@ -181,7 +181,7 @@ export default async function TeamDetail({
                     </tbody>
                   </table>
 
-                  <table className="flex-[2] text-center">
+                  <table className="flex-2 text-center">
                     <thead>
                       <tr className="bg-neutral-700 text-white">
                         <th>立直率</th>

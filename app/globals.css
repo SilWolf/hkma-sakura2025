@@ -1,63 +1,131 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-html {
-  scroll-behavior: smooth;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: valentine --default, valentine --prefersdark;
 }
 
-@layer components {
-  .document-ruling {
-    h2, h3 {
-      @apply font-semibold;
-    }
+@theme {
+  --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Noto Serif", ui-serif, Georgia, Cambria, "Times New Roman",
+    Times, serif;
 
-    h2 {
-      @apply text-4xl;
-    }
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
 
-    h3 {
-      @apply text-3xl;
-    }
+  --animate-carousel: carousel 40s linear infinite;
+  --animate-fade-in-from-left: fadeInFromLeft 0.8s ease-out 1;
+  --animate-fade-in-from-right: fadeInFromRight 0.8s ease-out 1;
 
-    h4 {
-      @apply text-2xl;
+  @keyframes carousel {
+    0% {
+      left: -200px;
     }
+    100% {
+      left: 100%;
+    }
+  }
+  @keyframes fadeInFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes fadeInFromRight {
+    0% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
 
-    h5 {
-      @apply text-xl;
-    }
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
 
-    a {
-      @apply text-cyan-400 underline hover:text-cyan-500;
-    }
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
-    p {
-      @apply leading-8;
-    }
+@utility document-ruling {
+  h2,
+  h3 {
+    @apply font-semibold;
+  }
 
-    table {
-      th {
-        @apply whitespace-nowrap
-      }
-      th, td {
-        @apply text-center p-2 border border-current;
-      }
-    }
+  h2 {
+    @apply text-4xl;
+  }
 
-    ul, ol {
-      @apply pl-6;
-      li {
-        @apply pl-4 leading-8;
-      }
-    }
+  h3 {
+    @apply text-3xl;
+  }
 
-    ul {
-      @apply list-disc;
-    }
+  h4 {
+    @apply text-2xl;
+  }
 
-    ol {
-      @apply list-decimal;
+  h5 {
+    @apply text-xl;
+  }
+
+  a {
+    @apply text-cyan-400 underline hover:text-cyan-500;
+  }
+
+  p {
+    @apply leading-8;
+  }
+
+  table {
+    th {
+      @apply whitespace-nowrap;
     }
+    th,
+    td {
+      @apply text-center p-2 border border-current;
+    }
+  }
+
+  ul,
+  ol {
+    @apply pl-6;
+    li {
+      @apply pl-4 leading-8;
+    }
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+}
+
+@layer utilities {
+  html {
+    scroll-behavior: smooth;
   }
 }
