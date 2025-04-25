@@ -73,6 +73,7 @@ export type RawMatch = {
     playerWest: MatchResultPlayer;
     playerNorth: MatchResultPlayer;
   };
+  rounds: any[];
 };
 
 export type RawMatchWithRounds = RawMatch & {
