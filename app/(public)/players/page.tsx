@@ -1,28 +1,8 @@
-import PLAYERS from "@/constants/PLAYERS";
-import {
-  getPlayersGroupByTeams,
-  getRegularTeams,
-  getRegularTeamsWithPlayers,
-  getTeams,
-} from "@/helpers/sanity.helper";
+import PLAYERS, { PLAYER_TYPE_DATA } from "@/constants/PLAYERS";
 import { Metadata } from "next";
-import Link from "next/link";
 import PlayerPortraitButton from "./components/PlayerPortraitButton";
-
-const PLAYER_TYPE_DATA = {
-  hklplayer: {
-    bgColor: "#F400E0",
-    bgColorLight: "#fadef8",
-    color: "#FFFFFF",
-    display: "HKL Player",
-  },
-  challenger: {
-    bgColor: "#9078B5",
-    bgColorLight: "#e7d9fc",
-    color: "#FFFFFF",
-    display: "Challenger",
-  },
-} as const;
+import PlayerDialog from "./components/PlayerDialog";
+import PlayerDetailsSwiper from "./widgets/PlayerDetailsSwiper";
 
 export const revalidate = 1800;
 
@@ -30,9 +10,7 @@ export const metadata: Metadata = {
   title: "參賽選手",
 };
 
-export default async function Teams() {
-  const tournamentTeams = await getRegularTeamsWithPlayers();
-
+export default async function Players() {
   return (
     <main className="relative">
       {/* <section className="pt-10 pb-10">
@@ -41,7 +19,7 @@ export default async function Teams() {
         </h2>
       </section> */}
 
-      <section className="container mx-auto pt-12 pb-24">
+      <section className="container mx-auto pt-12 pb-12">
         <div className="grid grid-cols-2 gap-2">
           {(["hklplayer", "challenger"] as const).map((type) => (
             <div key={type}>
@@ -64,10 +42,33 @@ export default async function Teams() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 justify-center">
                   {PLAYERS.filter(({ playerType }) => playerType === type).map(
                     (player) => (
-                      <PlayerPortraitButton
+                      <a
                         key={player.name.display}
-                        player={player}
-                      />
+                        href={`#${player.id}`}
+                        data-name={player.name.display}
+                        className="cursor-pointer relative transition-transform hover:scale-110 **:data-sakura-icon:transition-transform hover:**:data-sakura-icon:scale-110 hover:**:data-sakura-icon:rotate-45"
+                      >
+                        <img
+                          src="/images/logo-sakura-notext.png"
+                          className="absolute opacity-50"
+                        />
+                        <img
+                          className="relative z-10 rounded-full"
+                          src={player.portrait.default.url}
+                          alt={player.name.display}
+                        />
+                        <div className="absolute z-10 bottom-2 left-2 right-2 bg-white rounded-full pl-[12px] pb-[4px] text-[20px] leading-[28px] text-center">
+                          <img
+                            src="/images/sakura-icon-64x64.png"
+                            className="absolute -left-2 top-0 w-8 h-8"
+                            alt="*"
+                            data-sakura-icon
+                          />
+                          <span className="whitespace-nowrap">
+                            {player.name.display}
+                          </span>
+                        </div>
+                      </a>
                     )
                   )}
                 </div>
@@ -77,57 +78,23 @@ export default async function Teams() {
         </div>
       </section>
 
-      {PLAYERS.map((player) => (
-        <dialog
+      {/* {PLAYERS.map((player, index) => (
+        <PlayerDialog
           key={player.name.display}
-          id={`modal-${player.name.display}`}
-          className="modal **:data-fullbody:transition-all **:data-fullbody:duration-700 **:data-fullbody:-translate-x-[15%] **:data-fullbody:opacity-0 open:**:data-fullbody:opacity-100 open:**:data-fullbody:translate-x-0 **:data-infoblock:transition-all **:data-infoblock:duration-700 **:data-infoblock:translate-x-[10vh] **:data-infoblock:opacity-0 open:**:data-infoblock:opacity-100 open:**:data-infoblock:translate-x-0 **:data-sakura-icon:transition-transform **:data-sakura-icon:duration-700 open:**:data-sakura-icon:-rotate-45"
-        >
-          <div className="modal-box scale-25 w-full max-w-(--breakpoint-lg) overflow-visible">
-            <div className="h-[90vh]">
-              <div className="flex h-full">
-                <div>
-                  <img
-                    className="h-full"
-                    src={player.fullbody.default.url}
-                    alt={player.name.display}
-                    data-fullbody
-                  />
-                </div>
-                <div className="flex-1 pt-16">
-                  <div className="relative" data-infoblock>
-                    <div>
-                      <div
-                        className="text-[0.5em] inline-block -ml-3 px-4 py-1 rounded-full"
-                        style={{
-                          color: PLAYER_TYPE_DATA[player.playerType].color,
-                          backgroundColor:
-                            PLAYER_TYPE_DATA[player.playerType].bgColor,
-                        }}
-                      >
-                        {PLAYER_TYPE_DATA[player.playerType].display}
-                      </div>
-                    </div>
-                    <div className="relative inline-block bg-white rounded-full pl-14 pr-8 pb-2 mt-2 text-[40px] text-center">
-                      <img
-                        src="/images/sakura-icon-64x64.png"
-                        className="absolute -left-4 top-0 w-16 h-16"
-                        alt="*"
-                        data-sakura-icon
-                      />
-                      <span>{player.name.display}</span>
-                    </div>
-                    <div className="px-6 py-2 text-[24px] mt-4"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
-      ))}
+          player={player}
+          prevPlayer={PLAYERS[(PLAYERS.length + index - 1) % PLAYERS.length]}
+          nextPlayer={PLAYERS[(index + 1) % PLAYERS.length]}
+        />
+      ))} */}
+
+      <section>
+        <div className="pb-12">
+          {PLAYERS.map((player) => (
+            <a id={player.id} key={player.id} />
+          ))}
+        </div>
+        <PlayerDetailsSwiper />
+      </section>
     </main>
   );
 }

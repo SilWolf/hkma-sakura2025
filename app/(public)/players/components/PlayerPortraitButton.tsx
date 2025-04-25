@@ -3,7 +3,7 @@
 import { SakuraPlayer } from "@/constants/PLAYERS";
 
 const handleClickButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-  const targetModalId = `modal-${e.currentTarget.getAttribute("data-name")}`;
+  const targetModalId = `player-details-swiper`;
   (document.getElementById(targetModalId) as HTMLDialogElement)?.showModal();
 };
 
@@ -13,9 +13,9 @@ export default function PlayerPortraitButton({
   player: SakuraPlayer;
 }) {
   return (
-    <button
+    <a
       key={player.name.display}
-      onClick={handleClickButton}
+      href={`#${player.name.display}`}
       data-name={player.name.display}
       className="cursor-pointer relative transition-transform hover:scale-110 **:data-sakura-icon:transition-transform hover:**:data-sakura-icon:scale-110 hover:**:data-sakura-icon:rotate-45"
     >
@@ -37,6 +37,6 @@ export default function PlayerPortraitButton({
         />
         <span className="whitespace-nowrap">{player.name.display}</span>
       </div>
-    </button>
+    </a>
   );
 }
