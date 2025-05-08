@@ -441,7 +441,7 @@ export const apiQueryMatchesForSchedule = async () => {
           { key: "playerSouth", point: pointsByPlayers[1] },
           { key: "playerWest", point: pointsByPlayers[2] },
           { key: "playerNorth", point: pointsByPlayers[3] },
-        ].sort((a, b) => a.point - b.point);
+        ].sort((a, b) => b.point - a.point);
 
         newMatch.result = {
           playerEast: {
