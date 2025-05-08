@@ -164,15 +164,15 @@ export type Match = {
     };
   };
   rounds?: Array<{
-    code?: string;
-    type?: "unknown" | "ron" | "tsumo" | "exhausted" | "hotfix";
-    playerEast?: {
+    code: string;
+    type: "unknown" | "ron" | "tsumo" | "exhausted" | "hotfix";
+    playerEast: {
       position?: "east" | "south" | "west" | "north";
       status?: "none" | "isRiichied" | "isRevealed";
       isWaited?: boolean;
-      type?: "none" | "win" | "lose";
-      beforeScore?: number;
-      afterScore?: number;
+      type: "none" | "win" | "lose";
+      beforeScore: number;
+      afterScore: number;
       dora?: number;
       redDora?: number;
       innerDora?: number;
@@ -181,13 +181,13 @@ export type Match = {
       pureScore?: number;
       yaku?: string;
     };
-    playerSouth?: {
+    playerSouth: {
       position?: "east" | "south" | "west" | "north";
       status?: "none" | "isRiichied" | "isRevealed";
       isWaited?: boolean;
-      type?: "none" | "win" | "lose";
-      beforeScore?: number;
-      afterScore?: number;
+      type: "none" | "win" | "lose";
+      beforeScore: number;
+      afterScore: number;
       dora?: number;
       redDora?: number;
       innerDora?: number;
@@ -196,13 +196,13 @@ export type Match = {
       pureScore?: number;
       yaku?: string;
     };
-    playerWest?: {
+    playerWest: {
       position?: "east" | "south" | "west" | "north";
       status?: "none" | "isRiichied" | "isRevealed";
       isWaited?: boolean;
-      type?: "none" | "win" | "lose";
-      beforeScore?: number;
-      afterScore?: number;
+      type: "none" | "win" | "lose";
+      beforeScore: number;
+      afterScore: number;
       dora?: number;
       redDora?: number;
       innerDora?: number;
@@ -211,13 +211,13 @@ export type Match = {
       pureScore?: number;
       yaku?: string;
     };
-    playerNorth?: {
+    playerNorth: {
       position?: "east" | "south" | "west" | "north";
       status?: "none" | "isRiichied" | "isRevealed";
       isWaited?: boolean;
-      type?: "none" | "win" | "lose";
-      beforeScore?: number;
-      afterScore?: number;
+      type: "none" | "win" | "lose";
+      beforeScore: number;
+      afterScore: number;
       dora?: number;
       redDora?: number;
       innerDora?: number;

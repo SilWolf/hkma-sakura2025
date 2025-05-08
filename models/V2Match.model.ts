@@ -1,3 +1,4 @@
+import { playerSchema } from "@/adapters/sanity/sanity.zod";
 import * as zod from "zod";
 
 const v2MatchResultOfPlayer = zod.object({
@@ -61,6 +62,7 @@ export const v2MatchPlayerSchema = zod.object({
       })
       .optional(),
   }),
+  statistics: playerSchema.shape.statistics.unwrap().element.nullish(),
 });
 
 export const v2MatchSchema = zod.object({

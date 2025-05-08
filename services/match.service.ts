@@ -479,3 +479,31 @@ export const apiQueryMatchesForSchedule = async () => {
     });
   });
 };
+
+export const apiQueryMatchesForRecalulation = async (
+  tournamentId: string,
+  offset: number = 0,
+  size: number = 50
+) => {
+  const query = q.star
+    .filterByType("match")
+    .filterRaw(
+      `tournament._ref == "${tournamentId}" && defined(resultUploadedAt)`
+    )
+    .order("startAt asc")
+    .slice(offset, size)
+    .project((sub) => ({
+      playerEast: sub.field("playerEast"),
+      playerSouth: sub.field("playerSouth"),
+      playerWest: sub.field("playerWest"),
+      playerNorth: sub.field("playerNorth"),
+      playerEastTeam: sub.field("playerEastTeam"),
+      playerSouthTeam: sub.field("playerSouthTeam"),
+      playerWestTeam: sub.field("playerWestTeam"),
+      playerNorthTeam: sub.field("playerNorthTeam"),
+      result: sub.field("result"),
+      rounds: sub.field("rounds[]"),
+    }));
+
+  return runQuery(query);
+};

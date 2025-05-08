@@ -1,15 +1,16 @@
-import { q, runQuery, urlFor } from "@/adapters/sanity";
+import { q, runQuery, sanityClient, urlFor } from "@/adapters/sanity";
 import * as z from "zod";
 import { V2Tournament, V2TournamentTeam } from "@/models/V2Tournament.model";
 import { mergeObject } from "@/utils/object.util";
 import { V2MatchPlayer } from "@/models/V2Match.model";
+import { MatchTournament, Player } from "@/adapters/sanity/sanity.types";
 
 const TOURNAMENT_ID = process.env.SANITY_DEFAULT_TOURNAMENT_ID;
 
-export const apiGetTournament = async () => {
+export const apiGetTournamentById = async (tournamentId: string) => {
   const query = q.star
     .filterByType("matchTournament")
-    .filterBy(`_id == "${TOURNAMENT_ID}"`)
+    .filterBy(`_id == "${tournamentId}"`)
     .slice(0, 1)
     .project((sub) => ({
       _id: z.string(),
@@ -145,9 +146,10 @@ export const apiGetTournament = async () => {
                       })
                     )
                 ),
-                statistics: playerRef.raw<unknown>(
-                  `statistics[_key=="${TOURNAMENT_ID}"][0]`
-                ),
+                statistics: playerRef
+                  .field("statistics[]")
+                  .filter(`_key=="${tournamentId}"`)
+                  .slice(0),
               })),
             overrided: player.field("overrided").project((playerOverrided) => ({
               name: z.string().nullish(),
@@ -359,4 +361,47 @@ export const apiGetTournament = async () => {
   }
 
   return result;
+};
+
+export const apiGetTournament = async () =>
+  apiGetTournamentById(TOURNAMENT_ID as string);
+
+export const apiGetTournamentByMatchId = async (matchId: string) => {
+  const query = q.star
+    .filterByType("match")
+    .filterRaw(`_id == "${matchId}"`)
+    .slice(0)
+    .project((sub) => ({
+      tournamentId: sub.field("tournament").field("_ref"),
+    }));
+
+  const tournamentId = await runQuery(query).then((res) => res?.tournamentId);
+  if (!tournamentId) {
+    throw new Error("Cannot find tournament id");
+  }
+
+  return apiGetTournamentById(tournamentId);
+};
+
+export const apiPatchTeamsStatistics = async (
+  tournamentId: string,
+  teamsMap: Record<
+    string,
+    {
+      statistics: NonNullable<
+        NonNullable<MatchTournament["teams"]>[number]["statistics"]
+      >;
+    }
+  >
+) => {
+  const ref = sanityClient.patch(tournamentId);
+  const teamIds = Object.keys(teamsMap);
+
+  for (const teamId of teamIds) {
+    ref.set({
+      [`teams[team._ref=="${teamId}"].statistics`]: teamsMap[teamId].statistics,
+    });
+  }
+
+  return await ref.commit();
 };

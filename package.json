@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "generate:sanity-to-zod": "ts-to-zod ./adapters/sanity/sanity.types.ts ./adapters/sanity/sanity.zod.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -43,6 +44,7 @@
     "eslint-config-next": "15.3.2",
     "postcss": "^8",
     "tailwindcss": "^4.1.5",
+    "ts-to-zod": "^3.15.0",
     "typescript": "^5"
   }
 }

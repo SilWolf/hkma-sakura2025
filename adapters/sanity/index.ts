@@ -14,7 +14,7 @@ const sanityConfig = {
   token: process.env.SANITY_SECRET_TOKEN,
 };
 
-const sanityClient = createClient(sanityConfig);
+export const sanityClient = createClient(sanityConfig);
 
 export const runQuery = makeSafeQueryRunner((query) =>
   sanityClient.fetch(query)
