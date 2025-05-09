@@ -11,7 +11,7 @@ export const apiGetTournamentById = async (tournamentId: string) => {
   const query = q.star
     .filterByType("matchTournament")
     .filterBy(`_id == "${tournamentId}"`)
-    .slice(0, 1)
+    .slice(0)
     .project((sub) => ({
       _id: z.string(),
       name: z.string().nullish(),
@@ -232,23 +232,23 @@ export const apiGetTournamentById = async (tournamentId: string) => {
       })),
     }));
 
-  const result = await runQuery(query).then((tournaments) => {
-    if (!tournaments[0]) {
+  const result = await runQuery(query).then((fetchedTournament) => {
+    if (!fetchedTournament) {
       return null;
     }
 
     const tournament = {
-      ...tournaments[0],
-      id: tournaments[0]._id,
-      name: tournaments[0].name ?? "(未命名的聯賽)",
+      ...fetchedTournament,
+      id: fetchedTournament._id,
+      name: fetchedTournament.name ?? "(未命名的聯賽)",
       image: {
-        logo: tournaments[0].logoUrl
-          ? { default: { url: tournaments[0].logoUrl } }
+        logo: fetchedTournament.logoUrl
+          ? { default: { url: fetchedTournament.logoUrl } }
           : undefined,
       },
-      rulesetId: tournaments[0].rulesetId ?? "hkleague-4p",
-      themeId: tournaments[0].themeId ?? "default",
-      teams: (tournaments[0].teams ?? []).map((team) => {
+      rulesetId: fetchedTournament.rulesetId ?? "hkleague-4p",
+      themeId: fetchedTournament.themeId ?? "default",
+      teams: (fetchedTournament.teams ?? []).map((team) => {
         const teamFinal = mergeObject(
           mergeObject({}, team.ref ?? {}),
           team.overrided ?? {}

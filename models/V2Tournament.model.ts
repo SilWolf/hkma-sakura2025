@@ -1,5 +1,6 @@
-import * as zod from 'zod'
-import { v2MatchPlayerSchema } from './V2Match.model'
+import * as zod from "zod";
+import { v2MatchPlayerSchema } from "./V2Match.model";
+import { matchTournamentSchema } from "@/adapters/sanity/sanity.zod";
 
 export const v2TournamentTeamSchema = v2MatchPlayerSchema.extend({
   players: zod.array(
@@ -7,8 +8,10 @@ export const v2TournamentTeamSchema = v2MatchPlayerSchema.extend({
       statistics: zod.unknown(),
     })
   ),
-  statistics: zod.unknown(),
-})
+  statistics: matchTournamentSchema.shape.teams
+    .unwrap()
+    .element.shape.statistics.nullish(),
+});
 
 export const v2TournamentSchema = zod.object({
   id: zod.string(),
@@ -16,14 +19,14 @@ export const v2TournamentSchema = zod.object({
   image: zod.object({
     logo: zod
       .object({
-        default: zod.object({ url: zod.string().url('玩家圖片必須是URL。') }),
+        default: zod.object({ url: zod.string().url("玩家圖片必須是URL。") }),
       })
       .optional(),
   }),
   teams: zod.array(v2TournamentTeamSchema).optional(),
   rulesetId: zod.string(),
   themeId: zod.string(),
-})
+});
 
-export type V2TournamentTeam = zod.infer<typeof v2TournamentTeamSchema>
-export type V2Tournament = zod.infer<typeof v2TournamentSchema>
+export type V2TournamentTeam = zod.infer<typeof v2TournamentTeamSchema>;
+export type V2Tournament = zod.infer<typeof v2TournamentSchema>;

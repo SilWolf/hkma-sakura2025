@@ -12,6 +12,7 @@ import NextMatchSection from "./_widgets/NextMatchSection";
 import RankingSection from "./_widgets/RankingSection";
 import SakuraInstagramEmbed from "./_widgets/SakuraInstagramEmbed";
 import LargePlayerPortrait from "./_components/LargePlayerPortrait";
+import TeamScoreConflictBar from "./_widgets/TeamScoreConflictBar";
 
 export const revalidate = 900;
 
@@ -20,12 +21,16 @@ export default async function Home() {
     apiGetLatestCompletedMatches(),
     apiGetLatestComingMatches(),
   ]);
-  const { players } = await apiGetTournament();
+  const { players, teams } = await apiGetTournament();
 
   const nextMatch = latestComingMatches[0];
 
   return (
     <main>
+      <section>
+        <TeamScoreConflictBar teamLeft={teams[0]} teamRight={teams[1]} />
+      </section>
+
       {nextMatch && (
         <section className="pb-12">
           <NextMatchSection nextMatch={nextMatch} />

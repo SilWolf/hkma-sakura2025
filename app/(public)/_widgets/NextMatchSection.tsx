@@ -15,16 +15,18 @@ export default function NextMatchSection({
       layers={[{ image: "/images/bg-sakura-2.webp", speed: -45 }]}
       className="min-h-[560px]"
     >
-      <div className="absolute inset-0 flex items-center justify-center pt-16">
+      <div className="absolute inset-0 flex items-center justify-center">
         <div className="container max-w-4xl mx-auto">
+          <div className="text-center mb-8 text-4xl">
+            <p className="mb-2">下一場出賽選手</p>
+            <p>{renderDateToLongForm(nextMatch.data.startAt)}</p>
+          </div>
+
           <div className="grid grid-cols-4 gap-x-8 text-[24px]">
             <LargePlayerPortrait player={nextMatch.data.players[0]} />
             <LargePlayerPortrait player={nextMatch.data.players[1]} />
             <LargePlayerPortrait player={nextMatch.data.players[2]} />
             <LargePlayerPortrait player={nextMatch.data.players[3]} />
-          </div>
-          <div className="text-center mt-8 text-4xl">
-            {renderDateToLongForm(nextMatch.data.startAt)}
           </div>
           <div className="mt-4">
             <div>
