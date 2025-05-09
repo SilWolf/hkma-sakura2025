@@ -151,23 +151,66 @@ export const apiGetTournamentById = async (tournamentId: string) => {
                   .filter(`_key=="${tournamentId}"`)
                   .slice(0),
               })),
-            overrided: player.field("overrided").project((playerOverrided) => ({
-              name: z.string().nullish(),
-              nickname: z.string().nullish(),
-              designation: z.string().nullish(),
-              introduction: z.string().nullish(),
-              portraitImage: playerOverrided.field("portraitImage.asset").field(
-                "_ref",
-                z
-                  .string()
-                  .nullish()
-                  .transform((assetId) =>
-                    urlFor(assetId, { mode: "cover", width: 720, height: 1000 })
-                  )
-              ),
-              portraitAltImage: playerOverrided
-                .field("portraitAltImage.asset")
-                .field(
+            overrided: player
+              .field("overrided")
+              .project((playerOverrided) => ({
+                name: z.string().nullish(),
+                nickname: z.string().nullish(),
+                designation: z.string().nullish(),
+                introduction: z.string().nullish(),
+                portraitImage: playerOverrided
+                  .field("portraitImage.asset")
+                  .field(
+                    "_ref",
+                    z
+                      .string()
+                      .nullish()
+                      .transform((assetId) =>
+                        urlFor(assetId, {
+                          mode: "cover",
+                          width: 720,
+                          height: 1000,
+                        })
+                      )
+                  ),
+                portraitAltImage: playerOverrided
+                  .field("portraitAltImage.asset")
+                  .field(
+                    "_ref",
+                    z
+                      .string()
+                      .nullish()
+                      .transform((assetId) =>
+                        urlFor(assetId, {
+                          mode: "cover",
+                          width: 720,
+                          height: 1000,
+                        })
+                      )
+                  ),
+                fullBodyImage: playerOverrided
+                  .field("fullBodyImage.asset")
+                  .field(
+                    "_ref",
+                    z
+                      .string()
+                      .nullish()
+                      .transform((assetId) =>
+                        urlFor(assetId, { mode: "contain", height: 1200 })
+                      )
+                  ),
+                fullBodyAltImage: playerOverrided
+                  .field("fullBodyAltImage.asset")
+                  .field(
+                    "_ref",
+                    z
+                      .string()
+                      .nullish()
+                      .transform((assetId) =>
+                        urlFor(assetId, { mode: "contain", height: 1200 })
+                      )
+                  ),
+                riichiImage: playerOverrided.field("riichiImage.asset").field(
                   "_ref",
                   z
                     .string()
@@ -175,41 +218,13 @@ export const apiGetTournamentById = async (tournamentId: string) => {
                     .transform((assetId) =>
                       urlFor(assetId, {
                         mode: "cover",
-                        width: 720,
-                        height: 1000,
+                        width: 800,
+                        height: 800,
                       })
                     )
                 ),
-              fullBodyImage: playerOverrided.field("fullBodyImage.asset").field(
-                "_ref",
-                z
-                  .string()
-                  .nullish()
-                  .transform((assetId) =>
-                    urlFor(assetId, { mode: "contain", height: 1200 })
-                  )
-              ),
-              fullBodyAltImage: playerOverrided
-                .field("fullBodyAltImage.asset")
-                .field(
-                  "_ref",
-                  z
-                    .string()
-                    .nullish()
-                    .transform((assetId) =>
-                      urlFor(assetId, { mode: "contain", height: 1200 })
-                    )
-                ),
-              riichiImage: playerOverrided.field("riichiImage.asset").field(
-                "_ref",
-                z
-                  .string()
-                  .nullish()
-                  .transform((assetId) =>
-                    urlFor(assetId, { mode: "cover", width: 800, height: 800 })
-                  )
-              ),
-            })),
+              }))
+              .nullable(true),
           }))
           .nullable(true),
 
@@ -366,7 +381,7 @@ export const apiGetTournamentById = async (tournamentId: string) => {
 export const apiGetTournament = async () =>
   apiGetTournamentById(TOURNAMENT_ID as string);
 
-export const apiGetTournamentByMatchId = async (matchId: string) => {
+export const apiGetTournamentIdByMatchId = async (matchId: string) => {
   const query = q.star
     .filterByType("match")
     .filterRaw(`_id == "${matchId}"`)
@@ -380,6 +395,11 @@ export const apiGetTournamentByMatchId = async (matchId: string) => {
     throw new Error("Cannot find tournament id");
   }
 
+  return tournamentId;
+};
+
+export const apiGetTournamentByMatchId = async (matchId: string) => {
+  const tournamentId = await apiGetTournamentIdByMatchId(matchId);
   return apiGetTournamentById(tournamentId);
 };
 
@@ -399,7 +419,7 @@ export const apiPatchTeamsStatistics = async (
 
   for (const teamId of teamIds) {
     ref.set({
-      [`teams[team._ref=="${teamId}"].statistics`]: teamsMap[teamId].statistics,
+      [`teams[ref._ref=="${teamId}"].statistics`]: teamsMap[teamId].statistics,
     });
   }
 

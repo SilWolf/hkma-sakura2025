@@ -1,31 +1,24 @@
-import PLAYERS from "@/constants/PLAYERS";
 import {
-  MatchDTO,
-  TeamPlayerDTO,
-  getLastDateFinishedMatchesGroupedByDate,
-  getLatestComingMatchesGroupedByDate,
-  getOldMatches,
-  getRegularTeams,
-  getTeams,
-} from "@/helpers/sanity.helper";
-import {
+  renderDateToShortForm,
   renderPoint,
-  renderRanking,
-  renderWeekday,
+  renderWeekdayByISODateString,
 } from "@/helpers/string.helper";
-import { Player, Team } from "@/types/index.type";
+import { V2MatchPlayer } from "@/models/V2Match.model";
+import {
+  apiGetLatestComingMatches,
+  apiGetLatestCompletedMatches,
+} from "@/services/match.service";
+import { apiGetTournament } from "@/services/tournament.service";
 import Link from "next/link";
 
 export const revalidate = 900;
 
 const ScheduleTeam = ({
-  team,
   player,
   point,
   isLoser,
 }: {
-  team: Team;
-  player: Player;
+  player: V2MatchPlayer;
   point?: number | null;
   isLoser?: boolean;
 }) => {
@@ -35,9 +28,9 @@ const ScheduleTeam = ({
   return (
     <div>
       <img
-        src={player.portraitImage + "?w=360&h=500&fit=crop&auto=format"}
+        src={player.image.portrait?.default.url}
         className="w-full"
-        alt={team.name}
+        alt={player.name.display.primary}
         style={{
           opacity: isLoser ? 0.4 : 1,
         }}
@@ -49,43 +42,12 @@ const ScheduleTeam = ({
   );
 };
 
-const NEXT_MATCH = {
-  date: new Date().toISOString(),
-  players: [PLAYERS[0], PLAYERS[1], PLAYERS[2], PLAYERS[3]],
-};
-
 export default async function Home() {
-  const [
-    regularTournamentTeams,
-    tournamentTeams,
-    lastMatchesGroupedByDate,
-    comingMatchesGroupedByDate,
-    oldMatches,
-  ] = await Promise.all([
-    getRegularTeams(),
-    getTeams(),
-    getLastDateFinishedMatchesGroupedByDate(),
-    getLatestComingMatchesGroupedByDate(),
-    getOldMatches(),
+  const [latestCompletedMatches, latestComingMatches] = await Promise.all([
+    apiGetLatestCompletedMatches(),
+    apiGetLatestComingMatches(),
   ]);
-
-  const teamSorter = (
-    { team: a }: { team: Team },
-    { team: b }: { team: Team }
-  ) => {
-    const indexOfA = regularTournamentTeams.findIndex(
-      (item) => item.team._id === a._id
-    );
-    const indexOfB = regularTournamentTeams.findIndex(
-      (item) => item.team._id === b._id
-    );
-
-    return indexOfB - indexOfA;
-  };
-
-  const tournamentTeamsOrderedByRanking = tournamentTeams.sort(
-    (a, b) => (a.statistics?.ranking ?? 0) - (b.statistics?.ranking ?? 0)
-  );
+  const { playersMap } = await apiGetTournament();
 
   return (
     <main>
@@ -131,83 +93,70 @@ export default async function Home() {
             <h2 className="font-semibold text-4xl mb-10">最新賽果</h2>
 
             <div className="space-y-6">
-              {lastMatchesGroupedByDate.map(({ date, weekday, matches }) => (
+              {latestCompletedMatches.map((match) => (
                 <div
-                  key={date}
-                  className="flex flex-col lg:flex-row gap-4 px-2 py-4 lg:px-4 lg:py-4 rounded-lg"
+                  key={match.data.startAt}
+                  className="flex flex-col lg:flex-row gap-8 px-2 py-4 lg:px-8 lg:py-8 rounded-lg bg-[rgba(255,255,255,0.1)]"
                 >
                   <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
-                    <p className="text-2xl font-semibold">{date}</p>
                     <p className="text-2xl font-semibold">
-                      ({renderWeekday(weekday)})
+                      {renderDateToShortForm(match.data.startAt)}
                     </p>
+                    <p className="text-2xl font-semibold">
+                      ({renderWeekdayByISODateString(match.data.startAt)})
+                    </p>
+                    {match.result && (
+                      <Link href={`/matches/${match.code}`}>
+                        <button className="btn btn-secondary mt-4">詳情</button>
+                      </Link>
+                    )}
                   </div>
-                  <div className="flex-1 grid grid-cols-1 xl:grid-cols-1 gap-4">
-                    {matches.map((match, index) => (
-                      <div key={match._id}>
-                        <div className="bg-base-200 py-1 px-4 rounded-full mb-2">
-                          <div className="flex">
-                            <h6 className="flex-1 text-left font-semibold">
-                              第{index + 1}回戰
-                            </h6>
-                            <div className="shrink-0 text-sm flex items-center gap-x-4 underline">
-                              {match.youtubeUrl && (
-                                <a href={match.youtubeUrl} target="_blank">
-                                  <i className="bi bi-youtube text-lg"></i>
-                                </a>
-                              )}
-                              {match.bilibiliUrl && (
-                                <a href={match.bilibiliUrl} target="_blank">
-                                  Bilibili
-                                </a>
-                              )}
-                              {match.rounds?.length > 0 && (
-                                <Link
-                                  className="inline-block"
-                                  href={`/matches/${match._id}`}
-                                >
-                                  詳情
-                                </Link>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-4 gap-2">
-                          {match.result &&
-                            match.rounds?.length > 0 &&
-                            [
-                              {
-                                team: match.playerEastTeam!,
-                                player: match.playerEast!,
-                                result: match.result.playerEast,
-                              },
-                              {
-                                team: match.playerSouthTeam!,
-                                player: match.playerSouth!,
-                                result: match.result.playerSouth,
-                              },
-                              {
-                                team: match.playerWestTeam!,
-                                player: match.playerWest!,
-                                result: match.result.playerWest,
-                              },
-                              {
-                                team: match.playerNorthTeam!,
-                                player: match.playerNorth!,
-                                result: match.result.playerNorth,
-                              },
-                            ].map(({ team, player, result }) => (
-                              <ScheduleTeam
-                                key={player._id}
-                                team={team}
-                                player={player}
-                                point={result.point}
-                                isLoser={result.ranking !== "1"}
-                              />
-                            ))}
-                        </div>
+                  <div className="flex-1 gap-x-6 gap-y-12">
+                    <div>
+                      <div className="grid grid-cols-4 gap-2">
+                        {!match.result &&
+                          match.data.players.map((player) => (
+                            <ScheduleTeam
+                              key={player.id}
+                              player={playersMap[player.id] ?? player}
+                            />
+                          ))}
+                        {match.result &&
+                          [
+                            {
+                              player:
+                                playersMap[match.data.players[0].id] ??
+                                match.data.players[0],
+                              result: match.result.playerEast,
+                            },
+                            {
+                              player:
+                                playersMap[match.data.players[1].id] ??
+                                match.data.players[1],
+                              result: match.result.playerSouth,
+                            },
+                            {
+                              player:
+                                playersMap[match.data.players[2].id] ??
+                                match.data.players[2],
+                              result: match.result.playerWest,
+                            },
+                            {
+                              player:
+                                playersMap[match.data.players[3].id] ??
+                                match.data.players[3],
+                              result: match.result.playerNorth,
+                            },
+                          ].map(({ player, result }) => (
+                            <ScheduleTeam
+                              key={player.id}
+                              player={playersMap[player.id] ?? player}
+                              point={result.point}
+                              isLoser={result.ranking !== "1"}
+                            />
+                          ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -297,44 +246,66 @@ export default async function Home() {
             <h2 className="font-semibold text-4xl mb-10">賽程</h2>
 
             <div className="space-y-6">
-              {comingMatchesGroupedByDate.map(({ date, weekday, matches }) => (
+              {latestComingMatches.map((match) => (
                 <div
-                  key={date}
-                  className="flex flex-col lg:flex-row gap-4 px-2 py-4 lg:px-4 lg:py-4 rounded-lg bg-base-100/50"
+                  key={match.data.startAt}
+                  className="flex flex-col lg:flex-row gap-8 px-2 py-4 lg:px-8 lg:py-8 rounded-lg bg-[rgba(255,255,255,0.1)]"
                 >
                   <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
-                    <p className="text-2xl font-semibold">{date}</p>
                     <p className="text-2xl font-semibold">
-                      ({renderWeekday(weekday)})
+                      {renderDateToShortForm(match.data.startAt)}
                     </p>
+                    <p className="text-2xl font-semibold">
+                      ({renderWeekdayByISODateString(match.data.startAt)})
+                    </p>
+                    {match.result && (
+                      <Link href={`/matches/${match.code}`}>
+                        <button className="btn btn-secondary mt-4">詳情</button>
+                      </Link>
+                    )}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 gap-x-6 gap-y-12">
                     <div>
-                      <div className="match-team-logos-grid grid grid-cols-4 gap-2">
-                        {[
-                          {
-                            team: matches[0].playerEastTeam!,
-                            player: matches[0].playerEast,
-                          },
-                          {
-                            team: matches[0].playerSouthTeam!,
-                            player: matches[0].playerSouth,
-                          },
-                          {
-                            team: matches[0].playerWestTeam!,
-                            player: matches[0].playerWest,
-                          },
-                          {
-                            team: matches[0].playerNorthTeam!,
-                            player: matches[0].playerNorth,
-                          },
-                        ]
-                          .sort(teamSorter)
-                          .map(({ team, player }) => (
+                      <div className="grid grid-cols-4 gap-2">
+                        {!match.result &&
+                          match.data.players.map((player) => (
                             <ScheduleTeam
-                              key={player?._id}
-                              player={player!}
-                              team={team}
+                              key={player.id}
+                              player={playersMap[player.id] ?? player}
+                            />
+                          ))}
+                        {match.result &&
+                          [
+                            {
+                              player:
+                                playersMap[match.data.players[0].id] ??
+                                match.data.players[0],
+                              result: match.result.playerEast,
+                            },
+                            {
+                              player:
+                                playersMap[match.data.players[1].id] ??
+                                match.data.players[1],
+                              result: match.result.playerSouth,
+                            },
+                            {
+                              player:
+                                playersMap[match.data.players[2].id] ??
+                                match.data.players[2],
+                              result: match.result.playerWest,
+                            },
+                            {
+                              player:
+                                playersMap[match.data.players[3].id] ??
+                                match.data.players[3],
+                              result: match.result.playerNorth,
+                            },
+                          ].map(({ player, result }) => (
+                            <ScheduleTeam
+                              key={player.id}
+                              player={playersMap[player.id] ?? player}
+                              point={result.point}
+                              isLoser={result.ranking !== "1"}
                             />
                           ))}
                       </div>

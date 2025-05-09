@@ -257,7 +257,7 @@ export const getLastDateFinishedMatchesGroupedByDate = cache(async () => {
   const regularTeams = await getRegularTeamsWithPlayers();
   const players = regularTeams.map(({ players }) => players).flat();
   const scheduledRawMatches = await publicClient.fetch<RawMatch[]>(
-    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && defined(result.rounds)] | order(startAt desc)[0...2] { _id, name, playerEast, playerEastTeam, playerSouth, playerSouthTeam, playerWest, playerWestTeam, playerNorth, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl, result}`
+    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && defined(resultUploadedAt)] | order(startAt desc)[0...2] { _id, name, playerEast, playerEastTeam, playerSouth, playerSouthTeam, playerWest, playerWestTeam, playerNorth, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl, result}`
   );
 
   const matchesGroupedByDate: Record<
@@ -325,7 +325,7 @@ export const getLatestComingMatchesGroupedByDate = cache(async () => {
   const regularTeams = await getRegularTeamsWithPlayers();
   const players = regularTeams.map(({ players }) => players).flat();
   const scheduledMatches = await publicClient.fetch<RawMatch[]>(
-    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && !defined(result.rounds)] | order(startAt asc)[0...4] { _id, name, playerEast, playerEastTeam, playerSouth, playerSouthTeam, playerWest, playerWestTeam, playerNorth, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl}`
+    `*[_type == "match" && !(_id in path("drafts.**")) && tournament._ref == "${CURRENT_STAGE_TOURNAMENT_ID}" && !defined(resultUploadedAt)] | order(startAt asc)[0...4] { _id, name, playerEast, playerEastTeam, playerSouth, playerSouthTeam, playerWest, playerWestTeam, playerNorth, playerNorthTeam, startAt, youtubeUrl, bilibiliUrl}`
   );
 
   const matchesGroupedByDate: Record<

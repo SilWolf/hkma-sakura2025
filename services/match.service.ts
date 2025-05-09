@@ -293,11 +293,28 @@ export const apiGetMatchById = async (matchId: string) => {
   });
 };
 
-export const apiQueryMatchesForSchedule = async () => {
+export const apiQueryMatchesForSchedule = async (options?: {
+  hasResult?: boolean;
+  direction?: "asc" | "desc";
+  count?: number;
+}) => {
+  let filter = `tournament._ref == "${TOURNAMENT_ID}"`;
+  if (typeof options?.hasResult !== "undefined") {
+    filter += ` && ${
+      options.hasResult === true ? "" : "!"
+    }defined(resultUploadedAt)`;
+  }
+
+  let order =
+    options?.direction === "desc"
+      ? ("startAt desc" as const)
+      : ("startAt asc" as const);
+
   const query = q.star
     .filterByType("match")
-    .filterRaw(`tournament._ref == "${TOURNAMENT_ID}"`)
-    .order("startAt asc")
+    .filterRaw(filter)
+    .order(order)
+    .slice(0, options?.count ?? 1000)
     .project((sub) => ({
       _id: z.string(),
       name: z.string().nullish(),
@@ -507,3 +524,17 @@ export const apiQueryMatchesForRecalulation = async (
 
   return runQuery(query);
 };
+
+export const apiGetLatestComingMatches = () =>
+  apiQueryMatchesForSchedule({
+    count: 4,
+    direction: "asc",
+    hasResult: false,
+  });
+
+export const apiGetLatestCompletedMatches = () =>
+  apiQueryMatchesForSchedule({
+    count: 2,
+    direction: "desc",
+    hasResult: true,
+  });
