@@ -1,7 +1,7 @@
 import { matchSchema } from "@/adapters/sanity/sanity.zod";
+import { recalculateStatisticsByTournamentId } from "@/functions/recalculateStatistics";
 import { client } from "@/helpers/sanity.helper";
 import { apiGetTournamentIdByMatchId } from "@/services/tournament.service";
-import { recalculateStatisticsByTournamentId } from "@/app/api/tournament/statistics/recalculate/route";
 
 export const dynamic = "force-dynamic"; // defaults to auto
 

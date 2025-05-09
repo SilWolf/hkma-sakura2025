@@ -3,7 +3,7 @@ import * as z from "zod";
 import { V2Tournament, V2TournamentTeam } from "@/models/V2Tournament.model";
 import { mergeObject } from "@/utils/object.util";
 import { V2MatchPlayer } from "@/models/V2Match.model";
-import { MatchTournament, Player } from "@/adapters/sanity/sanity.types";
+import { MatchTournament } from "@/adapters/sanity/sanity.types";
 
 const TOURNAMENT_ID = process.env.SANITY_DEFAULT_TOURNAMENT_ID;
 
