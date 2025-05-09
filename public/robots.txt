@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://sakura2025.hkmahjong.org/
+
+# Sitemaps
+Sitemap: https://sakura2025.hkmahjong.org/sitemap.xml
