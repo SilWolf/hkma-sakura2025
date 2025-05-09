@@ -27,7 +27,11 @@ function RankingList({
       </div>
       <div>
         {items.map((item, index) => (
-          <RankingListItem item={item} ranking={index + 1} />
+          <RankingListItem
+            key={item.player.id}
+            item={item}
+            ranking={index + 1}
+          />
         ))}
       </div>
     </div>
