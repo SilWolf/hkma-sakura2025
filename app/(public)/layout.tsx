@@ -16,8 +16,19 @@ export default function PublicLayout({
           minHeight: "calc(100vh - 160px)",
         }}
       >
-        <div className="bg-white py-2">
-          <Menu />
+        <div className="bg-white sticky top-0 z-50">
+          <div className="container mx-auto flex items-center justify-between">
+            <div>
+              <img
+                src="/images/logo-sakura-long.png"
+                className="block mx-auto h-12 xl:h-16"
+                alt="Sakura League"
+              />
+            </div>
+            <div>
+              <Menu />
+            </div>
+          </div>
         </div>
 
         {children}

@@ -1,6 +1,6 @@
-export const renderRanking = (
-  i: number | undefined | null | "1" | "2" | "3" | "4"
-) => {
+import dayjs from "dayjs";
+
+export const renderRanking = (i: number | undefined | null | string) => {
   if (typeof i === "undefined" || i === null) {
     return "-";
   }
@@ -143,5 +143,11 @@ export const renderDate = (value: string) => {
   return date.toISOString().substring(0, 10);
 };
 
+export const renderWeekdayByISODateString = (dateString: string) =>
+  renderWeekday(new Date(dateString).getDay());
+
 export const renderDateToShortForm = (value: string) =>
   `${value.substring(8, 10)}/${value.substring(5, 7)}`;
+
+export const renderDateToLongForm = (value: string) =>
+  dayjs(value).format("YYYY / MM / DD");

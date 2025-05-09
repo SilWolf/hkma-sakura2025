@@ -1,78 +1,52 @@
-import { getJsonValidator } from "@/helpers/json.helper";
-import matchSchema from "./match.schema.json";
+import { matchSchema } from "@/adapters/sanity/sanity.zod";
 import { client } from "@/helpers/sanity.helper";
+import { apiGetTournamentIdByMatchId } from "@/services/tournament.service";
+import { recalculateStatisticsByTournamentId } from "@/app/api/tournament/statistics/recalculate/route";
 
 export const dynamic = "force-dynamic"; // defaults to auto
 
-export async function PATCH(request: Request) {
-  const match = await request.json();
-  const jsonValidator = getJsonValidator(matchSchema);
+const matchSchemaOnlyResultAndRounds = matchSchema.pick({
+  _id: true,
+  result: true,
+  rounds: true,
+});
 
-  const validateResult = jsonValidator.validate(match);
-  if (!validateResult.isValid) {
+export async function PATCH(request: Request) {
+  const validateResult = matchSchemaOnlyResultAndRounds.safeParse(
+    await request.json()
+  );
+
+  if (!validateResult.success) {
     return Response.json(
       {
         success: false,
-        errors: validateResult.errors,
+        errors: validateResult.error,
       },
       { status: 400 }
     );
   }
 
-  const ref = client.patch(match._id).set(match);
-  return ref
+  const match = {
+    ...validateResult.data,
+    resultUploadedAt: new Date().toISOString(),
+  };
+
+  const response = await client
+    .patch(match._id)
+    .set(match)
     .commit()
-    .then(() => Response.json({ success: true }))
-    .catch((error) =>
-      Response.json({ success: false, errors: error.message }, { status: 400 })
+    .then(() => ({ success: true }))
+    .catch((error) => ({ success: false, errors: error.message }));
+
+  if (response.success) {
+    apiGetTournamentIdByMatchId(match._id).then(
+      recalculateStatisticsByTournamentId
     );
+  }
+
+  return Response.json(response, { status: response.success ? 200 : 400 });
 }
 
 export async function OPTIONS() {
   return new Response();
 }
-
-type Match = {
-  _id: string;
-  result: MatchResult;
-  rounds: MatchRound[];
-};
-
-type MatchResult = {
-  playerEast: MatchResultPlayer;
-  playerSouth: MatchResultPlayer;
-  playerWest: MatchResultPlayer;
-  playerNorth: MatchResultPlayer;
-};
-
-type MatchResultPlayer = {
-  score: number;
-  ranking: "1" | "2" | "3" | "4";
-  point: number;
-};
-
-type MatchRound = {
-  _key: string;
-  code: string;
-  type: "ron" | "tsumo" | "exhausted" | "hotfix";
-  playerEast: MatchRoundPlayer;
-  playerSouth: MatchRoundPlayer;
-  playerWest: MatchRoundPlayer;
-  playerNorth: MatchRoundPlayer;
-};
-
-type MatchRoundPlayer = {
-  position: "east" | "south" | "west" | "north";
-  type: "none" | "win" | "lose";
-  status: "none" | "isRiichied" | "isRevealed";
-  isWaited: boolean;
-  beforeScore: number;
-  afterScore: number;
-  dora?: number;
-  redDora?: number;
-  innerDora?: number;
-  han?: number;
-  fu?: number;
-  pureScore?: number;
-  yaku?: string;
-};
