@@ -32,6 +32,7 @@
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19",
     "react-scroll-parallax": "^3.4.5",
+    "react-social-media-embed": "^2.5.18",
     "swiper": "^11.2.6",
     "zod": "^3.24.4"
   },

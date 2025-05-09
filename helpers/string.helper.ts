@@ -1,8 +1,6 @@
 import dayjs from "dayjs";
 
-export const renderRanking = (
-  i: number | undefined | null | "1" | "2" | "3" | "4"
-) => {
+export const renderRanking = (i: number | undefined | null | string) => {
   if (typeof i === "undefined" || i === null) {
     return "-";
   }

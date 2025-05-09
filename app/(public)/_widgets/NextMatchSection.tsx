@@ -11,22 +11,22 @@ export default function NextMatchSection({
   nextMatch: V2Match;
 }) {
   return (
-    <section className="py-12">
-      <ParallaxBanner
-        layers={[{ image: "/images/bg-sakura-2.webp", speed: -15 }]}
-        className="min-h-[480px]"
-      >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="container max-w-4xl mx-auto">
-            <div className="grid grid-cols-4 gap-x-8">
-              <LargePlayerPortrait player={nextMatch.data.players[0]} />
-              <LargePlayerPortrait player={nextMatch.data.players[1]} />
-              <LargePlayerPortrait player={nextMatch.data.players[2]} />
-              <LargePlayerPortrait player={nextMatch.data.players[3]} />
-            </div>
-            <div className="text-center mt-8 text-4xl">
-              {renderDateToLongForm(nextMatch.data.startAt)}
-            </div>
+    <ParallaxBanner
+      layers={[{ image: "/images/bg-sakura-2.webp", speed: -45 }]}
+      className="min-h-[560px]"
+    >
+      <div className="absolute inset-0 flex items-center justify-center pt-16">
+        <div className="container max-w-4xl mx-auto">
+          <div className="grid grid-cols-4 gap-x-8 text-[24px]">
+            <LargePlayerPortrait player={nextMatch.data.players[0]} />
+            <LargePlayerPortrait player={nextMatch.data.players[1]} />
+            <LargePlayerPortrait player={nextMatch.data.players[2]} />
+            <LargePlayerPortrait player={nextMatch.data.players[3]} />
+          </div>
+          <div className="text-center mt-8 text-4xl">
+            {renderDateToLongForm(nextMatch.data.startAt)}
+          </div>
+          <div className="mt-4">
             <div>
               <a
                 href="https://www.youtube.com/@HKMAHJONG/streams"
@@ -45,7 +45,7 @@ export default function NextMatchSection({
             </div>
           </div>
         </div>
-      </ParallaxBanner>
-    </section>
+      </div>
+    </ParallaxBanner>
   );
 }
