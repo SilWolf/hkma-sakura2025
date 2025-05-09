@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const renderRanking = (
   i: number | undefined | null | "1" | "2" | "3" | "4"
 ) => {
@@ -148,3 +150,6 @@ export const renderWeekdayByISODateString = (dateString: string) =>
 
 export const renderDateToShortForm = (value: string) =>
   `${value.substring(8, 10)}/${value.substring(5, 7)}`;
+
+export const renderDateToLongForm = (value: string) =>
+  dayjs(value).format("YYYY / MM / DD");

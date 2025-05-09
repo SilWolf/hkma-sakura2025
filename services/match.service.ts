@@ -1,6 +1,7 @@
 import { q, runQuery, urlFor } from "../adapters/sanity";
 import * as z from "zod";
 import { V2Match } from "../models/V2Match.model";
+import { apiGetTournament } from "./tournament.service";
 
 const TOURNAMENT_ID = process.env.SANITY_DEFAULT_TOURNAMENT_ID;
 
@@ -298,6 +299,8 @@ export const apiQueryMatchesForSchedule = async (options?: {
   direction?: "asc" | "desc";
   count?: number;
 }) => {
+  const { playersMap } = await apiGetTournament();
+
   let filter = `tournament._ref == "${TOURNAMENT_ID}"`;
   if (typeof options?.hasResult !== "undefined") {
     filter += ` && ${
@@ -319,92 +322,16 @@ export const apiQueryMatchesForSchedule = async (options?: {
       _id: z.string(),
       name: z.string().nullish(),
       startAt: z.string(),
-      playerEast: sub.field("playerEast").deref().project(playerProject),
-      playerSouth: sub.field("playerSouth").deref().project(playerProject),
-      playerWest: sub.field("playerWest").deref().project(playerProject),
-      playerNorth: sub.field("playerNorth").deref().project(playerProject),
-      playerEastTeam: sub.field("playerEastTeam").deref().project(teamProject),
-      playerSouthTeam: sub
-        .field("playerSouthTeam")
-        .deref()
-        .project(teamProject),
-      playerWestTeam: sub.field("playerWestTeam").deref().project(teamProject),
-      playerNorthTeam: sub
-        .field("playerNorthTeam")
-        .deref()
-        .project(teamProject),
+      playerEastId: sub.field("playerEast").field("_ref"),
+      playerSouthId: sub.field("playerSouth").field("_ref"),
+      playerWestId: sub.field("playerWest").field("_ref"),
+      playerNorthId: sub.field("playerNorth").field("_ref"),
       result: sub.field("result"),
       _createdAt: true,
       _updatedAt: true,
     }));
 
   return runQuery(query).then((matches) => {
-    const formatPlayer = (
-      player: (typeof matches)[number]["playerEast"],
-      team: (typeof matches)[number]["playerEastTeam"]
-    ) => ({
-      id: player?._id ?? "",
-      teamId: team?._id ?? "",
-      color: {
-        primary: team?.color ?? "#FFFF00",
-        secondary: team?.color ?? "#FFFF00",
-      },
-      name: {
-        official: {
-          primary: player?.name ?? "",
-          secondary: player?.designation ?? "",
-          third: player?.nickname ?? "",
-        },
-        display: {
-          primary: player?.name ?? "",
-          secondary: team?.preferredName ?? "",
-          third: player?.nickname ?? "",
-        },
-      },
-      image: {
-        portrait: player?.portraitImage
-          ? {
-              default: {
-                url: player?.portraitImage,
-              },
-            }
-          : undefined,
-        portraitAlt: player?.portraitAltImage
-          ? {
-              default: {
-                url: player?.portraitAltImage,
-              },
-            }
-          : undefined,
-        fullBody: player?.fullBodyImage
-          ? {
-              default: {
-                url: player?.fullBodyImage,
-              },
-            }
-          : undefined,
-        fullBodyAlt: player?.fullBodyAltImage
-          ? {
-              default: {
-                url: player?.fullBodyAltImage,
-              },
-            }
-          : undefined,
-        riichi: player?.riichiImage
-          ? {
-              default: {
-                url: player?.riichiImage,
-              },
-            }
-          : undefined,
-        logo: {
-          default: {
-            url: team?.squareLogoImage ?? "",
-          },
-        },
-      },
-    });
-
     return Object.entries(
       Object.groupBy(matches, ({ startAt }) => startAt.substring(0, 10))
     ).map(([date, matches = []]) => {
@@ -415,10 +342,10 @@ export const apiQueryMatchesForSchedule = async (options?: {
           name: matches[0].name ?? "",
           startAt: matches[0].startAt,
           players: [
-            formatPlayer(matches[0].playerEast, matches[0].playerEastTeam),
-            formatPlayer(matches[0].playerSouth, matches[0].playerSouthTeam),
-            formatPlayer(matches[0].playerWest, matches[0].playerWestTeam),
-            formatPlayer(matches[0].playerNorth, matches[0].playerNorthTeam),
+            playersMap[matches[0].playerEastId!],
+            playersMap[matches[0].playerSouthId!],
+            playersMap[matches[0].playerWestId!],
+            playersMap[matches[0].playerNorthId!],
           ],
           rulesetRef: "hkleague-4p",
         },
@@ -438,16 +365,16 @@ export const apiQueryMatchesForSchedule = async (options?: {
           hasResult = true;
 
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerEast?._id)
+            players.findIndex((player) => player.id === match.playerEastId)
           ] += match.result.playerEast.point;
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerSouth?._id)
+            players.findIndex((player) => player.id === match.playerSouthId)
           ] += match.result.playerSouth.point;
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerWest?._id)
+            players.findIndex((player) => player.id === match.playerWestId)
           ] += match.result.playerWest.point;
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerNorth?._id)
+            players.findIndex((player) => player.id === match.playerNorthId)
           ] += match.result.playerNorth.point;
         }
       }

@@ -10,6 +10,9 @@ import {
 } from "@/services/match.service";
 import { apiGetTournament } from "@/services/tournament.service";
 import Link from "next/link";
+import LargePlayerProtrait from "./_components/LargePlayerPortrait";
+import { ParallaxBanner } from "react-scroll-parallax";
+import NextMatchSection from "./_widgets/NextMatchSection";
 
 export const revalidate = 900;
 
@@ -49,6 +52,8 @@ export default async function Home() {
   ]);
   const { playersMap } = await apiGetTournament();
 
+  const nextMatch = latestComingMatches[0];
+
   return (
     <main>
       <section className="w-full text-center relative overflow-hidden">
@@ -86,6 +91,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {nextMatch && <NextMatchSection nextMatch={nextMatch} />}
 
       <section className="py-12">
         <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">

@@ -3,6 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import localFont from "next/font/local";
+import { Providers } from "./provider";
 
 const myFont = localFont({
   src: "./fonts/Iansui-Regular.ttf",
@@ -74,7 +75,7 @@ export default function RootLayout({
         ></link>
       </head>
       <body>
-        {children}
+        <Providers>{children}</Providers>
         <SpeedInsights />
         <Analytics />
       </body>

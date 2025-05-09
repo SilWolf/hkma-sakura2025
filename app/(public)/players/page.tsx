@@ -57,7 +57,7 @@ export default async function Players() {
                           src={player.portrait.default.url}
                           alt={player.name.display}
                         />
-                        <div className="absolute z-10 bottom-2 left-2 right-2 bg-white rounded-full pl-[12px] pb-[4px] text-[20px] leading-[28px] text-center">
+                        <div className="absolute z-10 bottom-0 left-0 right-0 bg-white rounded-full pl-[12px] pb-[4px] text-[20px] leading-[28px] text-center">
                           <img
                             src="/images/sakura-icon-64x64.png"
                             className="absolute -left-2 top-0 w-8 h-8"
