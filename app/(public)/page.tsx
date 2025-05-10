@@ -23,6 +23,8 @@ export default async function Home() {
   ]);
   const { players, teams } = await apiGetTournament();
 
+  const currentMatch = latestCompletedMatches[0];
+  const comingMatches = latestComingMatches.slice(0, 2);
   const nextMatch = latestComingMatches[0];
 
   return (
@@ -49,20 +51,21 @@ export default async function Home() {
             <h2 className="font-semibold text-4xl mb-4">最新賽果</h2>
 
             <div className="space-y-6">
-              {latestCompletedMatches.map((match) => (
+              {
                 <div
-                  key={match.data.startAt}
+                  key={currentMatch.data.startAt}
                   className="flex flex-col lg:flex-row gap-8"
                 >
                   <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
                     <p className="text-2xl font-semibold">
-                      {renderDateToShortForm(match.data.startAt)}
+                      {renderDateToShortForm(currentMatch.data.startAt)}
                     </p>
                     <p className="text-2xl font-semibold">
-                      ({renderWeekdayByISODateString(match.data.startAt)})
+                      ({renderWeekdayByISODateString(currentMatch.data.startAt)}
+                      )
                     </p>
-                    {match.result && (
-                      <Link href={`/matches/${match.code}`}>
+                    {currentMatch.result && (
+                      <Link href={`/matches/${currentMatch.code}`}>
                         <button className="btn btn-secondary mt-4">詳情</button>
                       </Link>
                     )}
@@ -71,36 +74,36 @@ export default async function Home() {
                     <div>
                       <div className="grid grid-cols-4 gap-2 text-[24px]">
                         <LargePlayerPortrait
-                          player={match.data.players[0]}
-                          point={match.result?.playerEast.point}
-                          ranking={match.result?.playerEast.ranking}
+                          player={currentMatch.data.players[0]}
+                          point={currentMatch.result?.playerEast.point}
+                          ranking={currentMatch.result?.playerEast.ranking}
                         />
                         <LargePlayerPortrait
-                          player={match.data.players[1]}
-                          point={match.result?.playerSouth.point}
-                          ranking={match.result?.playerSouth.ranking}
+                          player={currentMatch.data.players[1]}
+                          point={currentMatch.result?.playerSouth.point}
+                          ranking={currentMatch.result?.playerSouth.ranking}
                         />
                         <LargePlayerPortrait
-                          player={match.data.players[2]}
-                          point={match.result?.playerWest.point}
-                          ranking={match.result?.playerWest.ranking}
+                          player={currentMatch.data.players[2]}
+                          point={currentMatch.result?.playerWest.point}
+                          ranking={currentMatch.result?.playerWest.ranking}
                         />
                         <LargePlayerPortrait
-                          player={match.data.players[3]}
-                          point={match.result?.playerNorth.point}
-                          ranking={match.result?.playerNorth.ranking}
+                          player={currentMatch.data.players[3]}
+                          point={currentMatch.result?.playerNorth.point}
+                          ranking={currentMatch.result?.playerNorth.ranking}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              }
             </div>
 
             <h2 className="font-semibold text-4xl mt-8 mb-4">賽程</h2>
 
             <div className="grid grid-cols-2 gap-x-8">
-              {latestComingMatches.map((match) => (
+              {comingMatches.map((match) => (
                 <div key={match.data.startAt} className="">
                   <div className="text-center mb-2">
                     <p className="text-xl font-semibold">
