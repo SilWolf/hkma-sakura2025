@@ -7,6 +7,8 @@ import {
 } from "@/services/tournament.service";
 import { revalidatePath } from "next/cache";
 
+const MIN_MAX_VALUE = 99999999;
+
 type RequiredPlayerStatistics = Required<
   NonNullable<NonNullable<Player["statistics"]>[number]>
 >;
@@ -20,8 +22,8 @@ const generateDefaultPlayerStatistics = () => {
     matchCount: 0,
     roundCount: 0,
     point: 0.0,
-    scoreMax: -10000000,
-    scoreMin: 10000000,
+    scoreMax: -MIN_MAX_VALUE,
+    scoreMin: MIN_MAX_VALUE,
     firstCount: 0,
     secondCount: 0,
     thirdCount: 0,
@@ -359,10 +361,15 @@ export const recalculateStatisticsByTournamentId = async (
     field: keyof RequiredPlayerStatistics,
     direction: "asc" | "desc",
     rankingField: keyof RequiredPlayerStatistics,
-    requiredField: keyof RequiredPlayerStatistics
+    requiredField: keyof RequiredPlayerStatistics,
+    options?: { keepUndefined?: boolean }
   ) => {
     const rankings = arr
-      .filter((player) => (player.statistics[requiredField] as number) > 0)
+      .filter(
+        (player) =>
+          !!options?.keepUndefined ||
+          (player.statistics[requiredField] as number) > 0
+      )
       .map((player) => ({
         _playerId: player.playerId,
         value: player.statistics[field] as number,
@@ -398,9 +405,12 @@ export const recalculateStatisticsByTournamentId = async (
       playerId,
       statistics: {
         ...statistics,
-        scoreMin: statistics.scoreMin === null ? 0 : statistics.scoreMin,
+        scoreMin:
+          statistics.scoreMin === MIN_MAX_VALUE ? 0 : statistics.scoreMin,
         scoreMax:
-          statistics.scoreMax === null ? 0 : Math.max(statistics.scoreMax, 0),
+          statistics.scoreMax === -MIN_MAX_VALUE
+            ? 0
+            : Math.max(statistics.scoreMax, 0),
         ronPureScoreAvg:
           statistics.ronCount > 0
             ? _temp.ronPureScoreTotal / statistics.ronCount
@@ -482,7 +492,8 @@ export const recalculateStatisticsByTournamentId = async (
     "point",
     "desc",
     "pointRanking",
-    "matchCount"
+    "matchCount",
+    { keepUndefined: true }
   );
   assignRankingToEachPlayer(
     playerStatistics,

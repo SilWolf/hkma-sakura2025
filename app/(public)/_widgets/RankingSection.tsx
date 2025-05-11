@@ -103,7 +103,7 @@ export default function RankingSection({
   const rankingPlayersByNonFourthP = players
     .toSorted(
       (a, b) =>
-        (a.statistics?.nonFourthP ?? 0) - (b.statistics?.nonFourthP ?? 0)
+        (b.statistics?.nonFourthP ?? 0) - (a.statistics?.nonFourthP ?? 0)
     )
     .map((player) => ({
       player,
@@ -115,7 +115,7 @@ export default function RankingSection({
       layers={[{ image: "/images/bg-sakura-2.webp", speed: -45 }]}
       className="min-h-screen"
     >
-      <div className="absolute inset-0 flex items-center justify-center pt-16">
+      <div className="absolute inset-0 flex items-center justify-center">
         <div className="container mx-auto">
           <div className="grid grid-cols-3 gap-x-8">
             <div>

@@ -139,6 +139,7 @@ export default async function Home() {
       </section>
 
       <section className="py-12">
+        <a id="ranking" />
         <RankingSection players={players} />
       </section>
 

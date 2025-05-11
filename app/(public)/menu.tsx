@@ -43,7 +43,7 @@ const Menu = () => {
           </Link>
         </li>
         <li>
-          <Link onClick={handleCloseMenu} href="/ranking">
+          <Link onClick={handleCloseMenu} href="/#ranking">
             排名及數據
           </Link>
         </li>
