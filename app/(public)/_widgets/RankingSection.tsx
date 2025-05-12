@@ -113,11 +113,11 @@ export default function RankingSection({
   return (
     <ParallaxBanner
       layers={[{ image: "/images/bg-sakura-2.webp", speed: -45 }]}
-      className="min-h-[2400px] tablet:min-h-[840px]"
+      className="min-h-[2400px] laptop:min-h-[840px]"
     >
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 tablet:grid-cols-3 gap-8 px-4 tablet:px-0">
+          <div className="grid grid-cols-1 laptop:grid-cols-3 gap-8 px-4 laptop:px-0">
             <div>
               <RankingList
                 items={rankingPlayersByTotalPoint}

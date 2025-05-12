@@ -18,12 +18,12 @@ export default async function Players() {
         </h2>
       </section> */}
 
-      <section className="container mx-auto tablet:pt-12 pb-12">
+      <section className="container mx-auto laptop:pt-12 pb-12">
         <div className="grid grid-cols-2 laptop:gap-2">
           {(["hklplayer", "challenger"] as const).map((type) => (
             <div key={type}>
               <div
-                className="hidden tablet:block text-center py-1 rounded-t-[20px]"
+                className="hidden laptop:block text-center py-1 rounded-t-[20px]"
                 style={{
                   background: PLAYER_TYPE_DATA[type].bgColor,
                   color: PLAYER_TYPE_DATA[type].color,

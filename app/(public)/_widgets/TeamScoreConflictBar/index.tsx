@@ -33,7 +33,7 @@ export default function TeamScoreConflictBar({
   return (
     <div className="flex relative">
       <div
-        className="text-right w-1/2 tablet:w-[var(--width)] text-white pr-6 py-1 tablet:py-3 relative overflow-hidden"
+        className="text-right w-1/2 laptop:w-[var(--width)] text-white pr-6 py-1 laptop:py-3 relative overflow-hidden"
         style={
           {
             "--width": teamLeftWidth,
@@ -41,19 +41,19 @@ export default function TeamScoreConflictBar({
           } as CSSProperties
         }
       >
-        <p className="flex flex-col tablet:flex-row justify-end gap-x-2">
+        <p className="flex flex-col laptop:flex-row justify-end gap-x-2">
           <span>HKL Player</span>
           <span>{renderPoint(teamLeftPoint)}</span>
         </p>
         <div className={`${styles.pulse} pulse-go-to-right`}></div>
       </div>
       <div
-        className="flex-1 text-left text-white pl-6 py-1 tablet:py-3 relative overflow-hidden"
+        className="flex-1 text-left text-white pl-6 py-1 laptop:py-3 relative overflow-hidden"
         style={{
           backgroundColor: teamRight.color.primary,
         }}
       >
-        <p className="flex flex-col tablet:flex-row-reverse justify-end gap-x-2">
+        <p className="flex flex-col laptop:flex-row-reverse justify-end gap-x-2">
           <span>Challenger</span>
           <span>{renderPoint(teamRightPoint)}</span>
         </p>
@@ -61,7 +61,7 @@ export default function TeamScoreConflictBar({
       </div>
 
       <div
-        className="absolute w-1/2 tablet:w-[var(--width)] left-0 top-0 bottom-0 z-10 flex items-center justify-end"
+        className="absolute w-1/2 laptop:w-[var(--width)] left-0 top-0 bottom-0 z-10 flex items-center justify-end"
         style={
           {
             "--width": teamLeftWidth,

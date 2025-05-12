@@ -13,7 +13,7 @@ export default function NextMatchSection({
   return (
     <ParallaxBanner
       layers={[{ image: "/images/bg-sakura-2.webp", speed: -45 }]}
-      className="min-h-screen tablet:min-h-[680px]"
+      className="min-h-screen laptop:min-h-[680px]"
     >
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="container max-w-tablet mx-auto px-4">
@@ -22,7 +22,7 @@ export default function NextMatchSection({
             <p>{renderDateToLongForm(nextMatch.data.startAt)}</p>
           </div>
 
-          <div className="grid grid-cols-2 tablet:grid-cols-4 gap-4 tablet:gap-8 text-[24px]">
+          <div className="grid grid-cols-2 laptop:grid-cols-4 gap-4 laptop:gap-8 text-[24px]">
             <LargePlayerPortrait player={nextMatch.data.players[0]} />
             <LargePlayerPortrait player={nextMatch.data.players[1]} />
             <LargePlayerPortrait player={nextMatch.data.players[2]} />

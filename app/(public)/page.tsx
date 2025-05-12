@@ -41,7 +41,7 @@ export default async function Home() {
         ))}
       </div> */}
 
-      <section className="py-0 tablet:py-12">
+      <section className="py-0 laptop:py-12">
         <div className="container px-2 mx-auto text-center flex flex-col laptop:flex-row gap-8 gap-y-16">
           <div className="flex-1">
             <h2 className="font-semibold text-4xl mb-4">最新賽果</h2>
@@ -50,10 +50,10 @@ export default async function Home() {
               {
                 <div
                   key={currentMatch.data.startAt}
-                  className="flex flex-col laptop:flex-row gap-2 tablet:gap-4"
+                  className="flex flex-col laptop:flex-row gap-2 laptop:gap-4"
                 >
-                  <div className="flex items-center justify-between tablet:justify-start gap-4 flex-row tablet:flex-col">
-                    <div className="flex flex-row tablet:flex-col items-center">
+                  <div className="flex items-center justify-between laptop:justify-start gap-4 flex-row laptop:flex-col">
+                    <div className="flex flex-row laptop:flex-col items-center">
                       <p className="text-2xl font-semibold">
                         {renderDateToShortForm(currentMatch.data.startAt)}
                       </p>
@@ -75,7 +75,7 @@ export default async function Home() {
                   </div>
                   <div className="flex-1 gap-x-6 gap-y-12">
                     <div>
-                      <div className="grid grid-cols-2 tablet:grid-cols-4 gap-2 text-[24px]">
+                      <div className="grid grid-cols-2 laptop:grid-cols-4 gap-2 text-[24px]">
                         <LargePlayerPortrait
                           player={currentMatch.data.players[0]}
                           point={currentMatch.result?.playerEast.point}
@@ -105,7 +105,7 @@ export default async function Home() {
 
             <h2 className="font-semibold text-4xl mt-8 mb-4">賽程</h2>
 
-            <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4 tablet:gap-8">
+            <div className="grid grid-cols-1 laptop:grid-cols-2 gap-4 laptop:gap-8">
               {comingMatches.map((match) => (
                 <div key={match.data.startAt} className="">
                   <div className="text-center mb-2">
@@ -135,7 +135,7 @@ export default async function Home() {
               </Link>
             </div>
           </div>
-          <div className="w-full tablet:w-[360px]">
+          <div className="w-full laptop:w-[360px]">
             <SakuraInstagramEmbed />
           </div>
         </div>
