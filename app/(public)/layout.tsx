@@ -1,8 +1,8 @@
-import type { Metadata, Viewport } from "next";
 import Menu from "./menu";
 import "./public-layout.css";
 import TeamScoreConflictBar from "./_widgets/TeamScoreConflictBar";
 import { apiGetTournament } from "@/services/tournament.service";
+import Link from "next/link";
 
 export default async function PublicLayout({
   children,
@@ -24,11 +24,13 @@ export default async function PublicLayout({
           <div className="bg-white">
             <div className="container mx-auto flex items-center justify-between">
               <div>
-                <img
-                  src="/images/logo-sakura-long.png"
-                  className="block mx-auto h-12 tablet:h-16 relative z-50 pl-2 tablet:-pl-0"
-                  alt="Sakura League"
-                />
+                <Link href="/">
+                  <img
+                    src="/images/logo-sakura-long.png"
+                    className="block mx-auto h-12 tablet:h-16 relative z-50 pl-2 tablet:-pl-0"
+                    alt="Sakura League"
+                  />
+                </Link>
               </div>
               <div>
                 <Menu />
@@ -43,10 +45,36 @@ export default async function PublicLayout({
         {children}
       </div>
 
-      <footer className="text-neutral-800 [&_a]:hover:text-neutral-700 text-sm pt-16 pb-12">
+      <footer className="text-neutral-800 [&_a]:hover:text-neutral-700 text-sm pb-12">
         <div className="container px-2 mx-auto flex flex-col laptop:flex-row justify-between items-center laptop:items-end gap-4">
           <div className="space-y-4 text-left">
-            <div className="space-x-4">
+            <div>
+              <p>麻雀理工</p>
+              <p>聯絡我們</p>
+              <p className="mt-[1em]">
+                <i className="bi bi-phone"></i> 電話：+852 5114 3454
+              </p>
+              <p>
+                <i className="bi bi-envelope"></i> 電郵：
+                <a href="mailto:Mahjongpoly@gmail.com" className="underline">
+                  Mahjongpoly@gmail.com
+                </a>
+              </p>
+              <p>
+                <i className="bi bi-instagram"></i> Instagram：Mahjong.poly
+              </p>
+              <p>
+                <i className="bi bi-globe"></i> Website：
+                <a
+                  href="https://mahjong-poly.mystrikingly.com"
+                  className="underline"
+                  target="_blank"
+                >
+                  https://mahjong-poly.mystrikingly.com
+                </a>
+              </p>
+            </div>
+            <div className="space-x-4 mt-4">
               <span>主辦機構</span>
               <span>
                 <a
