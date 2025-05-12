@@ -267,8 +267,8 @@ const PLAYERS = [
     },
     stat: {
       atk: 2,
-      def: 2,
-      spd: 3,
+      def: 3,
+      spd: 4,
       luk: 4,
     },
     metadatas: [],
@@ -361,8 +361,8 @@ const PLAYERS = [
       },
     },
     stat: {
-      atk: 2,
-      def: 3,
+      atk: 3,
+      def: 2,
       spd: 2,
       luk: 3,
     },

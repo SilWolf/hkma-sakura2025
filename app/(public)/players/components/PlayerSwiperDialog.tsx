@@ -16,6 +16,11 @@ export default function PlayerSwiperDialog() {
           <PlayerDetailsSwiper />
         </div>
       </div>
+      <form method="dialog">
+        <button className="absolute top-0 right-0 z-50 text-[3em] leading-[1em]">
+          <i className="bi bi-x-lg"></i>
+        </button>
+      </form>
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>
