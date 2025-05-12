@@ -63,7 +63,7 @@ export default async function SchedulePage() {
   return (
     <main>
       <section className="py-10">
-        <h2 className="text-center text-4xl lg:text-5xl font-semibold">
+        <h2 className="text-center text-4xl laptop:text-5xl font-semibold">
           賽程及對局紀錄
         </h2>
       </section>
@@ -73,18 +73,16 @@ export default async function SchedulePage() {
           {matchesGroupedByDate.map((match) => (
             <div
               key={match.data.startAt}
-              className="flex flex-col lg:flex-row gap-8 px-2 py-4 lg:px-8 lg:py-8 rounded-lg bg-[rgba(255,255,255,0.1)]"
+              className="flex flex-col laptop:flex-row gap-8 px-2 py-4 laptop:px-8 laptop:py-8 rounded-lg bg-[rgba(255,255,255,0.1)]"
             >
-              <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
+              <div className="flex items-center justify-between">
                 <p className="text-2xl font-semibold">
-                  {renderDateToShortForm(match.data.startAt)}
-                </p>
-                <p className="text-2xl font-semibold">
-                  ({renderWeekdayByISODateString(match.data.startAt)})
+                  {renderDateToShortForm(match.data.startAt)}(
+                  {renderWeekdayByISODateString(match.data.startAt)})
                 </p>
                 {match.result && (
                   <Link href={`/matches/${match.code}`}>
-                    <button className="btn btn-secondary mt-4">詳情</button>
+                    <button className="btn btn-secondary">詳情</button>
                   </Link>
                 )}
               </div>

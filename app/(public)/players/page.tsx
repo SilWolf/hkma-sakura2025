@@ -14,7 +14,7 @@ export default async function Players() {
   return (
     <main className="relative">
       {/* <section className="pt-10 pb-10">
-        <h2 className="text-center text-4xl lg:text-5xl font-semibold">
+        <h2 className="text-center text-4xl laptop:text-5xl font-semibold">
           參賽選手
         </h2>
       </section> */}
@@ -39,7 +39,7 @@ export default async function Players() {
                   backgroundColor: PLAYER_TYPE_DATA[type].bgColorLight,
                 }}
               >
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 justify-center">
+                <div className="grid grid-cols-1 laptop:grid-cols-3 gap-4 justify-center">
                   {PLAYERS.filter(({ playerType }) => playerType === type).map(
                     (player) => (
                       <a
