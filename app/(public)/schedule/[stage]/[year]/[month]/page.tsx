@@ -70,18 +70,18 @@ export default async function SchedulePage() {
 
       <section className="pb-12">
         <div className="container px-2 mx-auto max-w-screen-lg space-y-6">
-          {matchesGroupedByDate.map((match) => (
+          {matchesGroupedByDate.map(({ mergedMatch, matches }) => (
             <div
-              key={match.data.startAt}
+              key={mergedMatch.data.startAt}
               className="flex flex-col laptop:flex-row gap-8 px-2 py-4 laptop:px-8 laptop:py-8 rounded-lg bg-[rgba(255,255,255,0.1)]"
             >
               <div className="flex items-center justify-between">
                 <p className="text-2xl font-semibold">
-                  {renderDateToShortForm(match.data.startAt)}(
-                  {renderWeekdayByISODateString(match.data.startAt)})
+                  {renderDateToShortForm(mergedMatch.data.startAt)}(
+                  {renderWeekdayByISODateString(mergedMatch.data.startAt)})
                 </p>
-                {match.result && (
-                  <Link href={`/matches/${match.code}`}>
+                {mergedMatch.result && (
+                  <Link href={`/matches/${mergedMatch.code}`}>
                     <button className="btn btn-secondary">詳情</button>
                   </Link>
                 )}
@@ -89,38 +89,38 @@ export default async function SchedulePage() {
               <div className="flex-1 gap-x-6 gap-y-12">
                 <div>
                   <div className="grid grid-cols-4 gap-2">
-                    {!match.result &&
-                      match.data.players.map((player) => (
+                    {!mergedMatch.result &&
+                      mergedMatch.data.players.map((player) => (
                         <ScheduleTeam
                           key={player.id}
                           player={playersMap[player.id] ?? player}
                         />
                       ))}
-                    {match.result &&
+                    {mergedMatch.result &&
                       [
                         {
                           player:
-                            playersMap[match.data.players[0].id] ??
-                            match.data.players[0],
-                          result: match.result.playerEast,
+                            playersMap[mergedMatch.data.players[0].id] ??
+                            mergedMatch.data.players[0],
+                          result: mergedMatch.result.playerEast,
                         },
                         {
                           player:
-                            playersMap[match.data.players[1].id] ??
-                            match.data.players[1],
-                          result: match.result.playerSouth,
+                            playersMap[mergedMatch.data.players[1].id] ??
+                            mergedMatch.data.players[1],
+                          result: mergedMatch.result.playerSouth,
                         },
                         {
                           player:
-                            playersMap[match.data.players[2].id] ??
-                            match.data.players[2],
-                          result: match.result.playerWest,
+                            playersMap[mergedMatch.data.players[2].id] ??
+                            mergedMatch.data.players[2],
+                          result: mergedMatch.result.playerWest,
                         },
                         {
                           player:
-                            playersMap[match.data.players[3].id] ??
-                            match.data.players[3],
-                          result: match.result.playerNorth,
+                            playersMap[mergedMatch.data.players[3].id] ??
+                            mergedMatch.data.players[3],
+                          result: mergedMatch.result.playerNorth,
                         },
                       ].map(({ player, result }) => (
                         <ScheduleTeam

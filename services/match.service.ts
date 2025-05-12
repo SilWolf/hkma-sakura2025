@@ -419,7 +419,10 @@ export const apiQueryMatchesForSchedule = async (options?: {
         };
       }
 
-      return newMatch;
+      return {
+        mergedMatch: newMatch,
+        matches,
+      };
     });
   });
 };

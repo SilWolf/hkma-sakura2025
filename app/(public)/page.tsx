@@ -23,9 +23,11 @@ export default async function Home() {
   ]);
   const { players, teams } = await apiGetTournament();
 
-  const currentMatch = latestCompletedMatches[0];
-  const comingMatches = latestComingMatches.slice(0, 2);
-  const nextMatch = latestComingMatches[0];
+  const currentMatch = latestCompletedMatches[0]?.mergedMatch;
+  const comingMatches = latestComingMatches
+    .slice(0, 2)
+    .map(({ mergedMatch }) => mergedMatch);
+  const nextMatch = latestComingMatches[0]?.mergedMatch;
 
   return (
     <main>
