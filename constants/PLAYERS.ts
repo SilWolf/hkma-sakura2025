@@ -252,7 +252,7 @@ const PLAYERS = [
   {
     id: "player8",
     name: {
-      display: "Evelyn",
+      display: "保安隊長",
     },
     playerType: "challenger" as const,
     portrait: {
@@ -271,16 +271,9 @@ const PLAYERS = [
       spd: 3,
       luk: 4,
     },
-    metadatas: [
-      { label: "身上最引以為傲嘅地方", content: "英文幾好" },
-      { label: "最愛的穿搭風格", content: "unisex" },
-      { label: "擇偶條件", content: "無所謂" },
-      { label: "最討厭的人類", content: "蠢人" },
-      { label: "你最喜愛做的事", content: "瞓" },
-      { label: "想同觀眾講的說話", content: "新手！新手！新手！" },
-    ],
+    metadatas: [],
     description:
-      "雖然只有半年麻雀經驗，但展現出驚人的天賦！特別喜歡荔枝口味的各種飲品，每次對局都展現出超強的集中力。期待在麻雀世界繼續成長，創造更多精彩戰績。",
+      "一年麻雀經驗的新星！作為麻雀理工嘅保安隊長，在牌桌上有著驚訝的觀察力和直覺。視酒精如命，佢身上流着的嘅唔係血液，而係酒精！！歡迎大家約佢比試酒力🍷🍷。",
   },
   {
     id: "player9",
@@ -354,7 +347,7 @@ const PLAYERS = [
   {
     id: "player11",
     name: {
-      display: "Hazel",
+      display: "園丁",
     },
     playerType: "challenger" as const,
     portrait: {
@@ -373,16 +366,9 @@ const PLAYERS = [
       spd: 2,
       luk: 3,
     },
-    metadatas: [
-      { label: "身上最引以為傲嘅地方", content: "同埋心" },
-      { label: "最愛的穿搭風格", content: "韓風" },
-
-      { label: "最討厭的人類", content: "無禮貌嘅人" },
-      { label: "你最喜愛做的事", content: "聽歌" },
-      { label: "想同觀眾講的說話", content: "新手但會努力學" },
-    ],
+    metadatas: [],
     description:
-      "半年麻雀經驗的音樂愛好者！熱愛聽歌放鬆心情。作為麻雀新手，贏過$100是最難忘的戰績。以輕鬆愉快的心態學習麻雀，享受每一局比賽的樂趣。",
+      "擁有4年豐富麻雀經驗的選手！不僅照顧植物有一手，更有驚人的耐心！！最喜歡飲奶。期待在排局上見到佢心思細膩嘅一面。",
   },
   {
     id: "player12",
