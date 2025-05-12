@@ -29,10 +29,6 @@ export default async function Home() {
 
   return (
     <main>
-      <section>
-        <TeamScoreConflictBar teamLeft={teams[0]} teamRight={teams[1]} />
-      </section>
-
       {nextMatch && (
         <section className="pb-12">
           <NextMatchSection nextMatch={nextMatch} />
@@ -45,8 +41,8 @@ export default async function Home() {
         ))}
       </div> */}
 
-      <section className="py-12">
-        <div className="container px-2 mx-auto text-center flex flex-col lg:flex-row gap-8 gap-y-16">
+      <section className="py-0 tablet:py-12">
+        <div className="container px-2 mx-auto text-center flex flex-col laptop:flex-row gap-8 gap-y-16">
           <div className="flex-1">
             <h2 className="font-semibold text-4xl mb-4">最新賽果</h2>
 
@@ -54,25 +50,32 @@ export default async function Home() {
               {
                 <div
                   key={currentMatch.data.startAt}
-                  className="flex flex-col lg:flex-row gap-8"
+                  className="flex flex-col laptop:flex-row gap-2 tablet:gap-4"
                 >
-                  <div className="[&>p]:inline lg:[&>p]:block shrink-0 text-center">
-                    <p className="text-2xl font-semibold">
-                      {renderDateToShortForm(currentMatch.data.startAt)}
-                    </p>
-                    <p className="text-2xl font-semibold">
-                      ({renderWeekdayByISODateString(currentMatch.data.startAt)}
-                      )
-                    </p>
-                    {currentMatch.result && (
-                      <Link href={`/matches/${currentMatch.code}`}>
-                        <button className="btn btn-secondary mt-4">詳情</button>
-                      </Link>
-                    )}
+                  <div className="flex items-center justify-between tablet:justify-start gap-4 flex-row tablet:flex-col">
+                    <div className="flex flex-row tablet:flex-col items-center">
+                      <p className="text-2xl font-semibold">
+                        {renderDateToShortForm(currentMatch.data.startAt)}
+                      </p>
+                      <p className="text-2xl font-semibold">
+                        (
+                        {renderWeekdayByISODateString(
+                          currentMatch.data.startAt
+                        )}
+                        )
+                      </p>
+                    </div>
+                    <div>
+                      {currentMatch.result && (
+                        <Link href={`/matches/${currentMatch.code}`}>
+                          <button className="btn btn-secondary">詳情</button>
+                        </Link>
+                      )}
+                    </div>
                   </div>
                   <div className="flex-1 gap-x-6 gap-y-12">
                     <div>
-                      <div className="grid grid-cols-4 gap-2 text-[24px]">
+                      <div className="grid grid-cols-2 tablet:grid-cols-4 gap-2 text-[24px]">
                         <LargePlayerPortrait
                           player={currentMatch.data.players[0]}
                           point={currentMatch.result?.playerEast.point}
@@ -102,7 +105,7 @@ export default async function Home() {
 
             <h2 className="font-semibold text-4xl mt-8 mb-4">賽程</h2>
 
-            <div className="grid grid-cols-2 gap-x-8">
+            <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4 tablet:gap-8">
               {comingMatches.map((match) => (
                 <div key={match.data.startAt} className="">
                   <div className="text-center mb-2">
@@ -132,7 +135,7 @@ export default async function Home() {
               </Link>
             </div>
           </div>
-          <div className="w-[360px]">
+          <div className="w-full tablet:w-[360px]">
             <SakuraInstagramEmbed />
           </div>
         </div>

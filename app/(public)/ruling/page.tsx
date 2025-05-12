@@ -8,7 +8,7 @@ export default function RulingPage() {
   return (
     <main>
       <section className="py-10">
-        <h2 className="text-center text-4xl lg:text-5xl font-semibold">
+        <h2 className="text-center text-4xl laptop:text-5xl font-semibold">
           聯賽賽制及規則
         </h2>
       </section>

@@ -1,12 +1,16 @@
-import type { Metadata, Viewport } from "next";
 import Menu from "./menu";
 import "./public-layout.css";
+import TeamScoreConflictBar from "./_widgets/TeamScoreConflictBar";
+import { apiGetTournament } from "@/services/tournament.service";
+import Link from "next/link";
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { teams } = await apiGetTournament();
+
   return (
     <>
       <div
@@ -16,17 +20,24 @@ export default function PublicLayout({
           minHeight: "calc(100vh - 160px)",
         }}
       >
-        <div className="bg-white sticky top-0 z-50">
-          <div className="container mx-auto flex items-center justify-between">
-            <div>
-              <img
-                src="/images/logo-sakura-long.png"
-                className="block mx-auto h-12 xl:h-16"
-                alt="Sakura League"
-              />
+        <div className="sticky top-0 z-50">
+          <div className="bg-white">
+            <div className="container mx-auto flex items-center justify-between">
+              <div>
+                <Link href="/">
+                  <img
+                    src="/images/logo-sakura-long.png"
+                    className="block mx-auto h-12 tablet:h-16 relative z-50 pl-2 tablet:-pl-0"
+                    alt="Sakura League"
+                  />
+                </Link>
+              </div>
+              <div>
+                <Menu />
+              </div>
             </div>
             <div>
-              <Menu />
+              <TeamScoreConflictBar teamLeft={teams[0]} teamRight={teams[1]} />
             </div>
           </div>
         </div>
@@ -34,10 +45,36 @@ export default function PublicLayout({
         {children}
       </div>
 
-      <footer className="text-neutral-800 [&_a]:hover:text-neutral-700 text-sm pt-16 pb-12">
-        <div className="container px-2 mx-auto flex flex-col md:flex-row justify-between items-center md:items-end gap-4">
+      <footer className="text-neutral-800 [&_a]:hover:text-neutral-700 text-sm pb-12">
+        <div className="container px-2 mx-auto flex flex-col laptop:flex-row justify-between items-center laptop:items-end gap-4">
           <div className="space-y-4 text-left">
-            <div className="space-x-4">
+            <div>
+              <p>麻雀理工</p>
+              <p>聯絡我們</p>
+              <p className="mt-[1em]">
+                <i className="bi bi-phone"></i> 電話：+852 5114 3454
+              </p>
+              <p>
+                <i className="bi bi-envelope"></i> 電郵：
+                <a href="mailto:Mahjongpoly@gmail.com" className="underline">
+                  Mahjongpoly@gmail.com
+                </a>
+              </p>
+              <p>
+                <i className="bi bi-instagram"></i> Instagram：Mahjong.poly
+              </p>
+              <p>
+                <i className="bi bi-globe"></i> Website：
+                <a
+                  href="https://mahjong-poly.mystrikingly.com"
+                  className="underline"
+                  target="_blank"
+                >
+                  https://mahjong-poly.mystrikingly.com
+                </a>
+              </p>
+            </div>
+            <div className="space-x-4 mt-4">
               <span>主辦機構</span>
               <span>
                 <a
@@ -45,7 +82,7 @@ export default function PublicLayout({
                   target="_blank"
                 >
                   <img
-                    className="h-10 sm:h-12 inline-block"
+                    className="h-10 tablet:h-12 inline-block"
                     src="/images/logo-poly.webp"
                     alt="香港麻雀理工"
                   />
@@ -54,7 +91,7 @@ export default function PublicLayout({
               <span>
                 <a href="https://www.hkmahjong.org/" target="_blank">
                   <img
-                    className="h-12 sm:h-16 inline-block"
+                    className="h-12 tablet:h-16 inline-block"
                     src="/images/logo-hkma-black.png"
                     alt="香港麻雀協會 Hong Kong Mahjong Association"
                   />
@@ -63,7 +100,7 @@ export default function PublicLayout({
             </div>
           </div>
           <div className="space-y-4">
-            {/* <div className="space-x-4 text-center md:text-right pr-1 text-2xl">
+            {/* <div className="space-x-4 text-center laptop:text-right pr-1 text-2xl">
               <a
                 href="https://www.youtube.com/@HKMAHJONG/streams"
                 target="_blank"
@@ -93,10 +130,10 @@ export default function PublicLayout({
                 <i className="bi bi-instagram"></i>
               </a>
             </div> */}
-            {/* <div className="space-x-6 text-center md:text-right pr-1">
+            {/* <div className="space-x-6 text-center laptop:text-right pr-1">
               <a href="mailto:Mahjongpoly@gmail.com">聯絡我們</a>
             </div> */}
-            {/* <p className="text-center md:text-right">
+            {/* <p className="text-center laptop:text-right">
               ©2025 by 香港麻雀協會 Hong Kong Mahjong Association.
             </p> */}
           </div>

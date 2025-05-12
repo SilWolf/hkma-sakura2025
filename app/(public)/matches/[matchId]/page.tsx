@@ -221,7 +221,7 @@ export default async function MatchDetailPage({
 
   return (
     <main>
-      <section className="pt-16 md:pt-8 pb-4">
+      <section className="pt-16 laptop:pt-8 pb-4">
         <div className="container max-w-(--breakpoint-lg) mx-auto px-2 space-x-2 text-sm">
           <Link
             className="opacity-80"

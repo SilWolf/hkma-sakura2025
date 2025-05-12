@@ -16,13 +16,17 @@ const Menu = () => {
 
   return (
     <div>
-      <div className="fixed top-0 left-0 right-0 z-50 text-right md:hidden">
-        <button className="p-2" onClick={handleClickMenu} aria-label="選單">
+      <div className="fixed top-0 left-0 right-0 z-50 text-right laptop:hidden">
+        <button
+          className="py-1 px-2"
+          onClick={handleClickMenu}
+          aria-label="選單"
+        >
           <i className="bi bi-list text-4xl"></i>
         </button>
       </div>
       <ul
-        className="bg-neutral-100 fixed top-0 left-0 right-0 z-40 hidden pt-12 md:pt-0 md:block md:static md:bg-transparent md:[&>li]:inline-block [&>li>a]:block md:[&>li>a]:inline-block [&>li>a]:py-4 [&>li>a]:px-4"
+        className="bg-neutral-100 fixed top-0 left-0 right-0 z-40 hidden pt-12 laptop:pt-0 laptop:block laptop:static laptop:bg-transparent laptop:[&>li]:inline-block [&>li>a]:block laptop:[&>li>a]:inline-block [&>li>a]:py-4 [&>li>a]:px-4"
         style={{
           display: menuOpened ? "block" : undefined,
         }}
