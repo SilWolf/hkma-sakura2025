@@ -12,7 +12,6 @@ import NextMatchSection from "./_widgets/NextMatchSection";
 import RankingSection from "./_widgets/RankingSection";
 import SakuraInstagramEmbed from "./_widgets/SakuraInstagramEmbed";
 import LargePlayerPortrait from "./_components/LargePlayerPortrait";
-import TeamScoreConflictBar from "./_widgets/TeamScoreConflictBar";
 
 export const revalidate = 900;
 
@@ -21,7 +20,7 @@ export default async function Home() {
     apiGetLatestCompletedMatches(),
     apiGetLatestComingMatches(),
   ]);
-  const { players, teams } = await apiGetTournament();
+  const { players } = await apiGetTournament();
 
   const currentMatch = latestCompletedMatches[0]?.mergedMatch;
   const comingMatches = latestComingMatches
@@ -68,7 +67,7 @@ export default async function Home() {
                       </p>
                     </div>
                     <div>
-                      {currentMatch.result && (
+                      {currentMatch.data.result && (
                         <Link href={`/matches/${currentMatch.code}`}>
                           <button className="btn btn-secondary">詳情</button>
                         </Link>
@@ -80,23 +79,27 @@ export default async function Home() {
                       <div className="grid grid-cols-2 laptop:grid-cols-4 gap-2 text-[24px]">
                         <LargePlayerPortrait
                           player={currentMatch.data.players[0]}
-                          point={currentMatch.result?.playerEast.point}
-                          ranking={currentMatch.result?.playerEast.ranking}
+                          point={currentMatch.data.result?.playerEast.point}
+                          ranking={currentMatch.data.result?.playerEast.ranking}
                         />
                         <LargePlayerPortrait
                           player={currentMatch.data.players[1]}
-                          point={currentMatch.result?.playerSouth.point}
-                          ranking={currentMatch.result?.playerSouth.ranking}
+                          point={currentMatch.data.result?.playerSouth.point}
+                          ranking={
+                            currentMatch.data.result?.playerSouth.ranking
+                          }
                         />
                         <LargePlayerPortrait
                           player={currentMatch.data.players[2]}
-                          point={currentMatch.result?.playerWest.point}
-                          ranking={currentMatch.result?.playerWest.ranking}
+                          point={currentMatch.data.result?.playerWest.point}
+                          ranking={currentMatch.data.result?.playerWest.ranking}
                         />
                         <LargePlayerPortrait
                           player={currentMatch.data.players[3]}
-                          point={currentMatch.result?.playerNorth.point}
-                          ranking={currentMatch.result?.playerNorth.ranking}
+                          point={currentMatch.data.result?.playerNorth.point}
+                          ranking={
+                            currentMatch.data.result?.playerNorth.ranking
+                          }
                         />
                       </div>
                     </div>

@@ -204,91 +204,52 @@ export const apiQueryMatches = async () => {
 };
 
 export const apiGetMatchById = async (matchId: string) => {
+  const { playersMap } = await apiGetTournament();
+
   const query = q.star
     .filterByType("match")
     .filterRaw(`_id == "${matchId}"`)
-    .order("startAt asc")
-    .slice(0, 1)
+    .slice(0)
     .project((sub) => ({
       _id: z.string(),
       name: z.string().nullish(),
       startAt: z.string(),
-      playerEast: sub.field("playerEast").deref().project(playerProject),
-      playerSouth: sub.field("playerSouth").deref().project(playerProject),
-      playerWest: sub.field("playerWest").deref().project(playerProject),
-      playerNorth: sub.field("playerNorth").deref().project(playerProject),
-      playerEastTeam: sub.field("playerEastTeam").deref().project(teamProject),
-      playerSouthTeam: sub
-        .field("playerSouthTeam")
-        .deref()
-        .project(teamProject),
-      playerWestTeam: sub.field("playerWestTeam").deref().project(teamProject),
-      playerNorthTeam: sub
-        .field("playerNorthTeam")
-        .deref()
-        .project(teamProject),
+      playerEastId: sub.field("playerEast").field("_ref"),
+      playerSouthId: sub.field("playerSouth").field("_ref"),
+      playerWestId: sub.field("playerWest").field("_ref"),
+      playerNorthId: sub.field("playerNorth").field("_ref"),
+      result: true,
+      rounds: true,
+      youtubeUrl: true,
       _createdAt: true,
       _updatedAt: true,
     }));
 
-  return runQuery(query).then((matches) => {
-    if (matches.length === 0) {
+  return runQuery(query).then((match) => {
+    if (!match) {
       throw new Error("找不到賽事");
     }
 
-    const formatPlayer = (
-      player: (typeof matches)[number]["playerEast"],
-      team: (typeof matches)[number]["playerEastTeam"]
-    ) => ({
-      id: player?._id ?? "",
-      teamId: team?._id ?? "",
-      color: {
-        primary: team?.color ?? "#FFFF00",
-        secondary: team?.color ?? "#FFFF00",
-      },
-      name: {
-        official: {
-          primary: player?.name ?? "",
-          secondary: player?.designation ?? "",
-          third: player?.nickname ?? "",
-        },
-        display: {
-          primary: player?.name ?? "",
-          secondary: team?.preferredName ?? "",
-          third: player?.nickname ?? "",
-        },
-      },
-      image: {
-        portrait: {
-          default: {
-            url: player?.portraitImage ?? "",
-          },
-        },
-        logo: {
-          default: {
-            url: team?.squareLogoImage ?? "",
-          },
-        },
-      },
-    });
-
     return {
       schemaVersion: "2",
-      code: matches[0]._id,
+      code: match._id,
       data: {
-        name: matches[0].name ?? "",
-        startAt: matches[0].startAt,
+        name: match.name ?? "",
+        startAt: match.startAt,
         players: [
-          formatPlayer(matches[0].playerEast, matches[0].playerEastTeam),
-          formatPlayer(matches[0].playerSouth, matches[0].playerSouthTeam),
-          formatPlayer(matches[0].playerWest, matches[0].playerWestTeam),
-          formatPlayer(matches[0].playerNorth, matches[0].playerNorthTeam),
+          playersMap[match.playerEastId!],
+          playersMap[match.playerSouthId!],
+          playersMap[match.playerWestId!],
+          playersMap[match.playerNorthId!],
         ],
         rulesetRef: "hkleague-4p",
+        result: match.result,
+        rounds: match.rounds,
       },
       metadata: {
-        createdAt: matches[0]._createdAt,
-        updatedAt: matches[0]._updatedAt,
+        createdAt: match._createdAt,
+        updatedAt: match._updatedAt,
+        youtubeUrl: match.youtubeUrl,
       },
     } satisfies V2Match;
   });
@@ -327,8 +288,10 @@ export const apiQueryMatchesForSchedule = async (options?: {
       playerWestId: sub.field("playerWest").field("_ref"),
       playerNorthId: sub.field("playerNorth").field("_ref"),
       result: sub.field("result"),
+      rounds: true,
       _createdAt: true,
       _updatedAt: true,
+      youtubeUrl: true,
     }));
 
   return runQuery(query).then((matches) => {
@@ -352,6 +315,7 @@ export const apiQueryMatchesForSchedule = async (options?: {
         metadata: {
           createdAt: matches[0]._createdAt,
           updatedAt: matches[0]._updatedAt,
+          youtubeUrl: matches[0].youtubeUrl,
         },
       };
 
@@ -387,33 +351,33 @@ export const apiQueryMatchesForSchedule = async (options?: {
           { key: "playerNorth", point: pointsByPlayers[3] },
         ].sort((a, b) => b.point - a.point);
 
-        newMatch.result = {
+        newMatch.data.result = {
           playerEast: {
             point: pointsByPlayers[0],
             ranking: (
               sortedScores.findIndex(({ key }) => key === "playerEast") + 1
-            ).toString(),
+            ).toString() as "1" | "2" | "3" | "4",
             score: 0,
           },
           playerSouth: {
             point: pointsByPlayers[1],
             ranking: (
               sortedScores.findIndex(({ key }) => key === "playerSouth") + 1
-            ).toString(),
+            ).toString() as "1" | "2" | "3" | "4",
             score: 0,
           },
           playerWest: {
             point: pointsByPlayers[2],
             ranking: (
               sortedScores.findIndex(({ key }) => key === "playerWest") + 1
-            ).toString(),
+            ).toString() as "1" | "2" | "3" | "4",
             score: 0,
           },
           playerNorth: {
             point: pointsByPlayers[3],
             ranking: (
               sortedScores.findIndex(({ key }) => key === "playerNorth") + 1
-            ).toString(),
+            ).toString() as "1" | "2" | "3" | "4",
             score: 0,
           },
         };
@@ -421,7 +385,29 @@ export const apiQueryMatchesForSchedule = async (options?: {
 
       return {
         mergedMatch: newMatch,
-        matches,
+        matches: matches.map((match) => {
+          return {
+            schemaVersion: "2",
+            code: match._id,
+            data: {
+              name: match.name ?? "",
+              startAt: match.startAt,
+              players: [
+                playersMap[match.playerEastId!],
+                playersMap[match.playerSouthId!],
+                playersMap[match.playerWestId!],
+                playersMap[match.playerNorthId!],
+              ],
+              rulesetRef: "hkleague-4p",
+              result: match.result,
+              rounds: match.rounds,
+            },
+            metadata: {
+              createdAt: match._createdAt,
+              updatedAt: match._updatedAt,
+            },
+          } satisfies V2Match;
+        }),
       };
     });
   });

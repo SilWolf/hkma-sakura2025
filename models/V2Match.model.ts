@@ -1,4 +1,4 @@
-import { playerSchema } from "@/adapters/sanity/sanity.zod";
+import { matchSchema, playerSchema } from "@/adapters/sanity/sanity.zod";
 import * as zod from "zod";
 
 const v2MatchResultOfPlayer = zod.object({
@@ -74,20 +74,15 @@ export const v2MatchSchema = zod.object({
     remark: zod.string().optional(),
     players: zod.array(v2MatchPlayerSchema),
     rulesetRef: zod.string(),
+    result: matchSchema.shape.result.nullish(),
+    rounds: matchSchema.shape.rounds.nullish(),
   }),
   metadata: zod.object({
     createdAt: zod.string().datetime(),
     updatedAt: zod.string().datetime(),
     databaseId: zod.string().optional(),
+    youtubeUrl: zod.string().nullish(),
   }),
-  result: zod
-    .object({
-      playerEast: v2MatchResultOfPlayer,
-      playerSouth: v2MatchResultOfPlayer,
-      playerWest: v2MatchResultOfPlayer,
-      playerNorth: v2MatchResultOfPlayer,
-    })
-    .nullish(),
 });
 
 export type V2MatchPlayer = zod.infer<typeof v2MatchPlayerSchema>;
