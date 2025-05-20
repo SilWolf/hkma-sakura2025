@@ -432,7 +432,7 @@ const PLAYERS = [
       { label: "身上最引以為傲嘅地方", content: "Eyes" },
       { label: "最愛的穿搭風格", content: "吊帶小背心" },
       { label: "擇偶條件", content: "高" },
-      { label: "最討厭的人類", content: "自大蠹而不自知" },
+      { label: "最討厭的人類", content: "自大蠢而不自知" },
       { label: "你最喜愛做的事", content: "睡覺撚貓打冬冬" },
       {
         label: "想同觀眾講的說話",
