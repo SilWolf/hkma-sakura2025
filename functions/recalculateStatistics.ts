@@ -407,9 +407,7 @@ export const recalculateStatisticsByTournamentId = async (
         scoreMin:
           statistics.scoreMin === MIN_MAX_VALUE ? 0 : statistics.scoreMin,
         scoreMax:
-          statistics.scoreMax === -MIN_MAX_VALUE
-            ? 0
-            : Math.max(statistics.scoreMax, 0),
+          statistics.scoreMax === -MIN_MAX_VALUE ? 0 : statistics.scoreMax,
         ronPureScoreAvg:
           statistics.ronCount > 0
             ? _temp.ronPureScoreTotal / statistics.ronCount
