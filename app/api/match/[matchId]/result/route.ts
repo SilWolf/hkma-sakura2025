@@ -2,8 +2,11 @@ import { matchSchema } from "@/adapters/sanity/sanity.zod";
 import { recalculateStatisticsByTournamentId } from "@/functions/recalculateStatistics";
 import { client } from "@/helpers/sanity.helper";
 import { apiGetTournamentIdByMatchId } from "@/services/tournament.service";
+import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic"; // defaults to auto
+
+export const maxDuration = 60;
 
 const matchSchemaOnlyResultAndRounds = matchSchema.pick({
   _id: true,
@@ -39,9 +42,14 @@ export async function PATCH(request: Request) {
     .catch((error) => ({ success: false, errors: error.message }));
 
   if (response.success) {
-    apiGetTournamentIdByMatchId(match._id).then(
-      recalculateStatisticsByTournamentId
-    );
+    return apiGetTournamentIdByMatchId(match._id)
+      .then((tournamentId) => recalculateStatisticsByTournamentId(tournamentId))
+      .then(() => {
+        revalidatePath("/(public)", "layout");
+        return Response.json(response, {
+          status: response.success ? 200 : 400,
+        });
+      });
   }
 
   return Response.json(response, { status: response.success ? 200 : 400 });

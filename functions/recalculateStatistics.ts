@@ -5,7 +5,6 @@ import {
   apiGetTournamentById,
   apiPatchTeamsStatistics,
 } from "@/services/tournament.service";
-import { revalidatePath } from "next/cache";
 
 const MIN_MAX_VALUE = 99999999;
 
@@ -563,6 +562,4 @@ export const recalculateStatisticsByTournamentId = async (
     console.log(`[Recalculate] Update player ${playerStatistic.playerId} DONE`);
   }
   console.log("[Recalculate] Update players statistics... DONE");
-
-  revalidatePath("/(public)", "layout");
 };
