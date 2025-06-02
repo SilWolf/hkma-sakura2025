@@ -343,10 +343,10 @@ export default async function MatchDetailPage({
                   {match.data.result?.playerSouth.score}
                 </td>
                 <td className="text-center text-2xl font-bold py-4">
-                  {match.data.result?.playerNorth.score}
+                  {match.data.result?.playerWest.score}
                 </td>
                 <td className="text-center text-2xl font-bold py-4">
-                  {match.data.result?.playerWest.score}
+                  {match.data.result?.playerNorth.score}
                 </td>
               </tr>
 
@@ -384,10 +384,10 @@ export default async function MatchDetailPage({
                   {match.data.result?.playerSouth.score}
                 </td>
                 <td className="text-center text-2xl font-bold py-4">
-                  {match.data.result?.playerNorth.score}
+                  {match.data.result?.playerWest.score}
                 </td>
                 <td className="text-center text-2xl font-bold py-4">
-                  {match.data.result?.playerWest.score}
+                  {match.data.result?.playerNorth.score}
                 </td>
               </tr>
             </tbody>

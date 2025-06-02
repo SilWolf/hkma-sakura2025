@@ -21,9 +21,9 @@ export default function TeamScoreConflictBar({
       (Math.min(
         Math.max(
           (teamLeftPoint - teamRightPoint + BAR_LIMIT) / (BAR_LIMIT * 2),
-          0
+          0.0
         ),
-        100
+        1.0
       ) *
         0.6 +
         0.2) *
