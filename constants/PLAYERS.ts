@@ -208,47 +208,47 @@ const PLAYERS = [
     description:
       "擁有2-3年麻雀經驗的實力派選手！在香港立直麻雀團體聯賽中創下5連Top的亮眼戰績，更一舉擊飛三家展現實力。以果斷扭的打法著稱，人稱雀后，在牌桌上展現出獨特魅力。",
   },
-  {
-    id: "player7",
-    name: {
-      display: "Eris",
-    },
-    playerType: "hklplayer" as const,
-    portrait: {
-      default: {
-        url: "/images/players/portraits/8.png",
-      },
-    },
-    fullbody: {
-      default: {
-        url: "/images/players/fullbodys/8.png",
-      },
-    },
-    stat: {
-      atk: 4,
-      def: 3,
-      spd: 3,
-      luk: 2,
-    },
-    metadatas: [
-      { label: "擅長的戰術", content: "三暗追立" },
-      { label: "打牌時的小動作", content: "甩牌" },
-      { label: "身上最引以為傲嘅地方", content: "手應該係最靚" },
-      { label: "最愛的穿搭風格", content: "淑女，休閒" },
-      { label: "擇偶條件", content: "幽默，聰明" },
-      { label: "最討厭的人類", content: "得把口" },
-      {
-        label: "你最喜愛做的事",
-        content: "睇書，打牌，追劇（日本醫療劇/推理劇），普拉提",
-      },
-      {
-        label: "想同觀眾講的說話",
-        content: "希望係樱花盃發揮出我真正嘅水準！希望大家多多支持",
-      },
-    ],
-    description:
-      "香港競技麻雀界的實力派選手！4年的豐富經驗，培養出全面的麻雀技術，曾榮獲多個日麻比賽冠軍。熱愛閱讀、追劇，並保持著規律的普拉提運動。文武雙全的形象，在牌桌上展現出強大實力。",
-  },
+  // {
+  //   id: "player7",
+  //   name: {
+  //     display: "Eris",
+  //   },
+  //   playerType: "hklplayer" as const,
+  //   portrait: {
+  //     default: {
+  //       url: "/images/players/portraits/8.png",
+  //     },
+  //   },
+  //   fullbody: {
+  //     default: {
+  //       url: "/images/players/fullbodys/8.png",
+  //     },
+  //   },
+  //   stat: {
+  //     atk: 4,
+  //     def: 3,
+  //     spd: 3,
+  //     luk: 2,
+  //   },
+  //   metadatas: [
+  //     { label: "擅長的戰術", content: "三暗追立" },
+  //     { label: "打牌時的小動作", content: "甩牌" },
+  //     { label: "身上最引以為傲嘅地方", content: "手應該係最靚" },
+  //     { label: "最愛的穿搭風格", content: "淑女，休閒" },
+  //     { label: "擇偶條件", content: "幽默，聰明" },
+  //     { label: "最討厭的人類", content: "得把口" },
+  //     {
+  //       label: "你最喜愛做的事",
+  //       content: "睇書，打牌，追劇（日本醫療劇/推理劇），普拉提",
+  //     },
+  //     {
+  //       label: "想同觀眾講的說話",
+  //       content: "希望係樱花盃發揮出我真正嘅水準！希望大家多多支持",
+  //     },
+  //   ],
+  //   description:
+  //     "香港競技麻雀界的實力派選手！4年的豐富經驗，培養出全面的麻雀技術，曾榮獲多個日麻比賽冠軍。熱愛閱讀、追劇，並保持著規律的普拉提運動。文武雙全的形象，在牌桌上展現出強大實力。",
+  // },
   {
     id: "player8",
     name: {
