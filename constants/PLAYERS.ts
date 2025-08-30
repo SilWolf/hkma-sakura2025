@@ -548,6 +548,39 @@ const PLAYERS = [
     description:
       "13年麻雀資歷的資深玩家！不僅是麻雀高手，更是一位熱愛生活的文青。閒暇時喜歡到海邊拍照，捕捉生活中的美好瞬間。擅長閱讀各類小說，特別推薦《被討厭的勇氣》這本啟發人心的作品。以細膩的心思待人處世，在牌桌上也展現獨特魅力。",
   },
+  {
+    id: "player-",
+    name: {
+      display: "小俊子",
+    },
+    playerType: "challenger" as const,
+    portrait: {
+      default: {
+        url: "/images/players/portraits/17.png",
+      },
+    },
+    fullbody: {
+      default: {
+        url: "/images/players/fullbodys/17.png",
+      },
+    },
+    stat: {
+      atk: 1,
+      def: 1,
+      spd: 1,
+      luk: 1,
+    },
+    metadatas: [
+      { label: "擅長的戰術", content: "反枱" },
+      { label: "打牌時的小動作", content: "表情管理失控" },
+      { label: "身上最引以為傲嘅地方", content: "小短裙" },
+      { label: "最討厭的人類", content: "頭跳" },
+      { label: "你最喜愛做的事", content: "飲水" },
+      { label: "想同觀眾講的說話", content: "希望你唔係食飽飯撳入嚟" },
+    ],
+    description:
+      "香港競技麻雀界的奇蹟派選手!4分之1年的豐富經驗，培養出全面的麻雀甩牌技術，曾參與多個日麻比賽的觀眾席。 在麻雀理工中，第一名女校男生!",
+  },
 ];
 
 export default PLAYERS;
