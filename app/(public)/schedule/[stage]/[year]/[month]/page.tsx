@@ -16,7 +16,7 @@ const PlayerCard = ({
   point,
   isLoser,
 }: {
-  player: V2MatchPlayer;
+  player: V2MatchPlayer | null;
   point?: number | null;
   isLoser?: boolean;
 }) => {
@@ -26,9 +26,9 @@ const PlayerCard = ({
   return (
     <div>
       <img
-        src={player.image.portrait?.default.url}
+        src={player?.image.portrait?.default.url}
         className="w-full"
-        alt={player.name.display.primary}
+        alt={player?.name.display.primary}
         style={{
           opacity: isLoser ? 0.4 : 1,
         }}
@@ -116,32 +116,32 @@ export default async function SchedulePage() {
                           [
                             {
                               player:
-                                playersMap[match.data.players[0].id] ??
+                                playersMap[match.data.players[0]?.id] ??
                                 match.data.players[0],
                               result: match.data.result.playerEast,
                             },
                             {
                               player:
-                                playersMap[match.data.players[1].id] ??
+                                playersMap[match.data.players[1]?.id] ??
                                 match.data.players[1],
                               result: match.data.result.playerSouth,
                             },
                             {
                               player:
-                                playersMap[match.data.players[2].id] ??
+                                playersMap[match.data.players[2]?.id] ??
                                 match.data.players[2],
                               result: match.data.result.playerWest,
                             },
                             {
                               player:
-                                playersMap[match.data.players[3].id] ??
+                                playersMap[match.data.players[3]?.id] ??
                                 match.data.players[3],
                               result: match.data.result.playerNorth,
                             },
-                          ].map(({ player, result }) => (
+                          ].map(({ player, result }, i) => (
                             <PlayerCard
-                              key={player.id}
-                              player={playersMap[player.id] ?? player}
+                              key={i}
+                              player={playersMap[player?.id] ?? player}
                               point={result.point}
                               isLoser={result.ranking !== "1"}
                             />

@@ -319,7 +319,12 @@ export const apiQueryMatchesForSchedule = async (options?: {
         },
       };
 
-      const players = newMatch.data.players;
+      const players = [
+        matches[0].playerEastId!,
+        matches[0].playerSouthId!,
+        matches[0].playerWestId!,
+        matches[0].playerNorthId!,
+      ];
       const pointsByPlayers = [0.0, 0.0, 0.0, 0.0];
 
       let hasResult = false;
@@ -329,16 +334,16 @@ export const apiQueryMatchesForSchedule = async (options?: {
           hasResult = true;
 
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerEastId)
+            players.findIndex((playerId) => playerId === match.playerEastId)
           ] += match.result.playerEast.point;
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerSouthId)
+            players.findIndex((playerId) => playerId === match.playerSouthId)
           ] += match.result.playerSouth.point;
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerWestId)
+            players.findIndex((playerId) => playerId === match.playerWestId)
           ] += match.result.playerWest.point;
           pointsByPlayers[
-            players.findIndex((player) => player.id === match.playerNorthId)
+            players.findIndex((playerId) => playerId === match.playerNorthId)
           ] += match.result.playerNorth.point;
         }
       }
