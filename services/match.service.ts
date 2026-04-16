@@ -429,7 +429,7 @@ export const apiQueryMatchesForRecalulation = async (
       `tournament._ref == "${tournamentId}" && defined(resultUploadedAt)`
     )
     .order("startAt asc")
-    .slice(offset, size)
+    .slice(offset, offset + size)
     .project((sub) => ({
       playerEast: sub.field("playerEast"),
       playerSouth: sub.field("playerSouth"),

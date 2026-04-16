@@ -9,8 +9,8 @@ import { buildSrc, ImageSrcInputs } from "@sanity-image/url-builder";
 const sanityConfig = {
   projectId: "0a9a4r26",
   dataset: "production",
-  useCdn: true,
-  apiVersion: "2023-05-03",
+  useCdn: false,
+  apiVersion: "2026-04-07",
   token: process.env.SANITY_SECRET_TOKEN,
 };
 
