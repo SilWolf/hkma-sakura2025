@@ -69,7 +69,7 @@ export const v2MatchSchema = zod.object({
   schemaVersion: zod.string(),
   code: zod.string(),
   data: zod.object({
-    name: zod.string({ required_error: "對局必須有名稱" }),
+    name: zod.string().min(1, { message: "對局必須有名稱" }),
     startAt: zod.string(),
     remark: zod.string().optional(),
     players: zod.array(v2MatchPlayerSchema),
