@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 const thumbnailRender = (
   match: Match,
-  teamAndPlayers: { team: Team; players: Player[] }[]
+  teamAndPlayers: { team: Team; players: Player[] }[],
 ) => (
   <div
     style={{
@@ -248,7 +248,7 @@ const thumbnailRender = (
 
 const squareRender = (
   match: Match,
-  teamAndPlayers: { team: Team; players: Player[] }[]
+  teamAndPlayers: { team: Team; players: Player[] }[],
 ) => (
   <div
     style={{
@@ -490,20 +490,20 @@ export const GET = async (
   }: {
     params: Promise<{
       date: string;
-      style: "square" | "thumbnail";
+      style: string;
     }>;
-  }
+  },
 ) => {
   try {
     const { date, style } = await params;
     if (style !== "square" && style !== "thumbnail") {
       throw new Error(
-        'style must be "square" or "thumbnail", e.g. 2025-01-01/square'
+        'style must be "square" or "thumbnail", e.g. 2025-01-01/square',
       );
     }
 
     const regularTeamIds = await getRegularTeams().then((rts) =>
-      rts.map((rt) => rt._key)
+      rts.map((rt) => rt._key),
     );
 
     const matches = await getMatchesByDate(date);
@@ -542,7 +542,7 @@ export const GET = async (
         teamAndPlayersGroupedByTeamId[
           matches[i].playerEastTeam!._id
         ].players.findIndex(
-          (item) => item._id === matches[i].playerEast?._id
+          (item) => item._id === matches[i].playerEast?._id,
         ) === -1
       ) {
         teamAndPlayersGroupedByTeamId[
@@ -555,7 +555,7 @@ export const GET = async (
         teamAndPlayersGroupedByTeamId[
           matches[i].playerSouthTeam!._id
         ].players.findIndex(
-          (item) => item._id === matches[i].playerSouth?._id
+          (item) => item._id === matches[i].playerSouth?._id,
         ) === -1
       ) {
         teamAndPlayersGroupedByTeamId[
@@ -568,7 +568,7 @@ export const GET = async (
         teamAndPlayersGroupedByTeamId[
           matches[i].playerWestTeam!._id
         ].players.findIndex(
-          (item) => item._id === matches[i].playerWest?._id
+          (item) => item._id === matches[i].playerWest?._id,
         ) === -1
       ) {
         teamAndPlayersGroupedByTeamId[
@@ -581,7 +581,7 @@ export const GET = async (
         teamAndPlayersGroupedByTeamId[
           matches[i].playerNorthTeam!._id
         ].players.findIndex(
-          (item) => item._id === matches[i].playerNorth?._id
+          (item) => item._id === matches[i].playerNorth?._id,
         ) === -1
       ) {
         teamAndPlayersGroupedByTeamId[
@@ -606,16 +606,16 @@ export const GET = async (
       KdamThmorProRegular,
     ] = await Promise.all([
       fetch(
-        "https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-Regular.ttf"
+        "https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-Regular.ttf",
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-SemiBold.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/NotoSansTC-SemiBold.ttf`,
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2025.hkmahjong.org/fonts/NotoSerif-SemiBold.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/NotoSerif-SemiBold.ttf`,
       ).then((res) => res.arrayBuffer()),
       fetch(
-        `https://hkleague2025.hkmahjong.org/fonts/KdamThmorPro-Regular.ttf`
+        `https://hkleague2025.hkmahjong.org/fonts/KdamThmorPro-Regular.ttf`,
       ).then((res) => res.arrayBuffer()),
     ]);
 

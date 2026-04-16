@@ -2,7 +2,6 @@ import { getMatch } from "@/helpers/sanity.helper";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MatchLogsSection from "./MatchLogsSection";
-import { useMemo, useState } from "react";
 
 const MatchDetailReplayPage = async ({
   params,
@@ -23,7 +22,7 @@ const MatchDetailReplayPage = async ({
             className="opacity-80"
             href={`/schedule/${match.startAt.substring(
               0,
-              4
+              4,
             )}/${match.startAt.substring(5, 7)}`}
           >
             賽程
